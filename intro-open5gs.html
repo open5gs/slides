@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Open5GS – Introduction</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+    
+    <style>
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                    text-transform: none;
+        }
+    </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+          <h2 class="r-fit-text">
+            Introduction to <a href="https://open5gs.org">Open5GS</a>
+          </h2>
+          <p>Open Source Implementation for 5G Core and EPC</p>
+					<p>
+						<small>Created by <a href="https://github.com/acetcom">Sukchan Lee</a> and <a href="https://github.com/open5gs/open5gs/graphs/contributors">contributors</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Build your own 5G and LTE Networks with Open5GS</h2>
+					<p>
+            Open5GS is a C-language Open Source implementation for 5G Core and EPC, i.e. the core network of NR/LTE network. (Release-16)
+					</p>
+				</section>
+
+				<section style="text-align: left;">
+					<h2>What happened in 2017?</h2>
+					<ul>
+            <li>Proprietary eNBs are available from a variety of suppliers on the free/open market.</li>
+            <li>Also, srsRAN(formely srsENB) is looking like a much more viable approach.</li>
+            <li>But on the EPC side, there's no good options.</li>
+					</ul>
+				</section>
+
+        <section style="text-align: left;">
+					<h2>Strategy</h2>
+					<ul>
+            <li>The cleaner and saner architecture than others</li>  
+            <li>Providing a very simple installation process</li>
+            <li>Prompt, sincere and proactive response to problem reports from the open source commnutity</li>
+					</ul>
+				</section>
+
+        <section>
+					<h2>EPC Progress</h2>
+          <table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Release Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+              <tr>
+								<td>Feb 1, 2017</td>
+								<td>Programming started</td>
+							</tr>
+              <tr>
+								<td>Oct 9, 2017</td>
+								<td>v0.1.0 - First version released</td>
+							</tr>
+              <tr>
+								<td>Dec 18, 2017</td>
+								<td>v0.3.0 - IPv6 Support</td>
+							</tr>
+              <tr>
+								<td>Jul 11, 2018</td>
+								<td>v0.5.0 - CS Fallback Support</td>
+							</tr>
+              <tr>
+								<td>Jul 30, 2018</td>
+								<td>v0.5.1 - SMS over SG Support</td>
+							</tr>
+              <tr>
+								<td>Jan 12, 2020</td>
+								<td>v1.2.0 - VoLTE Now Works</td>
+							</tr>
+              <tr>
+								<td>Jul 10, 2020</td>
+								<td>v1.3.0 - NSA, ENDC and CUPS</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+        <section>
+					<h2>5G Core Progress</h2>
+          <table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Release Summary</th>
+							</tr>
+						</thead>
+						<tbody>
+              <tr>
+								<td>Aug 21, 2020</td>
+								<td>v2.0.0 - First release for 5G Core/EPC</td>
+							</tr>
+              <tr>
+								<td>Dec 11, 2021</td>
+								<td>v2.4.0 - VoNR implemented</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+        <section>
+          <section>
+					  <h2>Basic Architecture of Open5GS</h2>
+					  <img height="500px" data-src="https://open5gs.org/open5gs/assets/images/Open5GS_CUPS-01.jpg" alt="Open5GS Architecture">
+          </section>
+          <section style="text-align: left;">
+            <h2>4G/ 5G NSA Core</h2>
+            <ul>
+              <li>MME - Mobility Management Entity</li>
+              <li>HSS - Home Subscriber Server</li>
+              <li>PCRF - Policy and Charging Rules Function</li>
+              <li>SGW-C - Serving Gateway Control Plane</li>
+              <li>SGW-U - Serving Gateway User Plane</li>
+              <li>PGW-C/SMF - Packet Gateway Control Plane / (component contained in Open5GS SMF)</li>
+              <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
+            </ul>
+          </section>
+          <section style="text-align: left;">
+            <h2>5G SA Core</h2>
+            <ul>
+              <li>AMF - Access and Mobility Management Function</li>
+              <li>SMF - Session Management Function</li>
+              <li>UPF - User Plane Function</li>
+              <li>AUSF - Authentication Server Function</li>
+              <li>NRF - NF Repository Function</li>
+              <li>UDM - Unified Data Management</li>
+              <li>UDR - Unified Data Repository</li>
+              <li>PCF - Policy and Charging Function</li>
+              <li>NSSF - Network Slice Selection Function</li>
+              <li>BSF - Binding Support Function</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Install with a Package Manager</h2> 
+            <ul>
+              <li>Ubuntu makes it easy to install Open5GS.</li>
+                <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+                  sudo apt update
+                  sudo apt install software-properties-common
+                  sudo add-apt-repository ppa:open5gs/latest
+                  sudo apt update
+                  sudo apt install open5gs
+                </code></pre>
+              <li>
+                Nightly package are provided by <a href="https://osmocom.org">Osmocom</a> on <a href="https://build.opensuse.org/package/show/network:osmocom:nightly/open5gs">OBS</a>.
+              </li>
+              <li>
+                <a href="https://build.opensuse.org/user/show/mnhauke">Martin Hauke</a> packaged for openSUSE on <a href="https://build.opensuse.org/package/show/home:mnhauke:open5gs/open5gs">OBS</a>.
+              </li>
+            </ul>      
+					</section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Setup a 4G/5G NSA Core</h2> 
+              <p>- /etc/open5gs/mme.yaml</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-5|10-13|18-23">
+                mme:
+                    freeDiameter: /etc/freeDiameter/mme.conf
+                    s1ap:
+                -      addr: 127.0.0.2
+                +      addr: 10.10.0.2 # for external eNB
+                    gtpc:
+                      addr: 127.0.0.2
+                    gummei:
+                      plmn_id:
+                -        mcc: 901
+                -        mnc: 70
+                +        mcc: 001 # set your PLMN-MCC
+                +        mnc: 01  # set your PLMN-MNC
+                      mme_gid: 2
+                      mme_code: 1
+                    tai:
+                      plmn_id:
+                -        mcc: 901
+                -        mnc: 70
+                -      tac: 1
+                +        mcc: 001 # set your PLMN-MCC
+                +        mnc: 01  # set your PLMN-MNC
+                +      tac: 2 # should match the TAC used by your eNB
+                    security:
+              </code></pre>
+					</section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Setup a 4G/5G NSA Core(Cont.)</h2> 
+              <p>- /etc/open5gs/sgwu.yaml</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|3-4">
+                 sgwu:
+                    gtpu:
+                -      addr: 127.0.0.6
+                +      addr: 10.11.0.6  # for external eNB
+                    pfcp:
+                      addr: 127.0.0.6
+              </code></pre>
+              <p>- After changing config files, restart Open5GS daemons</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+                sudo systemctl restart open5gs-mmed
+                sudo systemctl restart open5gs-sgwud
+             </code></pre>
+					</section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Setup a 5G SA</h2> 
+              <p>- /etc/open5gs/amf.yaml</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|6-7|10-13|19-24|27-30">
+                amf:
+                    sbi:
+                      - addr: 127.0.0.5
+                        port: 7777
+                    ngap:
+                -      - addr: 127.0.0.5
+                +      - addr: 10.10.0.5 # for external gNB
+                    guami:
+                      - plmn_id:
+                -          mcc: 901
+                -          mnc: 70
+                +          mcc: 001 # set your PLMN-MCC
+                +          mnc: 01  # set your PLMN-MNC
+                        amf_id:
+                          region: 2
+                          set: 1
+                    tai:
+                      - plmn_id:
+                -          mcc: 901
+                -          mnc: 70
+                -        tac: 1
+                +          mcc: 001 # set your PLMN-MCC
+                +          mnc: 01  # set your PLMN-MNC
+                +        tac: 2 # should match the TAC used by your gNB
+                    plmn_support:
+                      - plmn_id:
+                -          mcc: 901
+                -          mnc: 70
+                +          mcc: 001 # set your PLMN-MCC
+                +          mnc: 01  # set your PLMN-MNC
+                        s_nssai:
+                          - sst: 1
+                    security:
+              </code></pre>
+					</section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Setup a 5G SA(Cont.)</h2> 
+              <p>- /etc/open5gs/upf.yaml</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|5-6">
+                upf:
+                    pfcp:
+                      - addr: 127.0.0.7
+                    gtpu:
+              -      - addr: 127.0.0.7
+              +      - addr: 10.11.0.7 # for external gNB
+                    subnet:
+                      - addr: 10.45.0.1/16
+                      - addr: 2001:db8:cafe::1/48
+              </code></pre>
+              <p>- After changing config files, restart Open5GS daemons</p>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+                sudo systemctl restart open5gs-amfd
+                sudo systemctl restart open5gs-upfd
+             </code></pre>
+					</section>
+          
+        </section>
+
+        <section>
+          <section style="text-align: left;">
+					  <h2 data-id="code-title">Install the WebUI of Open5GS</h2> 
+            <ul>
+              <li>Debian/Ubuntu can install <a href="https://nodejs.org/">Node.js</a> as follows:</li>
+                <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+                  sudo apt update
+                  sudo apt install curl
+                  curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+                  sudo apt install nodejs
+                </code></pre>
+              <li>You can now install WebUI of Open5GS</li>
+                <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+                  curl -fsSL https://open5gs.org/open5gs/assets/webui/install | sudo -E bash -
+                </code></pre>
+            </ul>      
+					</section>
+          <section style="text-align: left;">
+					  <h2>Register Subscriber Information</h2>
+					  <p>Connect to http://localhost:3000 using Web Browser</p>
+            <blockquote>
+              &ldquo;Username : admin, Password : 1423&rdquo;
+            </blockquote>
+            <p>To add subscriber information,</p>
+            <ol>
+              <li>Go to Subscriber Menu</li>
+              <li>Click + Button to add a new subscriber.</li>
+              <li>Fill the IMSI, Security(K, OPc, AMF), and APN</li>
+              <li>Click SAVE Button</li>              
+            </ul>      
+          </section>
+          <section>
+					  <h2>Subscriber Registered</h2>
+					  <img height="500px" data-src="https://open5gs.org/open5gs/assets/images/subscriber_info_with_two_slice.png" alt="Subscriber">
+          </section>
+        </section>
+
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>
