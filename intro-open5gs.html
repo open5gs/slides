@@ -62,11 +62,10 @@
 
         <section>
           <section>
-            <h2>What we would like to do</h2>
+            <h2>What I would like to do</h2>
             <ul>
               <li>The main goal is more Free Software in telecoms, not a business</li>
-              <li>Things never feel messy or overbearing.</li>
-              <li>We always develop 'upstream first'.</li>
+              <li>Upstream first: Building products from open source software</li>
             </ul>
 						<br>
 						<a href="#/3/1" class="navigate-down">
@@ -76,8 +75,8 @@
           <section style="text-align: left;">
             <h2>Why you'll love Open5GS</h2>
             <ul>
-              <li>The cleaner and saner architecture than others</li>
-              <li>Very simple installation with minimal configuration</li>
+              <li>The cleaner and much saner architecture</li>
+              <li>Pretty easy to learn, install and configure</li>
               <li>Prompt, sincere and proactive response to problem reports from the open source community</li>
             </ul>
           </section>
@@ -89,7 +88,7 @@
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Release Summary</th>
+                <th>Summary</th>
               </tr>
             </thead>
             <tbody>
@@ -117,10 +116,6 @@
                 <td>Jan 12, 2020</td>
                 <td>v1.2.0 - VoLTE Now Works</td>
               </tr>
-              <tr>
-                <td>Jul 10, 2020</td>
-                <td>v1.3.0 - NSA, ENDC and CUPS</td>
-              </tr>
             </tbody>
           </table>
         </section>
@@ -131,13 +126,17 @@
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Release Summary</th>
+                <th>Summary</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Oct 27, 2019</td>
-                <td>v1.0.0 - Rename Project to Open5GS</td>
+                <td>Rename Project to <a href="https://open5gs.org" target="_blank">Open5GS</a></td>
+              </tr>
+              <tr>
+                <td>Apr 28, 2020</td>
+                <td>Programming started</td>
               </tr>
               <tr>
                 <td>Aug 21, 2020</td>
@@ -207,7 +206,7 @@
           </section>
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 4G/5G NSA Core</h2>
-            <p>- /etc/open5gs/mme.yaml</p>
+            <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></p>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-5|10-13|18-23">
               mme:
                   freeDiameter: /etc/freeDiameter/mme.conf
@@ -237,7 +236,7 @@
           </section>
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 4G/5G NSA Core(Cont.)</h2>
-            <p>- /etc/open5gs/sgwu.yaml</p>
+            <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a></p>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|3-4">
                 sgwu:
                   gtpu:
@@ -254,7 +253,7 @@
           </section>
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 5G SA</h2>
-            <p>- /etc/open5gs/amf.yaml</p>
+            <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></p>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|6-7|10-13|19-24|27-30">
               amf:
                   sbi:
@@ -293,7 +292,7 @@
           </section>
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 5G SA(Cont.)</h2>
-            <p>- /etc/open5gs/upf.yaml</p>
+            <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/upf.yaml.in" target="_blank">/etc/open5gs/upf.yaml</a></p>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|5-6">
               upf:
                   pfcp:
@@ -373,7 +372,7 @@
               So far, we have covered the contents of the <a href="https://open5gs.org/open5gs/docs/guide/01-quickstart/" target="_blank">Quickstart</a> article.
             </li>
             <li>
-              If you're a software developer, take a look at the documentation that guides you through <a href="https://open5gs.org/open5gs/docs/guide/02-building-open5gs-from-sources/ target="_blank"">building Open5GS from source</a>.
+              If you're a software developer, take a look at the documentation that guides you through <a href="https://open5gs.org/open5gs/docs/guide/02-building-open5gs-from-sources/" target="_blank">building Open5GS from source</a>.
             </li>
             <li>
               If you want to build your own network, the <a href="https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/" target="_blank">Your First LTE</a> tutorial can help.
@@ -443,7 +442,7 @@
           <section>
             <h2><a href="https://github.com/open5gs/open5gs/graphs/contributors target="_blank"">Contributors</a></h2>
             <p>
-              If you're contributing through a pull request to Open5GS project on GitHub, please read the <a href="https://open5gs.org/open5gs/cla/ target="_blank"">Contributor License Agreement</a> in advance
+              If you're contributing through a pull request to Open5GS project on GitHub, please read the <a href="https://open5gs.org/open5gs/cla/" target="_blank">Contributor License Agreement</a> in advance
             </p>
           </section>
           <section>
@@ -523,13 +522,30 @@
         </section>
 
         <section>
+          <h2>Todos</h2>
+          <ul>
+            <li>UL Classifier</li>
+            <li>EAP-AKA-Prime, ciphered SUSI and HTTP2-TLS</li>
+            <li>Default QoS Profile in PCF/PCRF</li>
+            <li>Add locality in the configuration</li>
+          </ul>
+        </section>
+
+        <section>
           <h2>Future Challenges</h2>
           <ul>
-            <li>NEF</li>
-            <li>Multicore UPF using VPP, DPDK</li>
-            <li>Roaming</li>
-            <li>NMS</li>
+            <li>SMSF, NEF</li>
+            <li>SEPP for Roaming</li>
+            <li>Multicore UPF using VPP/DPDK</li>
+            <li>CLI/NMS</li>
           </ul>
+        </section>
+
+        <section style="text-align: left;">
+          <h1>THE END</h1>
+          <p>
+          If you don't understand something about Open5GS, the <a href="https://open5gs.org/open5gs/docs/" target="_blank">https://open5gs.org/open5gs/docs/</a> is a great place to look for answers.
+          </p>
         </section>
       </div>
 
