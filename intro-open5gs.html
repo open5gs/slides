@@ -20,7 +20,7 @@
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css">
-    
+
     <style>
       .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
                     text-transform: none;
@@ -189,7 +189,7 @@
             <h2 data-id="code-title">Install with a Package Manager</h2>
             <ul>
               <li>Ubuntu makes it easy to install Open5GS.</li>
-              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+              <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers data-noescape>
                 sudo apt update
                 sudo apt install software-properties-common
                 sudo add-apt-repository ppa:open5gs/latest
@@ -331,17 +331,17 @@
           </section>
           <section style="text-align: left;">
             <h2>Register Subscriber Information</h2>
-            <p>Connect to http://localhost:3000 using Web Browser</p>
-            <blockquote>
+            <p>Connect to <span class="fragment highlight-blue">http://localhost:3000</span> using Web Browser</p>
+            <blockquote class="fragment fade-left">
               &ldquo;Username : admin, Password : 1423&rdquo;
             </blockquote>
-            <p>To add subscriber information,</p>
+            <p class="fragment fade-up">To add subscriber information,</p>
             <ol>
-              <li>Go to Subscriber Menu</li>
-              <li>Click + Button to add a new subscriber.</li>
-              <li>Fill the IMSI, Security(K, OPc, AMF), and APN</li>
-              <li>Click SAVE Button</li>              
-            </ul>      
+                <li class="fragment fade-down">Go to Subscriber Menu</li>
+                <li class="fragment fade-down">Click <span style="color: red;">+</span> Button to add a new subscriber.</li>
+                <li class="fragment fade-down">Fill the IMSI, Security(K, OPc, AMF), and APN</li>
+              <li class="fragment fade-down">Click <span style="color: red;">SAVE</span> Button</li>
+            </ul>
           </section>
           <section>
             <h2>Subscriber Registered</h2>
@@ -445,7 +445,7 @@
               If you're contributing through a pull request to Open5GS project on GitHub, please read the <a href="https://open5gs.org/open5gs/cla/" target="_blank">Contributor License Agreement</a> in advance
             </p>
           </section>
-          <section>
+          <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
             <h2>People on Mar 19, 2022</h2>
             <table>
               <thead>
@@ -524,8 +524,8 @@
         <section>
           <h2>Todos</h2>
           <ul>
-            <li>UL Classifier</li>
-            <li>EAP-AKA-Prime, ciphered SUSI and HTTP2-TLS</li>
+            <li>UL Classifier - N9 interface between UPFs</li>
+            <li>EAP-AKA-Prime, Ciphered SUSI and HTTP2-TLS</li>
             <li>Default QoS Profile in PCF/PCRF</li>
             <li>Add locality in the configuration</li>
           </ul>
@@ -534,10 +534,12 @@
         <section>
           <h2>Future Challenges</h2>
           <ul>
-            <li>SMSF, NEF</li>
+            <li>SCEF/LI</li>
+            <li>SMSF</li>
             <li>SEPP for Roaming</li>
             <li>Multicore UPF using VPP/DPDK</li>
-            <li>CLI/NMS</li>
+            <li>Core Management - CLI/GUI/API</li>
+            <li>NEF</li>
           </ul>
         </section>
 
