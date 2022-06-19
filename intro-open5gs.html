@@ -209,7 +209,7 @@
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 4G/5G NSA Core</h2>
             <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></p>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-5|10-13|18-23">
               mme:
                   freeDiameter: /etc/freeDiameter/mme.conf
                   s1ap:
@@ -239,7 +239,7 @@
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 4G/5G NSA Core(Cont.)</h2>
             <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a></p>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|3-4">
                 sgwu:
                   gtpu:
               -      addr: 127.0.0.6
@@ -256,7 +256,7 @@
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 5G SA</h2>
             <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></p>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|6-7|10-13|19-24|27-30">
               amf:
                   sbi:
                     - addr: 127.0.0.5
@@ -295,7 +295,7 @@
           <section style="text-align: left;">
             <h2 data-id="code-title">Setup a 5G SA(Cont.)</h2>
             <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/upf.yaml.in" target="_blank">/etc/open5gs/upf.yaml</a></p>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|5-6">
               upf:
                   pfcp:
                     - addr: 127.0.0.7
