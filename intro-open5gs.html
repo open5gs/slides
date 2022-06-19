@@ -38,16 +38,17 @@
           <h2 class="r-fit-text">
             Introduction to <a href="https://open5gs.org" target="_blank">Open5GS</a>
           </h2>
-          <p>Open Source Implementation for 5G Core and EPC</p>
-          <p>
-            <small>Created by <a href="https://github.com/acetcom" target="_blank"">Sukchan Lee</a> and <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a></small>
-          </p>
+          <p>You can view this presentation at the link below:</p>
+          <p><small><a href="https://open5gs.org/slides/intro-open5gs" target="_blank">https://open5gs.org/slides/intro-open5gs</a></small></p>
         </section>
 
         <section>
           <h2>Build your own 5G and LTE Networks with Open5GS</h2>
           <p>
             Open5GS is a C-language Open Source implementation for 5G Core and EPC, i.e. the core network of NR/LTE network. (Release-16)
+          </p>
+          <p>
+            <small>Created by <a href="https://github.com/acetcom" target="_blank">Sukchan Lee</a> and <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a></small>
           </p>
         </section>
 
@@ -73,12 +74,13 @@
 						</a>
           </section>
           <section style="text-align: left;">
-            <h2>Why you'll love Open5GS</h2>
+            <h2>The plans in the beginning</h2>
             <ul>
               <li>The cleaner and much saner architecture</li>
               <li>Pretty easy to learn, install and configure</li>
               <li>Prompt, sincere and proactive response to problem reports from the open source community</li>
             </ul>
+            <blockquote class="fragment fade-down">Hope that even beginners can learn telecommunications easily.</blockquote>
           </section>
         </section>
 
@@ -329,23 +331,41 @@
               </code></pre>
             </ul>
           </section>
-          <section style="text-align: left;">
-            <h2>Register Subscriber Information</h2>
-            <p>Connect to <span class="fragment highlight-blue">http://localhost:3000</span> using Web Browser</p>
-            <blockquote class="fragment fade-left">
-              &ldquo;Username : admin, Password : 1423&rdquo;
-            </blockquote>
-            <p class="fragment fade-up">To add subscriber information,</p>
-            <ol>
-                <li class="fragment fade-down">Go to Subscriber Menu</li>
-                <li class="fragment fade-down">Click <span style="color: red;">+</span> Button to add a new subscriber.</li>
-                <li class="fragment fade-down">Fill the IMSI, Security(K, OPc, AMF), and APN</li>
-              <li class="fragment fade-down">Click <span style="color: red;">SAVE</span> Button</li>
-            </ul>
+          <section>
+            <h2>WebUI - Login</h2>
+            <p>Connect to <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> using Web Browser</p>
+            <table>
+              <tr>
+                <td style="vertical-align: middle;">
+                  <blockquote>
+                    Username : admin Password : 1423
+                  </blockquote>
+                </td>
+                <td>
+                  <img data-src="https://open5gs.org/assets/img/webui-login.png" alt="Subscriber">
+                </td>
+              </tr>
+            </table>
           </section>
           <section>
-            <h2>Subscriber Registered</h2>
-            <img height="500px" data-src="https://open5gs.org/open5gs/assets/images/subscriber_info_with_two_slice.png" alt="Subscriber">
+            <h2>WebUI - Main View</h2>
+            <p>To add the subscribers, go to [Subscriber] panel and hit [ADD A SUBSCRIBER].</p>
+            <img height="400px" data-src="https://open5gs.org/assets/img/webui-mainview.png" alt="Subscriber">
+          </section>
+          <section>
+            <h2>WebUI - Add Subscriber</h2>
+            <p>You may need to fill out USIM information</p>
+            <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-input.png" alt="Subscriber">
+          </section>
+          <section>
+            <h2>WebUI - Add Subscriber</h2>
+            <p>Then hit [SAVE] button when everything is configured.</p>
+            <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-save.png" alt="Subscriber">
+          </section>
+          <section>
+            <h2>WebUI - Main View</h2>
+            <p>You would get a subscriber registered as follows.</p>
+            <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-done.png" alt="Subscriber">
           </section>
         </section>
 
@@ -400,12 +420,12 @@
             </ul>
           </section>
           <section>
-            <h2>Open5GS Traffic on May 20, 2022</h2>
-            <img height="500px" data-src="https://open5gs.org/assets/img/traffic-052022.png" alt="Open5GS Traffic">
+            <h2>Open5GS Traffic on Jun 19, 2022</h2>
+            <img height="500px" data-src="https://open5gs.org/assets/img/traffic-061922.png" alt="Open5GS Traffic">
           </section>
           <section>
             <h2>Community Insights</h2>
-            <img height="500px" data-src="https://open5gs.org/assets/img/contribution-activity-052022.png" alt="Open5GS Traffic">
+            <img height="500px" data-src="https://open5gs.org/assets/img/contribution-activity-061922.png" alt="Open5GS Traffic">
           </section>
           <section>
             <h2>Record of Collaboration</h2>
@@ -484,7 +504,7 @@
             </p>
           </section>
           <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-            <h2>People on May 20, 2022</h2>
+            <h2>People on Jun 19, 2022</h2>
             <table>
               <thead>
                 <tr>
@@ -497,15 +517,15 @@
               <tbody>
                 <tr>
                   <td>acetcom</td>
-                  <td>3,134</td>
-                  <td>4,549,503</td>
-                  <td>3,265,075</td>
+                  <td>3,155</td>
+                  <td>4,553,817</td>
+                  <td>3,266,614</td>
                 </tr>
                 <tr>
                   <td>pespin</td>
-                  <td>55</td>
-                  <td>27,889</td>
-                  <td>14,072</td>
+                  <td>72</td>
+                  <td>29,486</td>
+                  <td>14,231</td>
                 </tr>
                 <tr>
                   <td>jyounggo</td>
@@ -527,7 +547,7 @@
                 </tr>
               </tbody>
             </table>
-            <p>An about 50 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> participated.</p>
+            <p>An about 52 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> participated.</p>
           </section>
         </section>
 
@@ -542,7 +562,7 @@
                 Open5GS Open Source files are made available under the terms of the GNU Affero General Public License (<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AGPL v3.0</a>).
               </li>
               <li>
-                <a href="https://open5gs.org/open5gs/support/" target="_blank">Commercial licenses</a> are also available from <a href="https://nextepc.com" target="_blank">NextEPC, Inc</a>.
+                <a href="https://open5gs.org/open5gs/support/" target="_blank">Commercial licenses</a> are also available.
               </li>
             </ul>
           </section>
@@ -553,14 +573,14 @@
                 <a href="https://sysmocom.de/" target="_blank">sysmocom</a> is providing commercial services around Open5GS open source software including support, development, consulting, training and system integration.
               </li>
               <li>
-                Commercial distributors that develop and distribute commercially licensed Open5GS software and do not wish their software under version 3 of the GNU Affero General Public License (the “AGPL-3.0”) must enter into a commercial license agreement with <a href="https://nextepc.com" target="_blank">NextEPC, Inc</a>.
+                Commercial distributors that develop and distribute commercially licensed Open5GS software and do not wish their software under version 3 of the GNU Affero General Public License (the “AGPL-3.0”) must enter into a commercial license agreement.
               </li>
             </ul>
           </section>
         </section>
 
         <section>
-          <h2>Todos</h2>
+          <h2>Request from Community</h2>
           <ul>
             <li>UL Classifier - N9 interface between UPFs</li>
             <li>EAP-AKA-Prime</li>
@@ -574,16 +594,58 @@
         </section>
 
         <section>
-          <h2>Request from Community</h2>
+          <h2>Request from Community(Cont.)</h2>
           <ul>
             <li>Multicore UPF using VPP/DPDK - Issues <a href="https://github.com/open5gs/open5gs/discussions/759" target="_blank">#759</a></li>
-            <li>SCEF/LI</li>
-            <li>SMSF</li>
             <li>Core Management - CLI/GUI/API</li>
             <li>NEF</li>
+            <li>SCEF/LI</li>
+            <li>SMSF</li>
             <li>NWDAF - Discussions <a href="https://github.com/open5gs/open5gs/discussions/851" target="_blank">#851</a></li>
             <li>SQLite, PostgreSQL, MySQL - Discussions <a href="https://github.com/open5gs/open5gs/discussions/1301" target="_blank">#1301</a></li>
           </ul>
+        </section>
+
+        <section>
+          <h2>Open5GS Support</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Kind</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:none;">Laboratory</td>
+                <td style="border:none;">Voice(VoLTE/VoNR) works</td>
+              </tr>
+              <tr>
+                <td style="border:none;"></td>
+                <td style="border:none;">CSFB/SMSoS</td>
+              </tr>
+              <tr>
+                <td align="right"></td>
+                <td>ePDG(SWx, S6b, S2b)</td>
+              </tr>
+              <tr>
+                <td style="border:none;">Field</td>
+                <td style="border:none;">Internet service recommended</td>
+              </tr>
+              <tr>
+                <td align="right"></td>
+                <td>Voice not fully tested</td>
+              </tr>
+              <tr>
+                <td style="border:none;">Known Limitation</td>
+                <td style="border:none;">Roaming</td>
+              </tr>
+              <tr>
+                <td align="right"></td>
+                <td>NMS/CLI</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <section>
@@ -598,7 +660,7 @@
             <tbody>
               <tr>
                 <td style="border:none;">2022/3Q</td>
-                <td style="border:none;">Metrics with Prometheus</td>
+                <td style="border:none;"><a href="https://open5gs.org/open5gs/docs/tutorial/04-metrics-prometheus/">Metrics with Prometheus</a></td>
               </tr>
               <tr>
                 <td align="right"></td>
