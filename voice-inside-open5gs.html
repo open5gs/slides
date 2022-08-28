@@ -124,7 +124,8 @@
           <ul>
             <li>Install Kamailio with IMS/MySQL modules</li>
             <li>Install RTPEngine/RTPProxy</li>
-            <li>Setup DNS Name
+            <li>Setup DNS Name</li>
+            <li>Setup FoHSS</li>
             <li>Running P-CSCF, S-CSCF and I-CSCF</li>
           </ul>
           <p>You can find more details at this link : <a href="https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/</a></p>
@@ -134,7 +135,7 @@
           <h2 data-id="code-title">Open5GS with Package Manager</h2>
           <ul>
             <li>Ubuntu makes it easy to install Open5GS.</li>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers data-noescape>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-3|4-5" data-noescape>
               sudo apt update
               sudo apt install software-properties-common
               sudo add-apt-repository ppa:open5gs/latest
@@ -152,7 +153,7 @@
         <section style="text-align: left;">
           <h2 data-id="code-title">EPC Setup for eNB/UE</h2>
           <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-5|10-13|18-23">
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-13|18-23">
             mme:
                 freeDiameter: /etc/freeDiameter/mme.conf
                 s1ap:
@@ -182,7 +183,7 @@
         <section style="text-align: left;">
           <h2 data-id="code-title">EPC Setup for eNB/UE (Cont.)</h2>
           <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|3-4">
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4">
               sgwu:
                 gtpu:
             -      addr: 127.0.0.6
@@ -191,7 +192,7 @@
                   addr: 127.0.0.6
           </code></pre>
           <p>- After changing config files, restart Open5GS daemons</p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
             sudo systemctl restart open5gs-mmed
             sudo systemctl restart open5gs-sgwud
           </code></pre>
@@ -199,7 +200,7 @@
         <section style="text-align: left;">
           <h2 data-id="code-title">EPC Setup for IMS</h2>
           <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/smf.yaml.in" target="_blank">/etc/open5gs/smf.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-9|13-14">
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4|5-6|7-9|13-14">
               smf:
                 subnet:
                   - addr: 10.45.0.1/16
@@ -219,7 +220,7 @@
         <section style="text-align: left;">
           <h2 data-id="code-title">EPC Setup for IMS (Cont.)</h2>
           <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/upf.yaml.in" target="_blank">/etc/open5gs/upf.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-9">
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4|5-6|7-9">
               upf:
                 subnet:
                   - addr: 10.45.0.1/16
@@ -231,10 +232,67 @@
             +        dev: ogstun2
           </code></pre>
           <p>- After changing config files, restart Open5GS daemons</p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
             sudo systemctl restart open5gs-smfd
             sudo systemctl restart open5gs-upfd
           </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2 data-id="code-title">TUN device</h2>
+          <p>/etc/systemd/network/99-open5gs-ims.network</a></p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-11|13-17">
+            $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.network
+            [Match]
+            Name=ogstun2
+
+            [Network]
+            Address=10.46.0.1/16
+
+            [Link]
+            MTUBytes=1400
+            RequiredForOnline=false
+            EOF"
+
+            $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.netdev
+            [NetDev]
+            Name=ogstun2
+            Kind=tun
+            EOF"
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2 data-id="code-title">TUN device</h2>
+          <p>/etc/systemd/network/99-open5gs.network</a></p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|6">
+			 [Network]
+			 Address=10.45.0.1/16
+			-Address=2001:db8:cafe::1/48
+
+			 [Link]
+			+MTUBytes=1400
+			 RequiredForOnline=false
+          </code></pre>
+          <p>- After changing config files, restart Open5GS daemons</p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+            $ sudo systemctl restart systemd-networkd
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2 data-id="code-title">Adding a route for the UE to have WAN connectivity</h2>
+          <ul>
+            <li>To enable IPv4/IPv6 forwarding</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+              sudo sysctl -w net.ipv4.ip_forward=1
+            </code></pre>
+            <li>To add the NAT rule</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+              sudo iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
+              sudo iptables -t nat -A POSTROUTING -s 10.46.0.0/16 ! -o ogstun2 -j MASQUERADE
+            </code></pre>
+          </ul>
         </section>
 
         <section style="text-align: left;">
@@ -280,22 +338,6 @@
           <h2>WebUI - Main View</h2>
           <p>You would get a subscriber registered as follows.</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-done.png" alt="Subscriber">
-        </section>
-
-        <section style="text-align: left;">
-          <h2 data-id="code-title">Adding a route for the UE to have WAN connectivity</h2>
-          <ul>
-            <li>To enable IPv4/IPv6 forwarding</li>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
-              sudo sysctl -w net.ipv4.ip_forward=1
-              sudo sysctl -w net.ipv6.conf.all.forwarding=1
-            </code></pre>
-            <li>To add the NAT rule</li>
-            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
-              sudo iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
-              sudo ip6tables -t nat -A POSTROUTING -s 2001:db8:cafe::/48 ! -o ogstun -j MASQUERADE
-            </code></pre>
-          </ul>
         </section>
 
         <section style="text-align: left;">
