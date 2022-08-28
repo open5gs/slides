@@ -125,8 +125,9 @@
             <li>Install Kamailio with IMS/MySQL modules</li>
             <li>Install RTPEngine/RTPProxy</li>
             <li>Setup DNS Name</li>
+            <li>Setup P-CSCF, S-CSCF and I-CSCF</li>
             <li>Setup FoHSS</li>
-            <li>Running P-CSCF, S-CSCF and I-CSCF</li>
+            <li>Running IMS components and FoHSS</li>
           </ul>
           <p>You can find more details at this link : <a href="https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/</a></p>
         </section>
@@ -151,51 +152,83 @@
           </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">EPC Setup for eNB/UE</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-13|18-23">
-            mme:
-                freeDiameter: /etc/freeDiameter/mme.conf
-                s1ap:
-            -      addr: 127.0.0.2
-            +      addr: 10.10.0.2 # for external eNB
-                gtpc:
-                  addr: 127.0.0.2
-                gummei:
-                  plmn_id:
-            -        mcc: 999
-            -        mnc: 70
-            +        mcc: 001 # set your PLMN-MCC
-            +        mnc: 01  # set your PLMN-MNC
-                  mme_gid: 2
-                  mme_code: 1
-                tai:
-                  plmn_id:
-            -        mcc: 999
-            -        mnc: 70
-            -      tac: 1
-            +        mcc: 001 # set your PLMN-MCC
-            +        mnc: 01  # set your PLMN-MNC
-            +      tac: 2 # should match the TAC used by your eNB
-                security:
-          </code></pre>
+          <h2>Network Elements in EPC</h2>
+          <ul>
+            <li>MME - Mobility Management Entity</li>
+            <li>HSS - Home Subscriber Server</li>
+            <li>PCRF - Policy and Charging Rules Function</li>
+            <li>SGW-C - Serving Gateway Control Plane</li>
+            <li>SGW-U - Serving Gateway User Plane</li>
+            <li>PGW-C/SMF - Packet Gateway Control Plane / (component contained in Open5GS SMF)</li>
+            <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
+          </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">EPC Setup for eNB/UE (Cont.)</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4">
-              sgwu:
-                gtpu:
-            -      addr: 127.0.0.6
-            +      addr: 10.11.0.6  # for external eNB
-                pfcp:
-                  addr: 127.0.0.6
-          </code></pre>
-          <p>- After changing config files, restart Open5GS daemons</p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
-            sudo systemctl restart open5gs-mmed
-            sudo systemctl restart open5gs-sgwud
-          </code></pre>
+          <h2>Network Functions in 5G Core</h2>
+          <ul>
+            <li>AMF - Access and Mobility Management Function</li>
+            <li>SMF - Session Management Function</li>
+            <li>UPF - User Plane Function</li>
+            <li>AUSF - Authentication Server Function</li>
+            <li>NRF - NF Repository Function</li>
+            <li>UDM - Unified Data Management</li>
+            <li>UDR - Unified Data Repository</li>
+            <li>PCF - Policy and Charging Function</li>
+            <li>NSSF - Network Slice Selection Function</li>
+            <li>BSF - Binding Support Function</li>
+            <li>SCP - Service Communications Proxy</li>
+          </ul>
+        </section>
+        <section style="text-align: left;">
+          <h2 data-id="code-title">Setup a 4G/ 5G NSA Core</h2>
+          <ul>
+            <li><p>Modify 4G MME Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a>) to set S1AP IP address, PLMN ID and TAC</p></li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-13|18-23">
+              mme:
+                  freeDiameter: /etc/freeDiameter/mme.conf
+                  s1ap:
+              -      addr: 127.0.0.2
+              +      addr: 10.10.0.2 # for external eNB
+                  gtpc:
+                    addr: 127.0.0.2
+                  gummei:
+                    plmn_id:
+              -        mcc: 999
+              -        mnc: 70
+              +        mcc: 001 # set your PLMN-MCC
+              +        mnc: 01  # set your PLMN-MNC
+                    mme_gid: 2
+                    mme_code: 1
+                  tai:
+                    plmn_id:
+              -        mcc: 999
+              -        mnc: 70
+              -      tac: 1
+              +        mcc: 001 # set your PLMN-MCC
+              +        mnc: 01  # set your PLMN-MNC
+              +      tac: 2 # should match the TAC used by your eNB
+                  security:
+            </code></pre>
+          </ul>
+        </section>
+        <section style="text-align: left;">
+          <h2 data-id="code-title">Setup a 4G/ 5G NSA Core (Cont.)</h2>
+          <ul>
+          <li><p>Modify 4G SGW-U Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a>) to set GTP-U IP address</p></li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4">
+                sgwu:
+                  gtpu:
+              -      addr: 127.0.0.6
+              +      addr: 10.11.0.6  # for external eNB
+                  pfcp:
+                    addr: 127.0.0.6
+            </code></pre>
+          <li><p>After changing config, restart Open5GS daemons</p></li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
+              sudo systemctl restart open5gs-mmed
+              sudo systemctl restart open5gs-sgwud
+            </code></pre>
+          </ul>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">EPC Setup for IMS</h2>
