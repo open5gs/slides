@@ -517,17 +517,19 @@
         </section>
 
         <section style="text-align: left;">
-          <h2>For Further Information</h2>
+          <h2>Turn on your eNB/gNB and UE</h2>
           <ul>
-            <li>
-              So far, we have covered the contents of the <a href="https://open5gs.org/open5gs/docs/guide/01-quickstart/" target="_blank">Quickstart</a> article.
-            </li>
-            <li>
-              If you're a software developer, take a look at the documentation that guides you through <a href="https://open5gs.org/open5gs/docs/guide/02-building-open5gs-from-sources/" target="_blank">building Open5GS from source</a>.
-            </li>
-            <li>
-              If you want to build your own network, the <a href="https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/" target="_blank">Your First LTE</a> tutorial can help.
-            </li>
+            <li>First, connect your eNB/gNB to the Open5GS core</li>
+            <li>Next, try to attach a UE to the basestation</li>
+            <li>Finally, test the voice call</li>
+          </ul>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>5G Core with VoNR</h2>
+          <ul>
+            <li>Open5GS VoNR was implemented using HTTP2 and does not support Diameter Protocol.</li>
+            <li>According to the standard, 5G PCF must support HTTP2 as well as Diameter intefaces like Rx.</li>
           </ul>
         </section>
 
@@ -541,22 +543,6 @@
           </div>
         </section>
 
-        <section>
-          <h2>Community Support</h2>
-          <ul>
-            <li>Problem with Open5GS can be filed as <a href="https://github.com/open5gs/open5gs/issues" target="_blank">issues</a> in this repository.</li>
-            <li>Other topics related to this project are happening on the <a href="https://github.com/open5gs/open5gs/discussions" target="_blank">discussions</a>.</li>
-            <li>Voice and text chat are available in Open5GS's <a href="https://discord.com/" target="_blank">Discord</a> workspace. Use this <a href="https://discord.com/invite/GreNkuc" target="_blank">link</a> to get started.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Open5GS Traffic on Jun 19, 2022</h2>
-          <img height="500px" data-src="https://open5gs.org/assets/img/traffic-061922.png" alt="Open5GS Traffic">
-        </section>
-        <section>
-          <h2>Community Insights</h2>
-          <img height="500px" data-src="https://open5gs.org/assets/img/contribution-activity-061922.png" alt="Open5GS Traffic">
-        </section>
         <section>
           <h2>Record of Collaboration</h2>
           <table>
@@ -575,7 +561,7 @@
                 <td>Nov 19, 2020</td>
                 <td><a href="https://open5gs.org/open5gs/release/2020/11/19/release-v2.0.22.html" target="_blank">v2.0.22 - Running for 1 Month</a></td>
               </tr>
-                <tr>
+              <tr>
                 <td>May 9, 2021</td>
                 <td><a href="https://open5gs.org/open5gs/release/2021/05/09/release-v2.2.8.html" target="_blank">v2.2.8 - Security Protection</a></td>
               </tr>
@@ -623,102 +609,6 @@
               </tr>
             </tbody>
           </table>
-        </section>
-
-        <section>
-          <h2><a href="https://github.com/open5gs/open5gs/graphs/contributors target="_blank"">Contributors</a></h2>
-          <p>
-            If you're contributing through a pull request to Open5GS project on GitHub, please read the <a href="https://open5gs.org/open5gs/cla/" target="_blank">Contributor License Agreement</a> in advance
-          </p>
-        </section>
-        <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-          <h2>People on Jun 19, 2022</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Account</th>
-                <th>Commits</th>
-                <th>Additions</th>
-                <th>Deletions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>acetcom</td>
-                <td>3,155</td>
-                <td>4,553,817</td>
-                <td>3,266,614</td>
-              </tr>
-              <tr>
-                <td>pespin</td>
-                <td>72</td>
-                <td>29,486</td>
-                <td>14,231</td>
-              </tr>
-              <tr>
-                <td>jyounggo</td>
-                <td>43</td>
-                <td>2,908</td>
-                <td>423</td>
-              </tr>
-              <tr>
-                <td>herlesupreeth</td>
-                <td>34</td>
-                <td>3,155</td>
-                <td>2,146</td>
-              </tr>
-              <tr>
-                <td>laf0rge</td>
-                <td>21</td>
-                <td>593</td>
-                <td>186</td>
-              </tr>
-            </tbody>
-          </table>
-          <p>An about 52 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> participated.</p>
-        </section>
-
-        <section style="text-align: left;">
-          <h2>License</h2>
-          <p>
-            Open5GS is licensed under a dual licensing model designed to meet the development and distribution needs of both commercial and open source projects.
-          </p>
-          <ul>
-            <li>
-              Open5GS Open Source files are made available under the terms of the GNU Affero General Public License (<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AGPL v3.0</a>).
-            </li>
-            <li>
-              <a href="https://open5gs.org/open5gs/support/" target="_blank">Commercial licenses</a> are also available.
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Request from Community</h2>
-          <ul>
-            <li>UL Classifier - N9 interface between UPFs</li>
-            <li>EAP-AKA-Prime</li>
-            <li>Add locality in the configuration</li>
-            <li>PCF/PCRF Default Profile - Issues <a href="https://github.com/open5gs/open5gs/discussions/1223" target="_blank">#1223</a>, <a href="https://github.com/open5gs/open5gs/discussions/1306" target="_blank">#1306</a>
-            <li>SEID/TEID randomness - Discussions <a href="https://github.com/open5gs/open5gs/discussions/1303" target="_blank">#1303</a>
-            <li>5G SUCI Profile A/B Scheme - Discussions <a href="https://github.com/open5gs/open5gs/discussions/1443" target="_blank">#1443</a></li>
-            <li>UPF selection based NSSAI - Issues <a href="https://github.com/open5gs/open5gs/issues/769" target="_blank">#769</a></li>
-            <li>Coverity scan results - Issues <a href="https://github.com/open5gs/open5gs/issues/1647" target="_blank">#1647</a></li>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Request from Community(Cont.)</h2>
-          <ul>
-            <li>Multicore UPF using VPP/DPDK - Issues <a href="https://github.com/open5gs/open5gs/discussions/759" target="_blank">#759</a></li>
-            <li>Core Management - CLI/GUI/API</li>
-            <li>NEF</li>
-            <li>SCEF/LI</li>
-            <li>SMSF</li>
-            <li>NWDAF - Discussions <a href="https://github.com/open5gs/open5gs/discussions/851" target="_blank">#851</a></li>
-            <li>SQLite, PostgreSQL, MySQL - Discussions <a href="https://github.com/open5gs/open5gs/discussions/1301" target="_blank">#1301</a></li>
-          </ul>
         </section>
 
         <section>
