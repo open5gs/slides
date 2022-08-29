@@ -152,7 +152,7 @@
           </ul>
         </section>
         <section style="text-align: left;">
-          <h2>Network Elements in EPC</h2>
+          <h2>Network Elements in 4G EPC</h2>
           <ul>
             <li>MME - Mobility Management Entity</li>
             <li>HSS - Home Subscriber Server</li>
@@ -180,9 +180,9 @@
           </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup a 4G/ 5G NSA Core</h2>
+          <h2 data-id="code-title">Setup 4G EPC MME</h2>
           <ul>
-            <li><p>Modify 4G MME Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a>) to set S1AP IP address, PLMN ID and TAC</p></li>
+            <li>Modify 4G MME Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a>) to set S1AP IP address, PLMN ID and TAC</li>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-13|18-23">
               mme:
                   freeDiameter: /etc/freeDiameter/mme.conf
@@ -212,9 +212,9 @@
           </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup a 4G/ 5G NSA Core (Cont.)</h2>
+          <h2 data-id="code-title">Setup 4G EPC SGW-U</h2>
           <ul>
-          <li><p>Modify 4G SGW-U Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a>) to set GTP-U IP address</p></li>
+            <li>Modify 4G SGW-U Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sgwu.yaml.in" target="_blank">/etc/open5gs/sgwu.yaml</a>) to set GTP-U IP address</li>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4">
                 sgwu:
                   gtpu:
@@ -223,100 +223,107 @@
                   pfcp:
                     addr: 127.0.0.6
             </code></pre>
-          <li><p>After changing config, restart Open5GS daemons</p></li>
+            <li>After changing config, restart Open5GS daemons</li>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
-              sudo systemctl restart open5gs-mmed
-              sudo systemctl restart open5gs-sgwud
+              $ sudo systemctl restart open5gs-mmed
+              $ sudo systemctl restart open5gs-sgwud
             </code></pre>
           </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">EPC Setup for IMS</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/smf.yaml.in" target="_blank">/etc/open5gs/smf.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4|5-6|7-9|13-14">
-              smf:
-                subnet:
-                  - addr: 10.45.0.1/16
-            -      - addr: 2001:db8:cafe::1/48
-            +        apn: internet
-            +        dev: ogstun
-            +      - addr: 10.46.0.1/16
-            +        apn: ims
-            +        dev: ogstun2
-                dns:
-                  - 8.8.8.8
-                  - 8.8.4.4
-            +    p-cscf:
-            +      - 10.4.128.21
-          </code></pre>
+          <h2 data-id="code-title">Setup 4G EPC SMF</h2>
+          <ul>
+            <li>Modify 4G SMF Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/smf.yaml.in" target="_blank">/etc/open5gs/smf.yaml</a>) to set UE Pool, APN, ifName and P-CSCF IP address</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4|5-6|7-9|13-14">
+                smf:
+                  subnet:
+                    - addr: 10.45.0.1/16
+              -      - addr: 2001:db8:cafe::1/48
+              +        apn: internet
+              +        dev: ogstun
+              +      - addr: 10.46.0.1/16
+              +        apn: ims
+              +        dev: ogstun2
+                  dns:
+                    - 8.8.8.8
+                    - 8.8.4.4
+              +    p-cscf:
+              +      - 10.4.128.21
+            </code></pre>
+          </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">EPC Setup for IMS (Cont.)</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/upf.yaml.in" target="_blank">/etc/open5gs/upf.yaml</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4|5-6|7-9">
-              upf:
-                subnet:
-                  - addr: 10.45.0.1/16
-            -      - addr: 2001:db8:cafe::1/48
-            +        apn: internet
-            +        dev: ogstun
-            +      - addr: 10.46.0.1/16
-            +        apn: ims
-            +        dev: ogstun2
-          </code></pre>
-          <p>- After changing config files, restart Open5GS daemons</p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
-            sudo systemctl restart open5gs-smfd
-            sudo systemctl restart open5gs-upfd
-          </code></pre>
-        </section>
-
-        <section style="text-align: left;">
-          <h2 data-id="code-title">TUN device</h2>
-          <p>/etc/systemd/network/99-open5gs-ims.network</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-11|13-17">
-            $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.network
-            [Match]
-            Name=ogstun2
-
-            [Network]
-            Address=10.46.0.1/16
-
-            [Link]
-            MTUBytes=1400
-            RequiredForOnline=false
-            EOF"
-
-            $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.netdev
-            [NetDev]
-            Name=ogstun2
-            Kind=tun
-            EOF"
-          </code></pre>
+          <h2 data-id="code-title">Setup 4G EPC UPF</h2>
+          <ul>
+            <li>Modify 4G UPF Config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/upf.yaml.in" target="_blank">/etc/open5gs/upf.yaml</a>) to set UE Pool, APN and ifName</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|4|5-6|7-9">
+                upf:
+                  subnet:
+                    - addr: 10.45.0.1/16
+              -      - addr: 2001:db8:cafe::1/48
+              +        apn: internet
+              +        dev: ogstun
+              +      - addr: 10.46.0.1/16
+              +        apn: ims
+              +        dev: ogstun2
+            </code></pre>
+            <li>After changing config, restart Open5GS daemons</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1|2">
+              $ sudo systemctl restart open5gs-smfd
+              $ sudo systemctl restart open5gs-updf
+            </code></pre>
+          </ul>
         </section>
 
         <section style="text-align: left;">
-          <h2 data-id="code-title">TUN device</h2>
-          <p>/etc/systemd/network/99-open5gs.network</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|6">
-			 [Network]
-			 Address=10.45.0.1/16
-			-Address=2001:db8:cafe::1/48
+          <h2 data-id="code-title">Setup Linux TUN device</h2>
+          <ul>
+            <li>Create TUN config(/etc/systemd/network/99-open5gs-ims.[network|netdev]) for IMS network</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-11|13-17">
+              $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.network
+              [Match]
+              Name=ogstun2
 
-			 [Link]
-			+MTUBytes=1400
-			 RequiredForOnline=false
-          </code></pre>
-          <p>- After changing config files, restart Open5GS daemons</p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
-            $ sudo systemctl restart systemd-networkd
-          </code></pre>
+              [Network]
+              Address=10.46.0.1/16
+
+              [Link]
+              MTUBytes=1400
+              RequiredForOnline=false
+              EOF"
+
+              $ sudo sh -c "cat << EOF > /etc/systemd/network/99-open5gs-ims.netdev
+              [NetDev]
+              Name=ogstun2
+              Kind=tun
+              EOF"
+            </code></pre>
+          </ul>
+        </section>
+        <section style="text-align: left;">
+          <h2 data-id="code-title">Setup Linux TUN device (Cont.)</h2>
+          <ul>
+            <li>Modify TUN config(/etc/systemd/network/99-open5gs.network) for INTERNET network</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3|6">
+               [Network]
+               Address=10.45.0.1/16
+              -Address=2001:db8:cafe::1/48
+
+               [Link]
+              +MTUBytes=1400
+               RequiredForOnline=false
+            </code></pre>
+            <li>After changing config, restart systemd-networkd</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
+              $ sudo systemctl restart systemd-networkd
+            </code></pre>
+          </ul>
         </section>
 
         <section style="text-align: left;">
           <h2 data-id="code-title">Adding a route for the UE to have WAN connectivity</h2>
           <ul>
-            <li>To enable IPv4/IPv6 forwarding</li>
+            <li>To enable IPv4 forwarding</li>
             <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
               sudo sysctl -w net.ipv4.ip_forward=1
             </code></pre>
@@ -329,110 +336,118 @@
         </section>
 
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup Diameter</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/mme.conf.in" target="_blank">/etc/freeDiameter/mme.conf</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|19-20">
-             # This must be a valid FQDN that resolves to the local host.
-             # Default: hostname's FQDN
-             #Identity = "aaa.koganei.freediameter.net";
-            -Identity = "mme.localdomain";
-            +Identity = "mme.epc.mnc001.mcc001.3gppnetwork.org";
+          <h2 data-id="code-title">Setup freeDiameter</h2>
+          <ul>
+            <li>Modify MME diameter config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/mme.conf.in" target="_blank">/etc/freeDiameter/mme.conf</a>) to set Identity, Realm and ConnectPeer(HSS)</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|16-17">
+               # This must be a valid FQDN that resolves to the local host.
+               # Default: hostname's FQDN
+               #Identity = "aaa.koganei.freediameter.net";
+              -Identity = "mme.localdomain";
+              +Identity = "mme.epc.mnc001.mcc001.3gppnetwork.org";
 
-             # The Diameter Realm of this daemon.
-             # Default: the domain part of Identity (after the first dot).
-             #Realm = "koganei.freediameter.net";
-            -Realm = "localdomain";
-            +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
+               # The Diameter Realm of this daemon.
+               # Default: the domain part of Identity (after the first dot).
+               #Realm = "koganei.freediameter.net";
+              -Realm = "localdomain";
+              +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
 
-             ##############################################################
-             ##  Transport protocol configuration
-            @@ -261,7 +261,7 @@ LoadExtension = "@libdir@/freeDiameter/dict_dcca_3gpp.fdx";
-             # Examples:
-             #ConnectPeer = "aaa.wide.ad.jp";
-             #ConnectPeer = "old.diameter.serv" { TcTimer = 60; TLS_old_method; No_SCTP; Port=3868; } ;
-            -ConnectPeer = "hss.localdomain" { ConnectTo = "127.0.0.8"; No_TLS; };
-            +ConnectPeer = "hss.epc.mnc001.mcc001.3gppnetwork.org"
-          </code></pre>
+               # Format:
+               #ConnectPeer = "diameterid" [ { parameter1; parameter2; ...} ] ;
+               # Parameters that can be specified in the peer's parameter list:
+              -ConnectPeer = "hss.localdomain" { ConnectTo = "127.0.0.8"; No_TLS; };
+              +ConnectPeer = "hss.epc.mnc001.mcc001.3gppnetwork.org"
+            </code></pre>
+          </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup Diameter</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/hss.conf.in" target="_blank">/etc/freeDiameter/hss.conf</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|19-20|21">
-             # This must be a valid FQDN that resolves to the local host.
-             # Default: hostname's FQDN
-             #Identity = "aaa.koganei.freediameter.net";
-            -Identity = "hss.localdomain";
-            +Identity = "hss.epc.mnc001.mcc001.3gppnetwork.org";
+          <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
+          <ul>
+            <li>Modify HSS diameter config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/hss.conf.in" target="_blank">/etc/freeDiameter/hss.conf</a>) to set Identity, Realm and ConnectPeer(MME/P-CSCF)</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|16-18">
+               # This must be a valid FQDN that resolves to the local host.
+               # Default: hostname's FQDN
+               #Identity = "aaa.koganei.freediameter.net";
+              -Identity = "hss.localdomain";
+              +Identity = "hss.epc.mnc001.mcc001.3gppnetwork.org";
 
-             # The Diameter Realm of this daemon.
-             # Default: the domain part of Identity (after the first dot).
-             #Realm = "koganei.freediameter.net";
-            -Realm = "localdomain";
-            +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
+               # The Diameter Realm of this daemon.
+               # Default: the domain part of Identity (after the first dot).
+               #Realm = "koganei.freediameter.net";
+              -Realm = "localdomain";
+              +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
 
-             ##############################################################
-             ##  Transport protocol configuration
-            @@ -261,6 +261,7 @@ LoadExtension = "@libdir@/freeDiameter/dict_dcca_3gpp.fdx";
-             # Examples:
-             #ConnectPeer = "aaa.wide.ad.jp";
-             #ConnectPeer = "old.diameter.serv" { TcTimer = 60; TLS_old_method; No_SCTP; Port=3868; } ;
-            -ConnectPeer = "mme.localdomain" { ConnectTo = "127.0.0.2"; No_TLS; };
-            +ConnectPeer = "mme.epc.mnc001.mcc001.3gppnetwork.org"
-            +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
-          </code></pre>
+               # Format:
+               #ConnectPeer = "diameterid" [ { parameter1; parameter2; ...} ] ;
+               # Parameters that can be specified in the peer's parameter list:
+              -ConnectPeer = "mme.localdomain" { ConnectTo = "127.0.0.2"; No_TLS; };
+              +ConnectPeer = "mme.epc.mnc001.mcc001.3gppnetwork.org"
+              +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
+            </code></pre>
+          </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup Diameter</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/smf.conf.in" target="_blank">/etc/freeDiameter/smf.conf</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|19-20">
-             # This must be a valid FQDN that resolves to the local host.
-             # Default: hostname's FQDN
-             #Identity = "aaa.koganei.freediameter.net";
-            -Identity = "smf.localdomain";
-            +Identity = "smf.epc.mnc001.mcc001.3gppnetwork.org";
+          <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
+          <ul>
+            <li>Modify SMF diameter config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/smf.conf.in" target="_blank">/etc/freeDiameter/smf.conf</a>) to set Identity, Realm and ConnectPeer(PCRF)</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|16-17">
+               # This must be a valid FQDN that resolves to the local host.
+               # Default: hostname's FQDN
+               #Identity = "aaa.koganei.freediameter.net";
+              -Identity = "smf.localdomain";
+              +Identity = "smf.epc.mnc001.mcc001.3gppnetwork.org";
 
-             # The Diameter Realm of this daemon.
-             # Default: the domain part of Identity (after the first dot).
-             #Realm = "koganei.freediameter.net";
-            -Realm = "localdomain";
-            +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
+               # The Diameter Realm of this daemon.
+               # Default: the domain part of Identity (after the first dot).
+               #Realm = "koganei.freediameter.net";
+              -Realm = "localdomain";
+              +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
 
-             ##############################################################
-             ##  Transport protocol configuration
-            @@ -261,7 +261,7 @@ LoadExtension = "@libdir@/freeDiameter/dict_dcca_3gpp.fdx";
-             # Examples:
-             #ConnectPeer = "aaa.wide.ad.jp";
-             #ConnectPeer = "old.diameter.serv" { TcTimer = 60; TLS_old_method; No_SCTP; Port=3868; } ;
-            -ConnectPeer = "pcrf.localdomain" { ConnectTo = "127.0.0.9"; No_TLS; };
-            +ConnectPeer = "pcrf.epc.mnc001.mcc001.3gppnetwork.org"
-          </code></pre>
+               # Format:
+               #ConnectPeer = "diameterid" [ { parameter1; parameter2; ...} ] ;
+               # Parameters that can be specified in the peer's parameter list:
+              -ConnectPeer = "pcrf.localdomain" { ConnectTo = "127.0.0.9"; No_TLS; };
+              +ConnectPeer = "pcrf.epc.mnc001.mcc001.3gppnetwork.org"
+            </code></pre>
+          </ul>
         </section>
         <section style="text-align: left;">
-          <h2 data-id="code-title">Setup Diameter</h2>
-          <p><a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/pcrf.conf.in" target="_blank">/etc/freeDiameter/pcrf.conf</a></p>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|19-20|21">
-             # This must be a valid FQDN that resolves to the local host.
-             # Default: hostname's FQDN
-             #Identity = "aaa.koganei.freediameter.net";
-            -Identity = "pcrf.localdomain";
-            +Identity = "pcrf.epc.mnc001.mcc001.3gppnetwork.org";
+          <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
+          <ul>
+            <li>Modify PCRF diameter config(<a href="https://github.com/open5gs/open5gs/blob/main/configs/freeDiameter/pcrf.conf.in" target="_blank">/etc/freeDiameter/pcrf.conf</a>) to set Identity, Realm and ConnectPeer(SMF/P-CSCF)</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-5|10-11|16-18">
+               # This must be a valid FQDN that resolves to the local host.
+               # Default: hostname's FQDN
+               #Identity = "aaa.koganei.freediameter.net";
+              -Identity = "pcrf.localdomain";
+              +Identity = "pcrf.epc.mnc001.mcc001.3gppnetwork.org";
 
-             # The Diameter Realm of this daemon.
-             # Default: the domain part of Identity (after the first dot).
-             #Realm = "koganei.freediameter.net";
-            -Realm = "localdomain";
-            +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
+               # The Diameter Realm of this daemon.
+               # Default: the domain part of Identity (after the first dot).
+               #Realm = "koganei.freediameter.net";
+              -Realm = "localdomain";
+              +Realm = "epc.mnc001.mcc001.3gppnetwork.org";
 
-             ##############################################################
-             ##  Transport protocol configuration
-            @@ -261,6 +261,7 @@ LoadExtension = "@libdir@/freeDiameter/dict_dcca_3gpp.fdx";
-             # Examples:
-             #ConnectPeer = "aaa.wide.ad.jp";
-             #ConnectPeer = "old.diameter.serv" { TcTimer = 60; TLS_old_method; No_SCTP; Port=3868; } ;
-            -ConnectPeer = "smf.localdomain" { ConnectTo = "127.0.0.4"; No_TLS; };
-            +ConnectPeer = "smf.epc.mnc001.mcc001.3gppnetwork.org"
-            +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
-          </code></pre>
+               # Format:
+               #ConnectPeer = "diameterid" [ { parameter1; parameter2; ...} ] ;
+               # Parameters that can be specified in the peer's parameter list:
+              -ConnectPeer = "smf.localdomain" { ConnectTo = "127.0.0.4"; No_TLS; };
+              +ConnectPeer = "smf.epc.mnc001.mcc001.3gppnetwork.org"
+              +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
+            </code></pre>
+          </ul>
+        </section>
+        <section style="text-align: left;">
+          <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
+          <ul>
+            <li>After changing config, restart Open5GS daemons</li>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1|2|3|4">
+              $ sudo systemctl restart open5gs-mmed
+              $ sudo systemctl restart open5gs-hssd
+              $ sudo systemctl restart open5gs-smfd
+              $ sudo systemctl restart open5gs-pcrfd
+            </code></pre>
+          </ul>
         </section>
 
         <section style="text-align: left;">
