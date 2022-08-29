@@ -120,6 +120,35 @@
         </section>
 
         <section style="text-align: left;">
+          <h2>Network Elements in 4G EPC</h2>
+          <ul>
+            <li>MME - Mobility Management Entity</li>
+            <li>HSS - Home Subscriber Server</li>
+            <li>PCRF - Policy and Charging Rules Function</li>
+            <li>SGW-C - Serving Gateway Control Plane</li>
+            <li>SGW-U - Serving Gateway User Plane</li>
+            <li>PGW-C/SMF - Packet Gateway Control Plane / (component contained in Open5GS SMF)</li>
+            <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
+          </ul>
+        </section>
+        <section style="text-align: left;">
+          <h2>Network Functions in 5G Core</h2>
+          <ul>
+            <li>AMF - Access and Mobility Management Function</li>
+            <li>SMF - Session Management Function</li>
+            <li>UPF - User Plane Function</li>
+            <li>AUSF - Authentication Server Function</li>
+            <li>NRF - NF Repository Function</li>
+            <li>UDM - Unified Data Management</li>
+            <li>UDR - Unified Data Repository</li>
+            <li>PCF - Policy and Charging Function</li>
+            <li>NSSF - Network Slice Selection Function</li>
+            <li>BSF - Binding Support Function</li>
+            <li>SCP - Service Communications Proxy</li>
+          </ul>
+        </section>
+
+        <section style="text-align: left;">
           <h2>VoLTE Setup with Kamailio IMS</h2>
           <ul>
             <li>Install Kamailio with IMS/MySQL modules</li>
@@ -149,34 +178,6 @@
             <li>
               <a href="https://build.opensuse.org/user/show/mnhauke" target="_blank">Martin Hauke</a> packaged for openSUSE on <a href="https://build.opensuse.org/package/show/home:mnhauke:open5gs/open5gs" target="_blank">OBS</a>.
             </li>
-          </ul>
-        </section>
-        <section style="text-align: left;">
-          <h2>Network Elements in 4G EPC</h2>
-          <ul>
-            <li>MME - Mobility Management Entity</li>
-            <li>HSS - Home Subscriber Server</li>
-            <li>PCRF - Policy and Charging Rules Function</li>
-            <li>SGW-C - Serving Gateway Control Plane</li>
-            <li>SGW-U - Serving Gateway User Plane</li>
-            <li>PGW-C/SMF - Packet Gateway Control Plane / (component contained in Open5GS SMF)</li>
-            <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
-          </ul>
-        </section>
-        <section style="text-align: left;">
-          <h2>Network Functions in 5G Core</h2>
-          <ul>
-            <li>AMF - Access and Mobility Management Function</li>
-            <li>SMF - Session Management Function</li>
-            <li>UPF - User Plane Function</li>
-            <li>AUSF - Authentication Server Function</li>
-            <li>NRF - NF Repository Function</li>
-            <li>UDM - Unified Data Management</li>
-            <li>UDR - Unified Data Repository</li>
-            <li>PCF - Policy and Charging Function</li>
-            <li>NSSF - Network Slice Selection Function</li>
-            <li>BSF - Binding Support Function</li>
-            <li>SCP - Service Communications Proxy</li>
           </ul>
         </section>
         <section style="text-align: left;">
@@ -481,18 +482,38 @@
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
-          <p>You may need to fill out USIM information</p>
+          <p>You need to fill out USIM information</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-input.png" alt="Subscriber">
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
-          <p>Then hit [SAVE] button when everything is configured.</p>
-          <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-save.png" alt="Subscriber">
+          <p>To add IMS profile, scroll down and hit the [+] button</p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-1.png" alt="Subscriber">
+        </section>
+        <section>
+          <h2>WebUI - Add Subscriber</h2>
+          <p>Fill out IMS profile as shown</p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-2.png" alt="Subscriber">
+        </section>
+        <section>
+          <h2>WebUI - Add Subscriber</h2>
+          <p>To add PCC profile, scroll down and hit the [+] button</p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-3.png" alt="Subscriber">
+        </section>
+        <section>
+          <h2>WebUI - Add Subscriber</h2>
+          <p>Then hit [SAVE] button when everything is configured</p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-4.png" alt="Subscriber">
         </section>
         <section>
           <h2>WebUI - Main View</h2>
-          <p>You would get a subscriber registered as follows.</p>
+          <p>You would get a subscriber registered as follows</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-done.png" alt="Subscriber">
+        </section>
+        <section>
+          <h2>WebUI - Main View</h2>
+          <p>Hit the [IMSI] Box to view the subscriber information</p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-show.png" alt="Subscriber">
         </section>
 
         <section style="text-align: left;">
