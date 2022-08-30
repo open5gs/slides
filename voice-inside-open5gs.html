@@ -39,6 +39,9 @@
             VoLTE & VoNR with Kamailio inside <a href="https://open5gs.org" target="_blank">Open5GS</a>
           </h2>
           <p><small>Presentation link : <a href="https://open5gs.org/slides/voice-inside-open5gs" target="_blank">https://open5gs.org/slides/voice-inside-open5gs</a></small></p>
+          <aside class="notes">
+              Hello. I'm Sukchan Lee, developing Open5GS. Today I will introduce Open5GS and explain how to set up Voice with Kamilio.
+          </aside>
         </section>
 
         <section>
@@ -49,6 +52,9 @@
           <p>
             <small>Created by <a href="https://github.com/acetcom" target="_blank">Sukchan Lee</a> and <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a></small>
           </p>
+          <aside class="notes">
+Open5GS is mainly used to configure LTE or 5G private networks. It is implemented in C language and can run on most Linux distributions, MacOS, FreeBSD, etc., but does not support Windows. This presentation can be viewed again at the link you are viewing now.
+          </aside>
         </section>
 
         <section>
@@ -87,6 +93,9 @@
               </tr>
             </tbody>
           </table>
+          <aside class="notes">
+On February 1, 2017, I started developing the program from scratch. The project is now entering its sixth year. The first version was released and distributed on October 9, 2017, eight months after starting development of the program. The project name was NextEPC and I had two friends on this project. As you can see from History, EPC supports voice features like CS Fallback, SMSsG, VoLTE and HSS Cx.
+          </aside>
         </section>
 
         <section>
@@ -117,6 +126,9 @@
               </tr>
             </tbody>
           </table>
+          <aside class="notes">
+The project name was changed to Open5GS prior to start developing 5G core. After 4 months of development, we were able to release the 5G core. And at the end of last year, the VoNR feature was also added.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -130,6 +142,9 @@
             <li>PGW-C/SMF - Packet Gateway Control Plane / (component contained in Open5GS SMF)</li>
             <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
           </ul>
+          <aside class="notes">
+Initially, the EPC consisted of MME, HSS, PCRF, SGW and PGW. After that, the project name was changed to Open5GS, and SGW and PGW used PFCP protocol to separate Control Plane and Data Plane. Then, the names of PGW-C and PGW-U have been changed to SMF and UPF, and EPC and 5G Core share and use together.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2>Network Functions in 5G Core</h2>
@@ -146,6 +161,9 @@
             <li>BSF - Binding Support Function</li>
             <li>SCP - Service Communications Proxy</li>
           </ul>
+          <aside class="notes">
+As mentioned earlier, SMF and UPF are used together in EPC as well as 5G Core. For your reference, in 5G Core, Network Element is called NF or Network Function. We currently support 11 NFs and plan to add more in the future.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -158,7 +176,10 @@
             <li>Setup FoHSS</li>
             <li>Running IMS components and FoHSS</li>
           </ul>
-          <p>You can find more details at this link : <a href="https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/</a></p>
+          <p>You can find more details at this link : <a href="https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup/</a> provided by <a href="https://github.com/herlesupreeth/">@herlesupreeth</a></p>
+          <aside class="notes">
+Now let's see how to build a VoLTE test environment. First you need to install the IMS module, MySQL and RTPEngine/RTPProxy. And you need to set up DNS to communicate with EPC. You can find more details in the document written by @herlesupreeth.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -179,6 +200,9 @@
               <a href="https://build.opensuse.org/user/show/mnhauke" target="_blank">Martin Hauke</a> packaged for openSUSE on <a href="https://build.opensuse.org/package/show/home:mnhauke:open5gs/open5gs" target="_blank">OBS</a>.
             </li>
           </ul>
+          <aside class="notes">
+Open5GS can be easily installed in Ubuntu/Debian environment. FYI, Osmocom distributes packages daily and Martin supports to provide OpenSUSE packages.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup 4G EPC MME</h2>
@@ -211,6 +235,11 @@
                   security:
             </code></pre>
           </ul>
+          <aside class="notes">
+For the MME and eNB to connect, you need to set the S1AP IP address. The MME creates an SCTP server with this address, and the eNB as an SCTP client connects to the MME.
+
+Additionally, the PLMN ID and TAC of the MME and the eNB should be set to match.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup 4G EPC SGW-U</h2>
@@ -230,6 +259,13 @@
               $ sudo systemctl restart open5gs-sgwud
             </code></pre>
           </ul>
+          <aside class="notes">
+The S1AP described in the previous slide is used in the control plane. Now we need to set the GTP-U IP address to connect the data path betwen SGW-U and eNB.
+
+Like MME's S1AP, SGW-U needs to create a GTP-U server with an IP address that the eNB can connect to. After setup, you need to restart MME and SGW-U.
+
+Then the eNB and EPC can connect.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup 4G EPC SMF</h2>
@@ -252,6 +288,13 @@
               +      - 10.4.128.21
             </code></pre>
           </ul>
+          <aside class="notes">
+Now we need to change the SMF and UPF settings for the data connection of the UE. First, since IPv6 is not used in this environment, we will delete it. Then change the subnet information in SMF settings to use two APNs.
+
+The internet APN is assigned a UE IP address from the 10.45.0.1/16 subnet and uses the ogstun interface in Linux machine.
+
+And, ims APN allocates UE IP address in 10.46.0.1/16 subnet and uses ogstun2 interface.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup 4G EPC UPF</h2>
@@ -274,6 +317,9 @@
               $ sudo systemctl restart open5gs-updf
             </code></pre>
           </ul>
+          <aside class="notes">
+You need to set the subnet of UPF to be the same as that of SMF. SMF and UPF should then be restarted for the settings changes to take effect.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -300,6 +346,11 @@
               EOF"
             </code></pre>
           </ul>
+          <aside class="notes">
+When installing Open5GS with a package manager, the TUN device is configured using systemd-networkd.
+
+Execute the command as shown to create a TUN device for the IMS network.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup Linux TUN device (Cont.)</h2>
@@ -319,6 +370,11 @@
               $ sudo systemctl restart systemd-networkd
             </code></pre>
           </ul>
+          <aside class="notes">
+For internet APN, you need to change the configuration of ogstun device. Remove IPv6 and set MTU to 1400.
+
+Restart systemd-networkd and you can check the ogstun and ogstun2 interfaces on your Linux machine.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -334,6 +390,11 @@
               sudo iptables -t nat -A POSTROUTING -s 10.46.0.0/16 ! -o ogstun2 -j MASQUERADE
             </code></pre>
           </ul>
+          <aside class="notes">
+Additional work is required for UE's traffic to go out of the Linux machine with Open5GS installed.
+
+Enable IPv4 forwarding and also add a MASQUERADE NAT rule.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -360,6 +421,11 @@
               +ConnectPeer = "hss.epc.mnc001.mcc001.3gppnetwork.org"
             </code></pre>
           </ul>
+          <aside class="notes">
+Now we need to set the diameter. In Open5GS, MME, HSS, SMF and PCRF support Diameter protocol.
+
+To connect Kamailio with domain name, change the MME's Identity, Realm, and Peer information using domain name as shown.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
@@ -386,6 +452,9 @@
               +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
             </code></pre>
           </ul>
+          <aside class="notes">
+Open5GS HSS supports Cx. To use this, additionally set P-CSCF in Connection Peer information.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
@@ -411,6 +480,9 @@
               +ConnectPeer = "pcrf.epc.mnc001.mcc001.3gppnetwork.org"
             </code></pre>
           </ul>
+          <aside class="notes">
+Change the Diameter setting of SMF to the domain name method in the same way as MME.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
@@ -437,6 +509,9 @@
               +ConnectPeer = "pcscf.ims.mnc001.mcc001.3gppnetwork.org"
             </code></pre>
           </ul>
+          <aside class="notes">
+PCRF establishes P-CSCF domain name in ConnectPeer for connection with IMS.
+          </aside>
         </section>
         <section style="text-align: left;">
           <h2 data-id="code-title">Setup freeDiameter (Cont.)</h2>
@@ -449,6 +524,9 @@
               $ sudo systemctl restart open5gs-pcrfd
             </code></pre>
           </ul>
+          <aside class="notes">
+Restart all 4 daemons for the Diameter setting change to take effect as well.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -466,6 +544,15 @@
               curl -fsSL https://open5gs.org/open5gs/assets/webui/install | sudo -E bash -
             </code></pre>
           </ul>
+          <aside class="notes">
+In order for HSS to authenticate a subscriber, the subscriber information must be added to the database.
+
+Open5GS uses MongoDB and provides WebUI.
+
+You can easily add subscriber information through WeBUI.
+
+Since WebUI is implemented based on node.js/React, you need to install node.js first. Then install the WebUI application.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Login</h2>
@@ -474,55 +561,89 @@
             Username : admin Password : 1423
           </blockquote>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-login.png" alt="Subscriber">
+          <aside class="notes">
+The initial ID of WebUI is admin and the initial password is 1423. After logging in, you can change your password in the Account menu.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Main View</h2>
           <p>To add the subscribers, go to [Subscriber] panel and hit [ADD A SUBSCRIBER].</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-mainview.png" alt="Subscriber">
+          <aside class="notes">
+There is a menu on the left panel. You can click Subscriber panel and add subscriber information as shown.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
           <p>You need to fill out USIM information</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-input.png" alt="Subscriber">
+          <aside class="notes">
+You will now need to fill out your USIM information. Modify the IMSI, AMD, K and OP/OPc referring to the USIM information you purchased.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
           <p>To add IMS profile, scroll down and hit the [+] button</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-1.png" alt="Subscriber">
+          <aside class="notes">
+For now, only internet APN information is set as default. In order to add an ims APN, scroll down and click the + button.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
           <p>Fill out IMS profile as shown</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-2.png" alt="Subscriber">
+          <aside class="notes">
+Enter the APN name as IMS and modify the Session AMBR if bandwidth limit is required.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
           <p>To add PCC profile, scroll down and hit the [+] button</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-3.png" alt="Subscriber">
+          <aside class="notes">
+Since we need to add PCC Profile, scroll down and click the + button as shown.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Add Subscriber</h2>
           <p>Then hit [SAVE] button when everything is configured</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-ims-add-subscriber-4.png" alt="Subscriber">
+          <aside class="notes">
+By default, QCI 1 and ARP 2 are set for Voice. You only need to modify MBR/GBR for bandwidth limit.
+
+And if you press the SAVE button, the subscriber information is saved in MongoDB.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Main View</h2>
           <p>You would get a subscriber registered as follows</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-done.png" alt="Subscriber">
+          <aside class="notes">
+You get a subscriber registered as shown.
+
+And, if you click the IMSI Box, you can check the subscriber information as shown in the following slide.
+          </aside>
         </section>
         <section>
           <h2>WebUI - Main View</h2>
           <p>Hit the [IMSI] Box to view the subscriber information</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-show.png" alt="Subscriber">
+          <aside class="notes">
+Internet and ims APN are set. And, in ims APN, PCC Rule for voice is set to add Flow using Diameter-Rx interface.
+          </aside>
         </section>
 
         <section style="text-align: left;">
-          <h2>Turn on your eNB/gNB and UE</h2>
+          <h2>Turn on your eNB and UE</h2>
           <ul>
-            <li>First, connect your eNB/gNB to the Open5GS core</li>
+            <li>First, connect your eNB to the Open5GS core</li>
             <li>Next, try to attach a UE to the basestation</li>
             <li>Finally, test the voice call</li>
           </ul>
+          <aside class="notes">
+Now everything is ready. Just turn on the eNB and UE and test the voice call.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -531,6 +652,13 @@
             <li>Open5GS VoNR was implemented using HTTP2 and does not support Diameter Protocol.</li>
             <li>According to the standard, 5G PCF must support HTTP2 as well as Diameter intefaces like Rx.</li>
           </ul>
+          <aside class="notes">
+Open5GS only supports half of VoNR. Both HTTP2 method and Diameter Rx method should be supported, but only HTTP2 was implemented first.
+
+If PCF, one of the 5G Cores, supports Diameter Rx method, it can be used directly connected to Kamailio.
+
+If many people in the open source community ask for this feature, we will make an implementation plan.
+          </aside>
         </section>
 
         <section data-background-iframe="https://open5gs.org/open5gs/docs/hardware/01-genodebs/" data-background-interactive>
@@ -541,6 +669,11 @@
               <li>An open source like srsRAN could be a much more viable approach for you.</li>
             </ul>
           </div>
+          <aside class="notes">
+So far, we have looked at the Voice feature using Open5GS. Now, we would just like to share information about Open5GS that may be of additional help.
+
+Open5GS's website has a list of tested eNBs/gNBs. We hope this helps you set up your lab environment.
+          </aside>
         </section>
 
         <section>
@@ -579,6 +712,15 @@
               </tr>
             </tbody>
           </table>
+          <aside class="notes">
+Here is records of our collaborations with other communities.
+
+On July 19, 2021, the integration with the OAI gNB was discussed in the Issue 1098. Click the link to view the contents.
+
+And, on May 4, 2022, SRS released 5G-SA and provided an application notes using Open5GS.
+
+Recently, Sysmocom has contributed a lot to Open5GS related to 2G/3G.
+          </aside>
         </section>
 
         <section>
