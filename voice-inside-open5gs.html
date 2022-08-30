@@ -40,7 +40,9 @@
           </h2>
           <p><small>Presentation link : <a href="https://open5gs.org/slides/voice-inside-open5gs" target="_blank">https://open5gs.org/slides/voice-inside-open5gs</a></small></p>
           <aside class="notes">
-              Hello. I'm Sukchan Lee, developing Open5GS. Today I will introduce Open5GS and explain how to set up Voice with Kamilio.
+Hello. I'm Sukchan Lee, developing Open5GS. Today I will introduce Open5GS and explain how to set up Voice with Kamailio.
+
+This presentation can be viewed again at the link you are viewing now.
           </aside>
         </section>
 
@@ -53,7 +55,7 @@
             <small>Created by <a href="https://github.com/acetcom" target="_blank">Sukchan Lee</a> and <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a></small>
           </p>
           <aside class="notes">
-Open5GS is mainly used to configure LTE or 5G private networks. It is implemented in C language and can run on most Linux distributions, MacOS, FreeBSD, etc., but does not support Windows. This presentation can be viewed again at the link you are viewing now.
+Open5GS is mainly used to configure LTE or 5G private networks. It is implemented in C language and can run on most Linux distributions, MacOS, FreeBSD, etc., but does not support Windows.
           </aside>
         </section>
 
@@ -94,7 +96,15 @@ Open5GS is mainly used to configure LTE or 5G private networks. It is implemente
             </tbody>
           </table>
           <aside class="notes">
-On February 1, 2017, I started developing the program from scratch. The project is now entering its sixth year. The first version was released and distributed on October 9, 2017, eight months after starting development of the program. The project name was NextEPC and I had two friends on this project. As you can see from History, EPC supports voice features like CS Fallback, SMSsG, VoLTE and HSS Cx.
+On February 1, 2017, I started developing the program from scratch.
+
+The project is now entering its sixth year.
+
+The first version was released and distributed on October 9, 2017, eight months after starting development of the program.
+
+The project name was NextEPC.
+
+As you can see from History, EPC supports voice features like CS Fallback, SMSsG, VoLTE and HSS Cx.
           </aside>
         </section>
 
@@ -143,7 +153,7 @@ The project name was changed to Open5GS prior to start developing 5G core. After
             <li>PGW-U/UPF - Packet Gateway User Plane / (component contained in Open5GS UPF)</li>
           </ul>
           <aside class="notes">
-Initially, the EPC consisted of MME, HSS, PCRF, SGW and PGW. After that, the project name was changed to Open5GS, and SGW and PGW used PFCP protocol to separate Control Plane and Data Plane. Then, the names of PGW-C and PGW-U have been changed to SMF and UPF, and EPC and 5G Core share and use together.
+Initially, the EPC consisted of MME, HSS, PCRF, SGW and PGW. After that, SGW and PGW used PFCP protocol to separate Control Plane and Data Plane. Then, the names of PGW-C and PGW-U have been changed to SMF and UPF, and EPC and 5G Core share and use together.
           </aside>
         </section>
         <section style="text-align: left;">
@@ -201,7 +211,7 @@ Now let's see how to build a VoLTE test environment. First you need to install t
             </li>
           </ul>
           <aside class="notes">
-Open5GS can be easily installed in Ubuntu/Debian environment. FYI, Osmocom distributes packages daily and Martin supports to provide OpenSUSE packages.
+Open5GS can be easily installed in Ubuntu/Debian environment. FYI, Osmocom provides nightly packages and Martin supports to provide OpenSUSE packages.
           </aside>
         </section>
         <section style="text-align: left;">
@@ -549,7 +559,7 @@ In order for HSS to authenticate a subscriber, the subscriber information must b
 
 Open5GS uses MongoDB and provides WebUI.
 
-You can easily add subscriber information through WeBUI.
+You can easily add subscriber information through WebUI.
 
 Since WebUI is implemented based on node.js/React, you need to install node.js first. Then install the WebUI application.
           </aside>
@@ -562,6 +572,8 @@ Since WebUI is implemented based on node.js/React, you need to install node.js f
           </blockquote>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-login.png" alt="Subscriber">
           <aside class="notes">
+You can connect to the WebUI using a web browser.
+
 The initial ID of WebUI is admin and the initial password is 1423. After logging in, you can change your password in the Account menu.
           </aside>
         </section>
@@ -578,7 +590,7 @@ There is a menu on the left panel. You can click Subscriber panel and add subscr
           <p>You need to fill out USIM information</p>
           <img height="400px" data-src="https://open5gs.org/assets/img/webui-create-input.png" alt="Subscriber">
           <aside class="notes">
-You will now need to fill out your USIM information. Modify the IMSI, AMD, K and OP/OPc referring to the USIM information you purchased.
+You will now need to fill out your USIM information. Modify the IMSI, AMF, K and OP/OPc referring to the USIM information you purchased.
           </aside>
         </section>
         <section>
@@ -655,9 +667,7 @@ Now everything is ready. Just turn on the eNB and UE and test the voice call.
           <aside class="notes">
 Open5GS only supports half of VoNR. Both HTTP2 method and Diameter Rx method should be supported, but only HTTP2 was implemented first.
 
-If PCF, one of the 5G Cores, supports Diameter Rx method, it can be used directly connected to Kamailio.
-
-If many people in the open source community ask for this feature, we will make an implementation plan.
+If PCF, one of the 5G Cores, supports Diameter Rx method, it can be used VoNR test using Kamailio.
           </aside>
         </section>
 
@@ -786,7 +796,7 @@ Another old problem. Simple WebUI for adding subscriber information is supported
             <tbody>
               <tr>
                 <td style="border:none;">2022/3Q</td>
-                <td style="border:none;"><a href="https://open5gs.org/open5gs/docs/tutorial/04-metrics-prometheus/">Metrics with Prometheus</a></td>
+                <td style="border:none;"><a href="https://open5gs.org/open5gs/docs/tutorial/04-metrics-prometheus/">Metrics with Prometheus</a>(<a href="https://github.com/pespin">@pespin</a>)</td>
               </tr>
               <tr>
                 <td align="right"></td>
