@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Open5GS – Status</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                    text-transform: none;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>
+            <a href="https://open5gs.org" target="_blank">Open5GS</a> status: recent, current and future developments
+          </h2>
+          <p><small>Presentation link : <a href="https://open5gs.org/slides/osmodevconf2024" target="_blank">https://open5gs.org/slides/osmodevconf2024</a></small></p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Recent Developments</h2>
+          <ul>
+            <li>Release 17</li>
+            <li>HTTP/2 over TLS</li>
+            <li>Metrics Support using Prometheus</li>
+            <li>5G SUCI Profile A/B Scheme</li>
+            <li>UPF High Availability</li>
+            <li>Frame Routing</li>
+            <li>PFCP Restoration</li>
+            <li>5G Roaming with SEPP</li>
+          </ul>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            What is SEPP?
+          </h2>
+          <p>
+            A network function in 5G architecture designed to secure information exchange between network operators for roaming.
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            How Does 5G Roaming Work?
+          </h2>
+          <p>
+            <small>
+              Use of TLS (Transport Layer Security) for encryption and N32 interface for communication between SEPPs.
+            </small>
+          </p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming(LBO)">
+        </section>
+
+        <section style="text-align: left;">
+          <h2>5G Roaming with SEPP</h2>
+          <p>
+          TLS Certification and Interface Configuration:
+          </p>
+          <p>
+            <small>
+                Discussion on the security practice of using different TLS certificates for SBI and N32 interfaces, and the design consideration behind separating N32c and N32f interfaces for control and forwarding.
+            </small>
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>New Configuration</h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-5|8-15|17-19|20-24">
+          -scp:
+          -  sbi:
+          -    - addr: 127.0.1.10
+          -      port: 7777
+          -
+           amf:
+             sbi:
+          -    - addr: 127.0.0.5
+          -      port: 7777
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 7777
+          +    client:
+          +      scp:
+          +        - uri: http://127.0.0.200:7777
+             ngap:
+          -    - addr: 127.0.0.5
+          +    server:
+          +      - address: 127.0.0.5
+             metrics:
+          -    - addr: 127.0.0.5
+          -      port: 9090
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 9090
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>New Configuration(Cont.)</h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-6|7-14|16-20|29-36">
+           mme:
+             freeDiameter: /home/acetcom/Documents/git/open5gs/install/etc/freeDiameter/mme.conf
+             s1ap:
+          -    - addr: 127.0.0.2
+          +    server:
+          +      - address: 127.0.0.2
+             gtpc:
+          -    - addr: 127.0.0.2
+          +    server:
+          +      - address: 127.0.0.2
+          +    client:
+          +      sgwc:
+          +        - address: 127.0.0.3
+          +      smf:
+          +        - address: 127.0.0.4
+             metrics:
+          -    - addr: 127.0.0.2
+          -      port: 9090
+          +    server:
+          +      - address: 127.0.0.2
+          +        port: 9090
+             gummei:
+               - plmn_id:
+                   mcc: 999
+          @@ -25,16 +33,3 @@
+               full: Open5GS
+               short: Next
+             mme_name: open5gs-mme0
+          -sgwc:
+          -  gtpc:
+          -    - addr: 127.0.0.3
+          -smf:
+          -  gtpc:
+          -    - addr:
+          -      - 127.0.0.4
+          -      - ::1
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>5G Roaming with SEPP</h2>
+          <p>
+          TLS Certification and Interface Configuration:
+          </p>
+          <p>
+            <small>
+                Discussion on the security practice of using different TLS certificates for SBI and N32 interfaces, and the design consideration behind separating N32c and N32f interfaces for control and forwarding.
+            </small>
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>SEPP Configuration</h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sepp1.yaml.in" target="_blank">/etc/open5gs/sepp1.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-9|11-16|20|23-26|31|34">
+          sepp:
+            default:
+              tls:
+                server:
+                  private_key: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls
+          /sepp1.key
+                  cert: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls/sepp1.crt
+                client:
+                  cacert: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls/ca.crt
+            sbi:
+              server:
+                - address: 127.0.1.250
+                  port: 7777
+              client:
+                scp:
+                  - uri: http://127.0.0.200:7777
+            n32:
+              server:
+                - sender: sepp1.localdomain
+                  scheme: https
+                  address: 127.0.1.251
+                  port: 7777
+                  n32f:
+                    scheme: https
+                    address: 127.0.1.252
+                    port: 7777
+              client:
+                sepp:
+                  - receiver: sepp2.localdomain
+                    uri: https://sepp2.localdomain:7777
+                    resolve: 127.0.2.251
+                    n32f:
+                      uri: https://sepp2.localdomain:7777
+                      resolve: 127.0.2.252
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            NRF requires a PLMN-ID
+          </h2>
+          <p>
+            <small>
+              For 5G Roaming, the PLMN ID must be configured in the NRF as follows:
+            </small>
+          </p>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/nrf.yaml.in" target="_blank">/etc/open5gs/nrf.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3-5">
+          nrf:
+            serving:  # 5G roaming requires PLMN in NRF
+              - plmn_id:
+                  mcc: 999
+                  mnc: 70
+            sbi:
+              server:
+                - address: 127.0.0.10
+                  port: 7777
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            The configuration of FQDN in NFs
+          </h2>
+          <p>
+            <small>
+              During the registration phase, a Network Function (NF) receives PLMN-ID information from the NRF and configures its own Fully Qualified Domain Name (FQDN) accordingly.
+            </small>
+          </p>
+          <ul>
+            <li>/etc/hosts</li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-3|5-7|9-11">
+          127.0.1.10  nrf.5gc.mnc070.mcc999.3gppnetwork.org
+          127.0.1.11  ausf.5gc.mnc070.mcc999.3gppnetwork.org
+          127.0.1.12  udm.5gc.mnc070.mcc999.3gppnetwork.org
+
+          127.0.2.10  nrf.5gc.mnc001.mcc001.3gppnetwork.org
+          127.0.2.11  ausf.5gc.mnc001.mcc001.3gppnetwork.org
+          127.0.2.12  udm.5gc.mnc001.mcc001.3gppnetwork.org
+
+          127.0.3.10  nrf.5gc.mnc010.mcc315.3gppnetwork.org
+          127.0.3.11  ausf.5gc.mnc010.mcc315.3gppnetwork.org
+          127.0.3.12  udm.5gc.mnc010.mcc315.3gppnetwork.org
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Determining UE Roaming in NFs
+          </h2>
+          <p>
+          AMF
+          </p>
+          <p>
+            <small>
+              Due to the ability to accurately extract the PLMN-ID from the SUCI, it is easy to distinguish whether the connection is being made from the Home PLMN or a Visited PLMN.
+            </small>
+          </p>
+          <p>
+          SMF
+          </p>
+          <p>
+            <small>
+              By comparing the first part of the SUP (IMSI) with the length of the PLMN-ID (5 or 6 bytes) received from the NRF, if they all differ, it is determined to be a Visited PLMN.
+            </small>
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h1>5G Roaming</h1>
+          <p>
+          For insights and detailed information on 5G Roaming with Open5GS, the tutorial at <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/05-roaming/</a> serves as an excellent resource.
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h1>Thank you</h1>
+          <p>
+          Thank You for Your Attention!
+          </p>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+      });
+
+    </script>
+
+  </body>
+</html>
