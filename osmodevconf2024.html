@@ -228,7 +228,6 @@
           </code></pre>
         </section>
 
-
         <section style="text-align: left;">
           <h2>
             NRF requires a PLMN-ID
@@ -313,9 +312,38 @@
         </section>
 
         <section style="text-align: left;">
-          <h1>5G Roaming</h1>
+          <h2>
+            The Risk of Full DNN:
+          </h2>
           <p>
-          For insights and detailed information on 5G Roaming with Open5GS, the tutorial at <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/05-roaming/</a> serves as an excellent resource.
+            <small>
+                If an AMF from other vendor doesn't use Full DNN, it won't work right.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="7-9|11|13-14">
+            TS29.502
+            6.1 Nsmf_PDUSession Service API
+            Table 6.1.6.2.2-1: Definition of type SmContextCreateData
+
+            NAME: dnn, Data type: Dnn
+
+            When present, it shall contain the requested DNN; the DNN
+            shall be the full DNN (i.e. with both the Network Identifier
+            and Operator Identifier) for a HR PDU session, and
+
+            it should be the full DNN in LBO and non-roaming scenarios.
+
+            If the Operator Identifier is absent,
+            the serving core network operator shall be assumed.
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>5G Roaming</h2>
+          <p>
+            <small>
+              For insights and detailed information on 5G Roaming with Open5GS, the tutorial at <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/05-roaming/</a> serves as an excellent resource.
+            </small>
           </p>
         </section>
 
