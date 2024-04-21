@@ -78,7 +78,7 @@
 
         <section style="text-align: left;">
           <h2>
-            Roaming Implementation Challenges
+            Design 5G Roaming
           </h2>
           <p>
             TLS Certification and Interface Configuration:
@@ -88,21 +88,25 @@
               Discussion on the security practice of using different TLS certificates for SBI and N32 interfaces, and the design consideration behind separating N32c and N32f interfaces for control and forwarding.
             </small>
           </p>
-        </section>
-
-        <section style="text-align: left;">
-          <h2>
-          New Configuration
-          </h2>
+          <p>
+            Challenges:
+          </p>
           <p>
             <small>
-            Starting from version 2.7.0, which supports SEPP, it has been decided to use a new format for the configuration files.
+              Legacy configuration files (up to version 2.6.x) lack the flexibility and features needed to effectively design roaming settings.
+            </small>
+          </p>
+          <p>
+            <small>
+              Key requirements such as Transport Layer Security (TLS) and specific configurations like n32/n32f are difficult to implement.
             </small>
           </p>
         </section>
 
         <section style="text-align: left;">
-          <h2>New Configuration</h2>
+          <h2>
+            New Configuration File Format
+          </h2>
           <ul>
             <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></li>
           </ul>
@@ -281,22 +285,31 @@
           <h2>
             Determining UE Roaming in NFs
           </h2>
-          <p>
-          AMF
-          </p>
+          <ul>
+            <li>
+              AMF
+            </li>
+          </ul>
           <p>
             <small>
               Due to the ability to accurately extract the PLMN-ID from the SUCI, it is easy to distinguish whether the connection is being made from the Home PLMN or a Visited PLMN.
             </small>
           </p>
-          <p>
-          SMF
-          </p>
+          <ul>
+            <li>
+              SMF
+            </li>
+          </ul>
           <p>
             <small>
-              By comparing the first part of the SUPI(IMSI) with the length of the PLMN-ID (5 or 6 bytes) received from the NRF, if they all differ, it is determined to be a Visited PLMN.
+              The AMF transmits session information to the SMF for roaming UEs using the Full DNN method, leveraging FQDN information.
             </small>
-          </p>
+          <p>
+          <p>
+            <small>
+              By comparing the SUPI with the Full DNN, the SMF determines whether the MNC is 2 or 3 bytes and identifies the accurate Home PLMN ID, allowing it to discern whether the UE is on the Home or Visited PLMN.
+            </small>
+          <p>
         </section>
 
         <section style="text-align: left;">
