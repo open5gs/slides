@@ -49,9 +49,6 @@
             <li>Metrics Support using Prometheus</li>
             <li>5G SUCI Profile A/B Scheme</li>
             <li>UPF High Availability</li>
-            <li>Frame Routing</li>
-            <li>PFCP Restoration</li>
-            <li>5G Roaming with SEPP</li>
           </ul>
         </section>
 
@@ -89,6 +86,56 @@
                 "ipv4_framed_routes", ("192.168.21.0/24"),
                 ...
           </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Overview of PFCP Restoration
+          </h2>
+          <p>
+            <small>
+              PFCP is a 3GPP protocol used in 5G core networks and 4G/LTE EPC to define the interactions between SMF and UPF or between SGW-C and SGW-U.
+            </small>
+          </p>
+          <p>
+            <small>
+              Across PFCP based interfaces, an SGW-C, SGW-U, SMF and UPF Node shall utilize PFCP Heartbeat Request and Heartbeat Response messages to detect and handle a peer PFCP entity failure or restart.
+            </small>
+          </p>
+          <p>
+            <ul>
+              <small>
+                <li>
+                  TS23.007 LTE Restoration procedures
+                </li>
+                <li>
+                  TS23.527 5G Restoration procedures
+                </li>
+              </small>
+            </ul>
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            PFCP Restoration Method
+          </h2>
+          <p>
+            SMF/SGW-C Restoration Procedures
+          </p>
+          <p>
+            <small>
+              UPF/SGW-U shall delete all session contexts affected by the PFCP entity restart that it may have stored.
+            </small>
+          </p>
+          <p>
+            UPF/SGW-U Restoration Procedures
+          </p>
+          <p>
+            <small>
+              SMF/SGW-C shall include a restoration indication in the PFCP Session Establishment Request message to indicate to the UPF/SGW-U.
+            </small>
+          <p>
         </section>
 
         <section style="text-align: left;">
