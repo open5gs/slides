@@ -140,6 +140,15 @@
 
         <section style="text-align: left;">
           <h2>
+            What is SEPP?
+          </h2>
+          <p>
+            A network function in 5G architecture designed to secure information exchange between network operators for roaming.
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
             How Does 5G Roaming Work?
           </h2>
           <p>
@@ -261,19 +270,20 @@
 
         <section style="text-align: left;">
           <h2>SEPP Configuration</h2>
-          <ul>
-            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/sepp1.yaml.in" target="_blank">/etc/open5gs/sepp1.yaml</a></li>
-          </ul>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-9|11-16|20|23-26|31|34">
+          <p>
+            <small>
+            Only N32 uses HTTPS with TLS, while other NFs use HTTP without TLS.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-8|10-15|19|22-25|30|33">
           sepp:
             default:
               tls:
                 server:
-                  private_key: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls
-          /sepp1.key
-                  cert: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls/sepp1.crt
+                  private_key: /etc/open5gs/tls/sepp1.key
+                  cert: /etc/open5gs/tls/sepp1.crt
                 client:
-                  cacert: /home/acetcom/Documents/git/open5gs/install/etc/open5gs/tls/ca.crt
+                  cacert: /etc/open5gs/tls/ca.crt
             sbi:
               server:
                 - address: 127.0.1.250
@@ -299,6 +309,54 @@
                     n32f:
                       uri: https://sepp2.localdomain:7777
                       resolve: 127.0.2.252
+          </code></pre>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>SEPP Configuration(Cont.)</h2>
+          <p>
+            <small>
+              N32 control and N32 forwarding interface use different key/certificate.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="2-7|13-16|20-23|29-31|35-37">
+            sbi:
+              server:
+                - address: 127.0.1.250
+                  port: 7777
+              client:
+                scp:
+                  - uri: http://127.0.0.200:7777
+            n32:
+              server:
+                - sender: sepp1.localdomain
+                  scheme: https
+                  address: 127.0.1.251
+                  private_key: /etc/open5gs/tls/sepp1.key
+                  cert: /etc/open5gs/tls/sepp1.crt
+                  verify_client: true
+                  verify_client_cacert: /etc/open5gs/tls/ca.crt
+                  n32f:
+                    scheme: https
+                    address: 127.0.1.252
+                    private_key: /etc/open5gs/tls/sepp1-n32f.key
+                    cert: /etc/open5gs/tls/sepp1-n32f.crt
+                    verify_client: true
+                    verify_client_cacert: /etc/open5gs/tls/ca.crt
+              client:
+                sepp:
+                  - receiver: sepp2.localdomain
+                    uri: https://sepp2.localdomain
+                    resolve: 127.0.2.251
+                    cacert: /etc/open5gs/tls/ca.crt
+                    client_private_key: /etc/open5gs/tls/sepp1.key
+                    client_cert: /etc/open5gs/tls/sepp1.crt
+                    n32f:
+                      uri: https://sepp2.localdomain
+                      resolve: 127.0.2.252
+                      cacert: /etc/open5gs/tls/ca.crt
+                      client_private_key: /etc/open5gs/tls/sepp1-n32f.key
+                      client_cert: /etc/open5gs/tls/sepp1-n32f.crt
           </code></pre>
         </section>
 
