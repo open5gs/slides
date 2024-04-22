@@ -57,11 +57,38 @@
 
         <section style="text-align: left;">
           <h2>
-            What is SEPP?
+            Framed Routing in 5G
           </h2>
           <p>
-            A network function in 5G architecture designed to secure information exchange between network operators for roaming.
+            <small>
+              Framed Routing allows a range of IP addresses or prefixes to be reachable over a single PDU Session, supporting IP networks behind a UE for IPv4 and IPv6 sessions.
+            </small>
           </p>
+          <p>
+            <small>
+              The Session Management Function (SMF) provides Framed Route information to the User Plane Function (UPF), and updates or releases PDU Sessions based on changes in Framed Route information from DN-AAA or UDM sources.
+            </small>
+          </p>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Subscriber Database
+          </h2>
+          <ul>
+            <li>
+              192.168.21.0/24 being routed to the <b>internet</b> APN is as follows.
+            </li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="6">
+            "imsi", ("999700000021309"),
+            ...
+            "slice", "[", "{",
+              "session", "[", "{",
+                "name", ("internet"),
+                "ipv4_framed_routes", ("192.168.21.0/24"),
+                ...
+          </code></pre>
         </section>
 
         <section style="text-align: left;">
@@ -88,15 +115,15 @@
               Discussion on the security practice of using different TLS certificates for SBI and N32 interfaces, and the design consideration behind separating N32c and N32f interfaces for control and forwarding.
             </small>
           </p>
-          <p>
+          <p class="fragment fade-up">
             Challenges:
           </p>
-          <p>
+          <p class="fragment fade-up">
             <small>
               Legacy configuration files (up to version 2.6.x) lack the flexibility and features needed to effectively design roaming settings.
             </small>
           </p>
-          <p>
+          <p class="fragment fade-up">
             <small>
               Key requirements such as Transport Layer Security (TLS) and specific configurations like n32/n32f are difficult to implement.
             </small>
