@@ -44,11 +44,22 @@
         <section style="text-align: left;">
           <h2>Recent Developments</h2>
           <ul>
-            <li>Release 17</li>
             <li>HTTP/2 over TLS</li>
+              <small>
+                Enhanced security and performance for control plane communications
+              </small>
             <li>Metrics Support using Prometheus</li>
+              <small>
+                Introduction of a generic API for counters, gauges, etc.
+              </small>
             <li>5G SUCI Profile A/B Scheme</li>
+              <small>
+                Enhanced subscriber privacy protection
+              </small>
             <li>UPF High Availability</li>
+              <small>
+                SMF detects UPF failover using PFCP Heartbeats. Process of transferring PDU sessions to a new UPF for uninterrupted service
+              </small>
           </ul>
         </section>
 
@@ -493,7 +504,7 @@
         </section>
 
         <section style="text-align: left;">
-          <h2>SEPP Implementation</h2>
+          <h2>SEPP Improvements</h2>
           <p>
             <small>
               While progress has been made in supporting LBO for roaming, the complete implementation for Home Routed roaming is pending.
@@ -504,27 +515,31 @@
 
         <section style="text-align: left;">
           <h2>Gy Interface Development</h2>
-          <p>
             <ul>
               <li>
                 Collaboration with Osmocom is ongoing for Gy interface implementation
               </li>
               <li>
+                open5gs-smfd supports interacting to an OCS node through the Gy interface
+              </li>
+              <li>
                 Initial basic code for open5gs-ocsd is expected to be released soon - Issues <a href="https://github.com/open5gs/open5gs/issues/1492" target="_blank">#1492</a>
               </li>
             </ul>
-          </p>
         </section>
 
-        <section>
-          <h2>Request from Community</h2>
-          <ul>
-            <li>EAP-AKA-Prime</li>
-            <li>Add locality in the configuration</li>
-            <li>NEF</li>
-            <li>SUPI/GPSI Ranges in UDM - Issues <a href="https://github.com/open5gs/open5gs/issues/2010" target="_blank">#2010</a></li>
-            <li>UL Classifier - N9 interface between UPFs</li>
-          </ul>
+        <section style="text-align: left;">
+          <h2>open5gs-ocsd</h2>
+          <p>
+          <small>
+            It may make sense to introduce at least a minimal open5gs-ocsd in open5gs.git which announced the Credit Control diameter app support, and which can handle CCR Initial/Update/Termination answering with CCA.
+          </small>
+          </p>
+          <p>
+          <small>
+            It could also set Validity-Time and Volume-Threshold each time it is requested some resources, to get periodic reports about each subscriber, and perhaps store that into the mongodb database.
+          </small>
+          </p>
         </section>
 
         <section>
@@ -537,6 +552,17 @@
               Moving WebUI and Documentation to separate repositories
             </small>
           </p>
+        </section>
+
+        <section>
+          <h2>Request from Community</h2>
+          <ul>
+            <li>EAP-AKA-Prime</li>
+            <li>Add locality in the configuration</li>
+            <li>NEF</li>
+            <li>SUPI/GPSI Ranges in UDM - Issues <a href="https://github.com/open5gs/open5gs/issues/2010" target="_blank">#2010</a></li>
+            <li>UL Classifier - N9 interface between UPFs</li>
+          </ul>
         </section>
 
         <section>
@@ -625,6 +651,15 @@
           <p>
             Should Open5GS create its own UPF? Otherwise is it better to use UPP-VPP or eUPF as it is?
           </p>
+        </section>
+
+        <section>
+          <h2>Harmonious Development and Prioritization</h2>
+          <ul>
+            <li>Prioritizing bug fixes in the issue</li>
+            <li>Need to address security vulnerablilities</li>
+            <li>Hope to do a lot of Future Developement</li>
+          </ul>
         </section>
 
         <section style="text-align: left;">
