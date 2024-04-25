@@ -208,6 +208,13 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
           <p>
             A network function in 5G architecture designed to secure information exchange between network operators for roaming.
           </p>
+          <aside class="notes">
+Roaming refers to the ability for a mobile device user to access cellular network services, including voice calls, text messages, and data usage, while traveling outside the geographical coverage area of their home network. It involves agreements between multiple service providers to allow seamless connectivity for customers as they move between different networks.
+
+SEPP is a key element in the 5G network architecture responsible for securing network-to-network communication in the roaming environment.
+
+It acts as a proxy that sits at the perimeter of the Public Land Mobile Network (PLMN) and enables secure communication between roaming partners.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -220,6 +227,13 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
             </small>
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming(LBO)">
+          <aside class="notes">
+the N32 interface and Transport Layer Security (TLS) play critical roles in ensuring secure communication between operators' networks.
+
+The N32 interface is part of the 5G System (5GS) architecture defined by the 3rd Generation Partnership Project (3GPP). It is used for communication between the Security Edge Protection Proxies (SEPPs) of different mobile network operators (MNOs) when handling roaming traffic.
+
+TLS (Transport Layer Security) is a widely used protocol for encrypting data transmissions over networks. TLS is employed over the N32 interface to secure the communication between SEPPs.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -241,6 +255,13 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
               Key requirements such as Transport Layer Security (TLS) and specific configurations like n32/n32f are difficult to implement.
             </small>
           </p>
+          <aside class="notes">
+To implement the 5G Roaming feature, we should consider how to have users set up the TLS and N32 interfaces described earlier.
+
+But there were a few challenges to overcome.
+
+The current configuration file structure doesn't allow me to configure TLS and N32 interfaces as flexibly as I'd like, and there's no way to separate N32-c for control and N32-f for data forwarding.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -277,6 +298,13 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
           +      - address: 127.0.0.5
           +        port: 9090
           </code></pre>
+          <aside class="notes">
+So I thought I should design a new config file format and apply it starting with v2.7.x.
+
+The biggest feature of the new version was to distinguish the behavior by server and client keywords under the interface of sbi, ngap, etc.
+
+I'll explain why I did this later when I describe the SEPP configuration file.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -322,8 +350,12 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
           -      - 127.0.0.4
           -      - ::1
           </code></pre>
-        </section>
+          <aside class="notes">
+Not only AMF, but also MME has been changed as above.
 
+Please pay attention to how the GTPC client in SGWC and SMF is being changed.
+          </aside>
+        </section>
 
         <section style="text-align: left;">
           <h2>SEPP Configuration</h2>
@@ -367,6 +399,13 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
                       uri: https://sepp2.localdomain:7777
                       resolve: 127.0.2.252
           </code></pre>
+          <aside class="notes">
+This is the simplest way to set up SEPP. Note that TLS is only being applied to the N32 interface. All other NFs do not use TLS.
+
+For this purpose, we created a new keyword called default. We set the default value of the TLS certificate in advance, and the TLS certificate in default will be set as the default unless otherwise specified in https below.
+
+Of course, if you specify a new TLS below, it will overwrite the existing default value.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -415,6 +454,9 @@ Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If
                       client_private_key: /etc/open5gs/tls/sepp1-n32f.key
                       client_cert: /etc/open5gs/tls/sepp1-n32f.crt
           </code></pre>
+          <aside class="notes">
+This example shows how to set up N32-c and N32-f separately. This example also uses different TLS certificates for N32-c and N32-f, rather than using the default.
+          </aside>
         </section>
 
         <section style="text-align: left;">
