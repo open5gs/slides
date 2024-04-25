@@ -109,6 +109,11 @@ Libprom implements the format of the counters to pass to prometheus, and libprom
               The Session Management Function (SMF) provides Framed Route information to the User Plane Function (UPF), and updates or releases PDU Sessions based on changes in Framed Route information from DN-AAA or UDM sources.
             </small>
           </p>
+          <aside class="notes">
+One of the interesting features of 5G is the ability to provide connectivity from external N6 networks to IP networks that are sitting behind a UE (technically we can call this type of UE a router or CPE).
+
+This feature is called Frame Routing whereby another IP subnet is associated with a UE alongside the normal IP address that is assigned from the UE IP pool. You can check 3GPP TS 23.501 section 5.6.14 Support of Framed Routing for more details.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -129,6 +134,9 @@ Libprom implements the format of the counters to pass to prometheus, and libprom
                 "ipv4_framed_routes", ("192.168.21.0/24"),
                 ...
           </code></pre>
+          <aside class="notes">
+The simplest way to use this feature is to provide frame routing information to the subscriber database. You can specify the IP ranges that the UE router or CPE should cover in terms of the mask bits used by the subnet, as shown in the screen. This feature is also available for IPv6.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -157,6 +165,13 @@ Libprom implements the format of the counters to pass to prometheus, and libprom
               </small>
             </ul>
           </p>
+          <aside class="notes">
+The PFCP protocol was also used in 4G EPC. The PFCP Protocol was defined to separate the Control Plane and Data Plane into different Network Entities and to send and receive data between them.
+
+However, many problems can arise if a Network Entity in either Control or Data is abnormally shut down and restarted.
+
+First we need to detect when an NF in the Control or Data zone restarts. You can check the Recovery time in the Heartbeat Request/Response to see which NFs have been restarted.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -179,6 +194,11 @@ Libprom implements the format of the counters to pass to prometheus, and libprom
               SMF/SGW-C shall include a restoration indication in the PFCP Session Establishment Request message to indicate to the UPF/SGW-U.
             </small>
           <p>
+          <aside class="notes">
+Suppose an NF in a control zone, such as SMF or SGW-C, is abnormally shut down. If UPF or SGW-U detected it, all related contexts should be deleted. Otherwise, UPF/SGW-U will keep unnecessary contexts.
+
+Suppose an NF in a Data zone, such as UPF or SGW-U, is abnormally terminated. If the SMF or SGW-C detects it, it should send a PFCP Establishment Request to the UPF/SGW-U. It should include a Restoration Indication so that UPF/SGW-U generates the same F-TEID that SMF/SGW-C gave it.
+          </aside>
         </section>
 
         <section style="text-align: left;">
