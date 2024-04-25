@@ -54,10 +54,6 @@ Today, I'd like to give you an overview of development status in 2023, our curre
               <small>
                 Enhanced security and performance for control plane communications
               </small>
-            <li>Metrics Support using Prometheus</li>
-              <small>
-                Introduction of a generic API for counters, gauges, etc.
-              </small>
             <li>5G SUCI Profile A/B Scheme</li>
               <small>
                 Enhanced subscriber privacy protection
@@ -67,6 +63,36 @@ Today, I'd like to give you an overview of development status in 2023, our curre
                 SMF detects UPF failover using PFCP Heartbeats. Process of transferring PDU sessions to a new UPF for uninterrupted service
               </small>
           </ul>
+          <aside class="notes">
+HTTP2 is the interface used by 5G. While 4G primarily used Diameter, 5G uses HTTP2, and HTTP2 uses TLS by default for security.
+
+SUCI was introduced to protect IMSI from being exposed in 5G. For 5G, IMSI is used as the term SUPI, and the encryption of this SUPI is called SUCI. Initially, the SUCI implemented by Open5GS used the NULL Scheme, which did not protect the IMSI. With the support of Profile A/B Scheme, it is possible to protect the IMSI from being leaked to the outside world.
+
+When two UPFs are associated with a single SMF, you can configure the UPFs as redundant. If the first UPF goes down, the second UPF ensures uninterrupted service delivery to UEs.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Metrics Support using Prometheus
+          </h2>
+          <p>
+            <small>
+              Introduction of a generic API for counters, gauges, etc.
+            </small>
+          </p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/metrics.png" alt="Metrics">
+          <aside class="notes">
+Basically, this functionality was provided by Pau or pespin in osmocom.
+
+In order to monitor the various Open5GS programs, we need some sort of system for measuring metrics.
+
+For this purpose, support for counters has been added to open5gs by adding a kind of generic API for counters, gauges, etc. For the backend/implementation of that API, Prometheus was used, which by default requires an HTTP server to be running in the Open5GS process that serves the metrics.
+
+The Prometheus client library, prometheus-client-c, actually contains two libraries: libprom and libpromhttp.
+
+Libprom implements the format of the counters to pass to prometheus, and libpromhttp is a very small library that provides an http server that uses libmicrohpttd underneath it. Open5GS already relies on libmicrohttpd, and libmicrohttpd is very small, which is great because we can actually integrate the whole thing directly into your open5gs code.
+          </aside>
         </section>
 
         <section style="text-align: left;">
