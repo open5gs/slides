@@ -233,11 +233,15 @@ Therefore, it is necessary to allow the UPF/SGW-U to generate PFCP information w
             A network function in 5G architecture designed to secure information exchange between network operators for roaming.
           </p>
           <aside class="notes">
-Roaming refers to the ability for a mobile device user to access cellular network services, including voice calls, text messages, and data usage, while traveling outside the geographical coverage area of their home network. It involves agreements between multiple service providers to allow seamless connectivity for customers as they move between different networks.
+SEPP is an NF that was created for roaming in 5G.
 
-SEPP is a key element in the 5G network architecture responsible for securing network-to-network communication in the roaming environment.
+It can be deployed with or without SCP.
 
-It acts as a proxy that sits at the perimeter of the Public Land Mobile Network (PLMN) and enables secure communication between roaming partners.
+A redesign of the Open5GS 5G Core was required for SCP and SEPP.
+
+This is because they have different ways of discovering NFs.
+
+Therefore, I implemented SCP and SEPP as a top priority before all other features.
           </aside>
         </section>
 
@@ -252,11 +256,13 @@ It acts as a proxy that sits at the perimeter of the Public Land Mobile Network 
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming(LBO)">
           <aside class="notes">
-the N32 interface and Transport Layer Security (TLS) play critical roles in ensuring secure communication between operators' networks.
+NFs are deployed in the Home and Visited networks as shown below.
 
-The N32 interface is part of the 5G System (5GS) architecture defined by the 3rd Generation Partnership Project (3GPP). It is used for communication between the Security Edge Protection Proxies (SEPPs) of different mobile network operators (MNOs) when handling roaming traffic.
+There are two SEPPs in between, connecting HPLMN and VPLMN with N32 interfaces.
 
-TLS (Transport Layer Security) is a widely used protocol for encrypting data transmissions over networks. TLS is employed over the N32 interface to secure the communication between SEPPs.
+And since the N32 interface needs to be secured, TLS is commonly used.
+
+Note that in the figure below, the SCP connection is omitted, and other interfaces except N32 are often deployed without TLS.
           </aside>
         </section>
 
@@ -284,50 +290,15 @@ To implement the 5G Roaming feature, we should consider how to have users set up
 
 But there were a few challenges to overcome.
 
-The current configuration file structure doesn't allow me to configure TLS and N32 interfaces as flexibly as I'd like, and there's no way to separate N32-c for control and N32-f for data forwarding.
-          </aside>
-        </section>
+The configuration file used until v2.6.x was inflexible.
 
-        <section style="text-align: left;">
-          <h2>
-            New Configuration File Format
-          </h2>
-          <ul>
-            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></li>
-          </ul>
-          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-5|8-15|17-19|20-24">
-          -scp:
-          -  sbi:
-          -    - addr: 127.0.1.10
-          -      port: 7777
-          -
-           amf:
-             sbi:
-          -    - addr: 127.0.0.5
-          -      port: 7777
-          +    server:
-          +      - address: 127.0.0.5
-          +        port: 7777
-          +    client:
-          +      scp:
-          +        - uri: http://127.0.0.200:7777
-             ngap:
-          -    - addr: 127.0.0.5
-          +    server:
-          +      - address: 127.0.0.5
-             metrics:
-          -    - addr: 127.0.0.5
-          -      port: 9090
-          +    server:
-          +      - address: 127.0.0.5
-          +        port: 9090
-          </code></pre>
-          <aside class="notes">
-So I thought I should design a new config file format and apply it starting with v2.7.x.
+First of all, the way TLS is configured is inconvenient.
 
-The biggest feature of the new version was to distinguish the behavior by server and client keywords under the interface of sbi, ngap, etc.
+The N32 interface, which we described earlier, required a new way to configure it.
 
-I'll explain why I did this later when I describe the SEPP configuration file.
+Also, N32 needs to be configured in two parts, N32-c and N32-f for control and forward, which seemed almost impossible.
+
+So I had to redesign it with a new formatted config file, and I set out to change all of this.
           </aside>
         </section>
 
@@ -375,9 +346,57 @@ I'll explain why I did this later when I describe the SEPP configuration file.
           -      - ::1
           </code></pre>
           <aside class="notes">
-Not only AMF, but also MME has been changed as above.
+First, if you look at S1AP, you'll notice that the keyword server has been added.
 
-Please pay attention to how the GTPC client in SGWC and SMF is being changed.
+Just below, we see that GTP-C has also added the keyword client.
+
+Previously, client was outside of mme:, but we wanted to bring it inside.
+
+And to do that, I added the keywords server and client.
+          </aside>
+        </section>
+
+
+        <section style="text-align: left;">
+          <h2>
+            New Configuration File Format
+          </h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-5|8-15|17-19|20-24">
+          -scp:
+          -  sbi:
+          -    - addr: 127.0.1.10
+          -      port: 7777
+          -
+           amf:
+             sbi:
+          -    - addr: 127.0.0.5
+          -      port: 7777
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 7777
+          +    client:
+          +      scp:
+          +        - uri: http://127.0.0.200:7777
+             ngap:
+          -    - addr: 127.0.0.5
+          +    server:
+          +      - address: 127.0.0.5
+             metrics:
+          -    - addr: 127.0.0.5
+          -      port: 9090
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 9090
+          </code></pre>
+          <aside class="notes">
+In 5G, SCP is a client of AMF. NRFs are likewise clients of all other NFs.
+
+Therefore, I made them inside the AMF and added the keyword client.
+
+I'll explain why I did this later when I describe the SEPP configuration file.
           </aside>
         </section>
 
@@ -424,11 +443,21 @@ Please pay attention to how the GTPC client in SGWC and SMF is being changed.
                       resolve: 127.0.2.252
           </code></pre>
           <aside class="notes">
-This is the simplest way to set up SEPP. Note that TLS is only being applied to the N32 interface. All other NFs do not use TLS.
+Let's talk about how to set up SEPP.
 
-For this purpose, we created a new keyword called default. We set the default value of the TLS certificate in advance, and the TLS certificate in default will be set as the default unless otherwise specified in https below.
+First, SEPP needs to set up TLS for a secure connection.
 
-Of course, if you specify a new TLS below, it will overwrite the existing default value.
+TLS can be applied to multiple interfaces with a single certificate in common.
+
+So, I added the keyword default: to support this common approach.
+
+SEPPs have SBI interfaces in the same way as other NFs.
+
+Also, it requires an additional N32 interface that is protected by TLS.
+
+The N32 interface separates Control and Forward, so you can configure N32-f separately.
+
+We are looking at an example where N32-c and N32-f use a common TLS certificate, but the interfaces are created separately.
           </aside>
         </section>
 
@@ -479,7 +508,9 @@ Of course, if you specify a new TLS below, it will overwrite the existing defaul
                       client_cert: /etc/open5gs/tls/sepp1-n32f.crt
           </code></pre>
           <aside class="notes">
-This example shows how to set up N32-c and N32-f separately. This example also uses different TLS certificates for N32-c and N32-f, rather than using the default.
+This example shows how to set up separate TLS certificates for N32-c and N32-f. 
+
+It also shows the TLS settings directly under interface without using the default keyword.
           </aside>
         </section>
 
