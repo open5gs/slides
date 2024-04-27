@@ -537,6 +537,15 @@ It also shows the TLS settings directly under interface without using the defaul
                 - address: 127.0.0.10
                   port: 7777
           </code></pre>
+          <aside class="notes">
+A network or carrier can be identified and distinguished by its PLMN-ID. 
+
+To use roaming with SEPP, the Serving PLMN-ID must be defined in the NRF.
+
+Other NFs, such as AMFs and SMFs, receive the Serving PLMN-ID information during the NRF registration phase.
+
+Therefore, all NFs know which PLMN-ID is used as the Serving Network.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -564,6 +573,13 @@ It also shows the TLS settings directly under interface without using the defaul
           127.0.3.11  ausf.5gc.mnc010.mcc315.3gppnetwork.org
           127.0.3.12  udm.5gc.mnc010.mcc315.3gppnetwork.org
           </code></pre>
+          <aside class="notes">
+Control information that occurs when a UE connects is routed using the FQDN.
+
+Operator Identifier are defined using PLMN-IDs as shown below.
+
+Then complete the FQDN with the name of the NF, such as nrf, ausf, udm, etc.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -580,6 +596,36 @@ It also shows the TLS settings directly under interface without using the defaul
               Due to the ability to accurately extract the PLMN-ID from the SUCI, it is easy to distinguish whether the connection is being made from the Home PLMN or a Visited PLMN.
             </small>
           </p>
+          <p style="text-align: center;">
+          <img style="text-align: center;" height="300px" data-src="https://open5gs.org/assets/img/suci.png" alt="SUCI">
+          </p>
+          <aside class="notes">
+For HTTP2 Control information that occurs when a UE connects, we need to distinguish whether it is roaming or not.
+
+Let's take Authentication as an example.
+
+When the UE sends an Authentication Request, the gNB receives it from the AMF.
+
+It sends this control information to the AUSF via HTTP2.
+
+If it is roaming, it sends it to the AUSF in the home PLMN, otherwise it sends it to the AUSF in my network.
+
+Typically, the HTTP2 Control information contains the UE identifier.
+
+For AMF, it is contained in the HTTP2 Control information in SUCI format, as shown in the figure below.
+
+The SUCI contains the Home Network Identifier, or Home PLMN-ID.
+
+Therefore, you can compare the Serving PLMN-ID received from the NRF with the Home Network Identifier in the SUCI format.
+
+In AMF, it is easy to determine whether the HTTP2 Control information is Roaming or not.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Determining UE Roaming(Cont.)
+          </h2>
           <ul>
             <li>
               SMF
@@ -589,12 +635,38 @@ It also shows the TLS settings directly under interface without using the defaul
             <small>
               The AMF transmits session information to the SMF for roaming UEs using the Full DNN method, leveraging FQDN information.
             </small>
-          <p>
+          </p>
           <p>
             <small>
               By comparing the SUPI with the Full DNN, the SMF determines whether the MNC is 2 or 3 bytes and identifies the accurate Home PLMN ID, allowing it to discern whether the UE is on the Home or Visited PLMN.
             </small>
-          <p>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-4|5-9">
+          Full DNN: internet.5gc.mnc070.mcc999.3gppnetwork.org
+          SUPI: imsi-999700000000001
+          IMSI: 999700000000001
+          PLMN-ID: MCC(999) MNC(70)
+
+          Full DNN: internet.5gc.mnc014.mcc310.3gppnetwork.org
+          SUPI: imsi-3100140000000001
+          IMSI: 3100140000000001
+          PLMN-ID: MCC(310) MNC(014)
+          </code></pre>
+          <aside class="notes">
+SMFs do not have SUCI information.
+
+It only knows the IMSI, which is derived from the SUPI.
+
+As you probably know and have published, IMSI doesn't know if the MNC is 2 or 3 bytes.
+
+This means that the correct Home PLMN-ID cannot be extracted from the HTTP2 Control information that is generated when the UE connects.
+
+Here, Open5GS chose to use Full DNN.
+
+Full DNN uses the FQDN method with the Network Operator created by the PLMN-ID described earlier.
+
+This Full DNN is compared to the IMSI to determine if the MNC is 2 bytes or 3 bytes.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -622,6 +694,21 @@ It also shows the TLS settings directly under interface without using the defaul
             If the Operator Identifier is absent,
             the serving core network operator shall be assumed.
           </code></pre>
+          <aside class="notes">
+But there's one problem with this approach.
+
+This is because AMFs made by different manufacturers may not send the full DNN.
+
+The standard documentation explained it this way
+
+For Home Routed, it says "shall be". So it should be sent as a Full DNN.
+
+However, in Local Break Out or Non-Roaming, it says should be. This means that it may not be sent to the full DNN.
+
+Therefore, if you are using LBO, it will not work properly with Open5GS unless the other manufacturer sends a full DNN.
+
+If you have any other good suggestions, please let me know.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -631,6 +718,13 @@ It also shows the TLS settings directly under interface without using the defaul
               For insights and detailed information on 5G Roaming with Open5GS, the tutorial at <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/05-roaming/</a> serves as an excellent resource.
             </small>
           </p>
+          <aside class="notes">
+So far, we've talked about 5G Roaming.
+
+It was one of the most challenging things I've done recently.
+
+And I went on a bit long because I needed to explain why I had to implement it this way.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -644,31 +738,60 @@ It also shows the TLS settings directly under interface without using the defaul
             <li>Partial implementation of Roaming</li>
             <li>No OCS/OFCS</li>
           </ul>
+          <aside class="notes">
+Now let me explain what I'm currently doing.
+
+I still have some work to do on the Roaming feature.
+
+And I'll also talk about OCS.
+          </aside>
         </section>
 
         <section style="text-align: left;">
-          <h2>SEPP Improvements</h2>
+          <h2>Home Routed Roaming</h2>
           <p>
             <small>
               While progress has been made in supporting LBO for roaming, the complete implementation for Home Routed roaming is pending.
             </small>
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-hb.png" alt="Roaming(Home-Routed)">
+          <aside class="notes">
+Currently, only LBO, in other words Local Break Out, is implemented.
+
+As I mentioned a moment ago, it's that Local Break Out that other manufacturers' AMFs may not use as a Full DNN in LBO.
+
+In LBO, UPF terminates on the Visited network.
+
+Home Routed must send traffic to the UPF in Home.
+
+Because of this difference, the Home Routed method requires SMF and NSSF in addition to the Home PLMN.
+
+A property will be added to the Subscriber Database that distinguishes whether the subscriber is LBO or Home Routed.
+
+And, we'll make it selectable in the WebUI.
+          </aside>
         </section>
 
         <section style="text-align: left;">
           <h2>Gy Interface Development</h2>
-            <ul>
-              <li>
-                Collaboration with Osmocom is ongoing for Gy interface implementation
-              </li>
-              <li>
-                open5gs-smfd supports interacting to an OCS node through the Gy interface
-              </li>
-              <li>
-                Initial basic code for open5gs-ocsd is expected to be released soon - Issues <a href="https://github.com/open5gs/open5gs/issues/1492" target="_blank">#1492</a>
-              </li>
-            </ul>
+          <ul>
+            <li>
+              Collaboration with Osmocom is ongoing for Gy interface implementation
+            </li>
+            <li>
+              open5gs-smfd supports interacting to an OCS node through the Gy interface
+            </li>
+            <li>
+              Initial basic code for open5gs-ocsd is expected to be released soon - Issues <a href="https://github.com/open5gs/open5gs/issues/1492" target="_blank">#1492</a>
+            </li>
+          </ul>
+          <aside class="notes">
+Pau from Osmocom created Metrics, but also provided a Gy interface.
+
+And he's still making a lot of improvements.
+
+As soon as I finish the roaming functionality, I will implement OCS inside Open5GS.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -683,6 +806,13 @@ It also shows the TLS settings directly under interface without using the defaul
             It could also set Validity-Time and Volume-Threshold each time it is requested some resources, to get periodic reports about each subscriber, and perhaps store that into the mongodb database.
           </small>
           </p>
+          <aside class="notes">
+I will make it minimal with very few features, and hopefully the rest will be improved by contributions.
+
+I'll add properties that can be set on the subscriber database.
+
+I'll make them selectable in the WebUI.
+          </aside>
         </section>
 
         <section>
