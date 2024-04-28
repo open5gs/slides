@@ -816,15 +816,30 @@ I'll make them selectable in the WebUI.
         </section>
 
         <section>
-          <h2>Future Developements</h2>
+          <h2>Future Work</h2>
           <p>
             I wonder if I should...
           </p>
           <p>
             <small>
-              Moving WebUI and Documentation to separate repositories
+              Moving Documentation and WebUI to separate repositories
             </small>
           </p>
+          <aside class="notes">
+There was a suggestion from the community to move the WebUI and documentation to separate repositories.
+
+I think that's the way to go.
+
+But there are other things to consider.
+
+There are better tools for documentation. What about sphinx?
+
+The web UI also needs improvement. The admin tools like the CLI need to be better.
+
+I wanted to move to another repository at that point.
+
+I haven't, so they're still all together in the same repository.
+          </aside>
         </section>
 
         <section>
@@ -832,10 +847,15 @@ I'll make them selectable in the WebUI.
           <ul>
             <li>EAP-AKA-Prime</li>
             <li>Add locality in the configuration</li>
-            <li>NEF</li>
             <li>SUPI/GPSI Ranges in UDM - Issues <a href="https://github.com/open5gs/open5gs/issues/2010" target="_blank">#2010</a></li>
             <li>UL Classifier - N9 interface between UPFs</li>
+            <li>NEF</li>
           </ul>
+          <aside class="notes">
+There are also features requested by the community.
+
+I don't know how much I can do, but I'll do my best again.
+          </aside>
         </section>
 
         <section>
@@ -881,6 +901,15 @@ I'll make them selectable in the WebUI.
               </tr>
             </tbody>
           </table>
+          <aside class="notes">
+UPF performance test results shared.
+
+The reliability of this test is unknown.
+
+However, the performance of Open5GS UPF is poor.
+
+I started thinking about what to do with Open5GS UPF.
+          </aside>
         </section>
 
         <section>
@@ -913,10 +942,11 @@ I'll make them selectable in the WebUI.
               </tr>
             </tbody>
           </table>
-          <p>
-            <small>
-            </small>
-          </p>
+          <aside class="notes">
+To improve performance, we can think of eBPF/XDP and DPDK/VPP technologies.
+
+DPDK/VPP performs slightly better than eBPF/XDP, but is NIC-limited.
+          </aside>
         </section>
 
         <section>
@@ -924,6 +954,13 @@ I'll make them selectable in the WebUI.
           <p>
             Should Open5GS create its own UPF?
           </p>
+          <aside class="notes">
+And, is it a good idea to re-implement Open5GS UPF with a new technology?
+
+Alternatively, we can utilize an already developed eupf or UPG-VPP.
+
+I'm still trying to figure out what to do with UPF.
+          </aside>
         </section>
 
         <section>
@@ -933,6 +970,17 @@ I'll make them selectable in the WebUI.
             <li>Need to address security vulnerablilities</li>
             <li>Hope to do a lot of new features</li>
           </ul>
+          <aside class="notes">
+I work in order of priority.
+
+Bugs reported in Issues are prioritized.
+
+I also need to address security vulnerabilities.
+
+New features can be implemented in the remaining time.
+
+Please understand if things don't happen as quickly as you'd like.
+          </aside>
         </section>
 
         <section style="text-align: left;">
@@ -940,6 +988,11 @@ I'll make them selectable in the WebUI.
           <p>
             Thank You for Your Attention!
           </p>
+          <aside class="notes">
+Thank you!
+
+Feel free to ask any questions.
+          </aside>
         </section>
       </div>
 
