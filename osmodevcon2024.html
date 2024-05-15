@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Open5GS – Status</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                    text-transform: none;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>
+            <a href="https://open5gs.org" target="_blank">Open5GS</a> status: recent, current and future developments
+          </h2>
+          <p><small>Presentation link : <a href="https://open5gs.org/slides/osmodevcon2024" target="_blank">https://open5gs.org/slides/osmodevcon2024</a></small></p>
+          <p style="text-align: right;">Sukchan Lee</p>
+          <aside class="notes">
+Hello. I'm Sukchan Lee, the developer of Open5GS.
+
+I'm very happy to be here in Germany again after 6 years.
+
+Today I'm going to share what makes me think about developing Open5GS.
+
+Why did I implement that feature in the first place?
+
+Why did I change that config file?
+
+I'm here to share these thoughts.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Recent Developments</h2>
+          <ul>
+            <li>HTTP/2 over TLS</li>
+              <small>
+                Enhanced security and performance for control plane communications
+              </small>
+            <li>5G SUCI Profile A/B Scheme</li>
+              <small>
+                Enhanced subscriber privacy protection
+              </small>
+            <li>UPF High Availability</li>
+              <small>
+                SMF detects UPF failover using PFCP Heartbeats. Process of transferring PDU sessions to a new UPF for uninterrupted service
+              </small>
+          </ul>
+          <aside class="notes">
+HTTP2 is the interface used by 5G. Whereas 4G primarily used Diameter, 5G uses HTTP2. And TLS is used to secure the HTTP2 protocol. As we'll see later, TLS is essential for 5G roaming to connect different carriers. So I was going to do this, but someone in the community implemented it. Thank you!
+
+A new feature in 5G is encrypted IMSI. In 4G, capturing S1AP exposes the IMSI. In 5G, you can protect your IMSI with the SUCI Scheme.
+
+When two UPFs are associated with a single SMF, you can configure the UPFs as redundant. If the first UPF goes down, the second UPF ensures uninterrupted service delivery to UEs.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Metrics Support using Prometheus
+          </h2>
+          <p>
+            <small>
+              Introduction of a generic API for counters, gauges, etc.
+            </small>
+          </p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/metrics.png" alt="Metrics">
+          <aside class="notes">
+Basically, this functionality was provided by Pau or pespin in osmocom.
+
+In order to monitor the various Open5GS programs, we need some sort of system for measuring metrics.
+
+For this purpose, support for counters has been added to open5gs by adding a kind of generic API for counters, gauges, etc.
+
+For the backend/implementation of that API, Prometheus was used, which by default requires an HTTP server to be running in the Open5GS process that serves the metrics.
+
+The Prometheus client library, prometheus-client-c, actually contains two libraries: libprom and libpromhttp.
+
+Libprom implements the format of the counters to pass to prometheus, and libpromhttp is a very small library that provides an http server that uses libmicrohpttd underneath it.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Framed Routing in 5G
+          </h2>
+          <p>
+            <small>
+              Framed Routing allows a range of IP addresses or prefixes to be reachable over a single PDU Session, supporting IP networks behind a UE for IPv4 and IPv6 sessions.
+            </small>
+          </p>
+          <p>
+            <small>
+              The Session Management Function (SMF) provides Framed Route information to the User Plane Function (UPF), and updates or releases PDU Sessions based on changes in Framed Route information from DN-AAA or UDM sources.
+            </small>
+          </p>
+          <aside class="notes">
+One of the exciting features of 5G is the implementation of UEs as routers or CPEs.
+
+You can implement this with the Generic feature.
+
+This is through Frame Routing, which is described in TS23.501 Seciton 5.6.14.
+
+Normally we assign a single IP to a UE, but Frame Routing allows us to assign multiple IPs to a UE, expressed in subnets.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Subscriber Database
+          </h2>
+          <ul>
+            <li>
+              192.168.21.0/24 being routed to the <b>internet</b> APN is as follows.
+            </li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="6">
+            "imsi", ("999700000021309"),
+            ...
+            "slice", "[", "{",
+              "session", "[", "{",
+                "name", ("internet"),
+                "ipv4_framed_routes", ("192.168.21.0/24"),
+                ...
+          </code></pre>
+          <aside class="notes">
+The simplest way to use this feature is to provide frame routing information to the subscriber database. You can specify the IP ranges that the UE router or CPE should cover in terms of the mask bits used by the subnet, as shown in the screen. This feature is also available for IPv6.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Overview of PFCP Restoration
+          </h2>
+          <p>
+            <small>
+              PFCP is a 3GPP protocol used in 5G core networks and 4G/LTE EPC to define the interactions between SMF and UPF or between SGW-C and SGW-U.
+            </small>
+          </p>
+          <p>
+            <small>
+              Across PFCP based interfaces, an SGW-C, SGW-U, SMF and UPF Node shall utilize PFCP Heartbeat Request and Heartbeat Response messages to detect and handle a peer PFCP entity failure or restart.
+            </small>
+          </p>
+          <p>
+            <ul>
+              <small>
+                <li>
+                  TS23.007 LTE Restoration procedures
+                </li>
+                <li>
+                  TS23.527 5G Restoration procedures
+                </li>
+              </small>
+            </ul>
+          </p>
+          <aside class="notes">
+The PFCP protocol was defined to pass data back and forth between the control plane and the data plane.
+
+For EPC, the SGW can be separated into SGW-C and SGW-U. PGWs can be separated into PGW-C and PGW-U. In 5GC, SMF and UPF were separated from the beginning.
+
+Therefore, if one NF terminates abnormally, a Context mismatch occurs.
+
+How do we resolve this?
+
+Heartbeat Request/Response is exchanged periodically between the two.
+
+By checking the Recovery Time in Heartbeat, we can determine if the other one has terminated abnormally.
+
+This allows us to restart the abnormally terminated NF, which should recover the Context.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            PFCP Restoration Method
+          </h2>
+          <p>
+            SMF/SGW-C Restoration Procedures
+          </p>
+          <p>
+            <small>
+              UPF/SGW-U shall delete all session contexts affected by the PFCP entity restart that it may have stored.
+            </small>
+          </p>
+          <p>
+            UPF/SGW-U Restoration Procedures
+          </p>
+          <p>
+            <small>
+              SMF/SGW-C shall include a restoration indication in the PFCP Session Establishment Request message to indicate to the UPF/SGW-U.
+            </small>
+          <p>
+          <aside class="notes">
+Suppose an SMF or SGW-C in the Control Plane is abnormally terminated. If a UPF or SGW-U in the Data Plane detects this, it can simply delete all UE information in memory. All PFCP information in Control and Data can start in the initialized state.
+
+Imagine that you have terminated with the UPF or SGW-U in the Data Plane. When the SMF or SGW-C in the Control Plane detects this, it cannot just delete the UE information. This is because the SMF has the F-TEID information assigned by the UPF.
+
+Therefore, it is necessary to allow the UPF/SGW-U to generate PFCP information with the same F-TEID. This can be done by sending a PFCP session establishment request message with a restoration indication flag.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            What is SEPP?
+          </h2>
+          <p>
+            A network function in 5G architecture designed to secure information exchange between network operators for roaming.
+          </p>
+          <aside class="notes">
+SEPP is an NF that was created for roaming in 5G.
+
+It can be deployed with or without SCP.
+
+A redesign of the Open5GS 5G Core was required for SCP and SEPP.
+
+This is because they have different ways of discovering NFs.
+
+Therefore, I implemented SCP and SEPP as a top priority before all other features.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            How Does 5G Roaming Work?
+          </h2>
+          <p>
+            <small>
+              Use of TLS (Transport Layer Security) for encryption and N32 interface for communication between SEPPs.
+            </small>
+          </p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming(LBO)">
+          <aside class="notes">
+NFs are deployed in the Home and Visited networks as shown below.
+
+There are two SEPPs in between, connecting HPLMN and VPLMN with N32 interfaces.
+
+And since the N32 interface needs to be secured, TLS is commonly used.
+
+Note that in the figure below, the SCP connection is omitted, and other interfaces except N32 are often deployed without TLS.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Design 5G Roaming
+          </h2>
+          <p>
+            TLS Certification and Interface Configuration:
+            <small>
+              Discussion on the security practice of using different TLS certificates for SBI and N32 interfaces, and the design consideration behind separating N32c and N32f interfaces for control and forwarding.
+            </small>
+          </p>
+          <p class="fragment fade-up">
+            Challenges:
+            <small>
+              Legacy configuration files (up to version 2.6.x) lack the flexibility and features needed to effectively design roaming settings.
+            </small>
+            <small>
+              Key requirements such as Transport Layer Security (TLS) and specific configurations like n32/n32f are difficult to implement.
+            </small>
+          </p>
+          <aside class="notes">
+To implement the 5G Roaming feature, we should consider how to have users set up the TLS and N32 interfaces described earlier.
+
+But there were a few challenges to overcome.
+
+The configuration file used until v2.6.x was inflexible.
+
+First of all, the way TLS is configured is inconvenient.
+
+The N32 interface, which we described earlier, required a new way to configure it.
+
+Also, N32 needs to be configured in two parts, N32-c and N32-f for control and forward, which seemed almost impossible.
+
+So I had to redesign it with a new formatted config file, and I set out to change all of this.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>New Configuration(Cont.)</h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/mme.yaml.in" target="_blank">/etc/open5gs/mme.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="4-6|7-15|17-21|29-36">
+           mme:
+             freeDiameter: /home/acetcom/Documents/git/open5gs/install/etc/freeDiameter/mme.conf
+             s1ap:
+          -    - addr: 127.0.0.2
+          +    server:
+          +      - address: 127.0.0.2
+             gtpc:
+          -    - addr: 127.0.0.2
+          +    server:
+          +      - address: 127.0.0.2
+          +    client:
+          +      sgwc:
+          +        - address: 127.0.0.3
+          +      smf:
+          +        - address: 127.0.0.4
+             metrics:
+          -    - addr: 127.0.0.2
+          -      port: 9090
+          +    server:
+          +      - address: 127.0.0.2
+          +        port: 9090
+             gummei:
+               - plmn_id:
+                   mcc: 999
+          @@ -25,16 +33,3 @@
+               full: Open5GS
+               short: Next
+             mme_name: open5gs-mme0
+          -sgwc:
+          -  gtpc:
+          -    - addr: 127.0.0.3
+          -smf:
+          -  gtpc:
+          -    - addr:
+          -      - 127.0.0.4
+          -      - ::1
+          </code></pre>
+          <aside class="notes">
+First, if you look at S1AP, you'll notice that the keyword server has been added.
+
+Just below, we see that GTP-C has also added the keyword client.
+
+Previously, client was outside of mme:, but we wanted to bring it inside.
+
+And to do that, I added the keywords server and client.
+          </aside>
+        </section>
+
+
+        <section style="text-align: left;">
+          <h2>
+            New Configuration File Format
+          </h2>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/amf.yaml.in" target="_blank">/etc/open5gs/amf.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-5|8-15|17-19|20-24">
+          -scp:
+          -  sbi:
+          -    - addr: 127.0.1.10
+          -      port: 7777
+          -
+           amf:
+             sbi:
+          -    - addr: 127.0.0.5
+          -      port: 7777
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 7777
+          +    client:
+          +      scp:
+          +        - uri: http://127.0.0.200:7777
+             ngap:
+          -    - addr: 127.0.0.5
+          +    server:
+          +      - address: 127.0.0.5
+             metrics:
+          -    - addr: 127.0.0.5
+          -      port: 9090
+          +    server:
+          +      - address: 127.0.0.5
+          +        port: 9090
+          </code></pre>
+          <aside class="notes">
+In 5G, SCP is a client of AMF. NRFs are likewise clients of all other NFs.
+
+Therefore, I made them inside the AMF and added the keyword client.
+
+I'll explain why I did this later when I describe the SEPP configuration file.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>SEPP Configuration</h2>
+          <p>
+            <small>
+            Only N32 uses HTTPS with TLS, while other NFs use HTTP without TLS.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="2-8|10-15|19|22-25|30|33">
+          sepp:
+            default:
+              tls:
+                server:
+                  private_key: /etc/open5gs/tls/sepp1.key
+                  cert: /etc/open5gs/tls/sepp1.crt
+                client:
+                  cacert: /etc/open5gs/tls/ca.crt
+            sbi:
+              server:
+                - address: 127.0.1.250
+                  port: 7777
+              client:
+                scp:
+                  - uri: http://127.0.0.200:7777
+            n32:
+              server:
+                - sender: sepp1.localdomain
+                  scheme: https
+                  address: 127.0.1.251
+                  port: 7777
+                  n32f:
+                    scheme: https
+                    address: 127.0.1.252
+                    port: 7777
+              client:
+                sepp:
+                  - receiver: sepp2.localdomain
+                    uri: https://sepp2.localdomain:7777
+                    resolve: 127.0.2.251
+                    n32f:
+                      uri: https://sepp2.localdomain:7777
+                      resolve: 127.0.2.252
+          </code></pre>
+          <aside class="notes">
+Let's talk about how to set up SEPP.
+
+First, SEPP needs to set up TLS for a secure connection.
+
+TLS can be applied to multiple interfaces with a single certificate in common.
+
+So, I added the keyword default: to support this common approach.
+
+SEPPs have SBI interfaces in the same way as other NFs.
+
+Also, it requires an additional N32 interface that is protected by TLS.
+
+The N32 interface separates Control and Forward, so you can configure N32-f separately.
+
+We are looking at an example where N32-c and N32-f use a common TLS certificate, but the interfaces are created separately.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>SEPP Configuration(Cont.)</h2>
+          <p>
+            <small>
+              N32 control and N32 forwarding interface use different key/certificate.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="2-7|13-16|20-23|29-31|35-37">
+            sbi:
+              server:
+                - address: 127.0.1.250
+                  port: 7777
+              client:
+                scp:
+                  - uri: http://127.0.0.200:7777
+            n32:
+              server:
+                - sender: sepp1.localdomain
+                  scheme: https
+                  address: 127.0.1.251
+                  private_key: /etc/open5gs/tls/sepp1.key
+                  cert: /etc/open5gs/tls/sepp1.crt
+                  verify_client: true
+                  verify_client_cacert: /etc/open5gs/tls/ca.crt
+                  n32f:
+                    scheme: https
+                    address: 127.0.1.252
+                    private_key: /etc/open5gs/tls/sepp1-n32f.key
+                    cert: /etc/open5gs/tls/sepp1-n32f.crt
+                    verify_client: true
+                    verify_client_cacert: /etc/open5gs/tls/ca.crt
+              client:
+                sepp:
+                  - receiver: sepp2.localdomain
+                    uri: https://sepp2.localdomain
+                    resolve: 127.0.2.251
+                    cacert: /etc/open5gs/tls/ca.crt
+                    client_private_key: /etc/open5gs/tls/sepp1.key
+                    client_cert: /etc/open5gs/tls/sepp1.crt
+                    n32f:
+                      uri: https://sepp2.localdomain
+                      resolve: 127.0.2.252
+                      cacert: /etc/open5gs/tls/ca.crt
+                      client_private_key: /etc/open5gs/tls/sepp1-n32f.key
+                      client_cert: /etc/open5gs/tls/sepp1-n32f.crt
+          </code></pre>
+          <aside class="notes">
+This example shows how to set up separate TLS certificates for N32-c and N32-f. 
+
+It also shows the TLS settings directly under interface without using the default keyword.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            NRF requires a PLMN-ID
+          </h2>
+          <p>
+            <small>
+              For 5G Roaming, the PLMN ID must be configured in the NRF as follows:
+            </small>
+          </p>
+          <ul>
+            <li><a href="https://github.com/open5gs/open5gs/blob/main/configs/open5gs/nrf.yaml.in" target="_blank">/etc/open5gs/nrf.yaml</a></li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="3-5">
+          nrf:
+            serving:  # 5G roaming requires PLMN in NRF
+              - plmn_id:
+                  mcc: 999
+                  mnc: 70
+            sbi:
+              server:
+                - address: 127.0.0.10
+                  port: 7777
+          </code></pre>
+          <aside class="notes">
+A network or carrier can be identified and distinguished by its PLMN-ID. 
+
+To use roaming with SEPP, the Serving PLMN-ID must be defined in the NRF.
+
+Other NFs, such as AMFs and SMFs, receive the Serving PLMN-ID information during the NRF registration phase.
+
+Therefore, all NFs know which PLMN-ID is used as the Serving Network.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            The configuration of FQDN in NFs
+          </h2>
+          <p>
+            <small>
+              During the registration phase, a Network Function (NF) receives PLMN-ID information from the NRF and configures its own Fully Qualified Domain Name (FQDN) accordingly.
+            </small>
+          </p>
+          <ul>
+            <li>/etc/hosts</li>
+          </ul>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-3|5-7|9-11">
+          127.0.1.10  nrf.5gc.mnc070.mcc999.3gppnetwork.org
+          127.0.1.11  ausf.5gc.mnc070.mcc999.3gppnetwork.org
+          127.0.1.12  udm.5gc.mnc070.mcc999.3gppnetwork.org
+
+          127.0.2.10  nrf.5gc.mnc001.mcc001.3gppnetwork.org
+          127.0.2.11  ausf.5gc.mnc001.mcc001.3gppnetwork.org
+          127.0.2.12  udm.5gc.mnc001.mcc001.3gppnetwork.org
+
+          127.0.3.10  nrf.5gc.mnc010.mcc315.3gppnetwork.org
+          127.0.3.11  ausf.5gc.mnc010.mcc315.3gppnetwork.org
+          127.0.3.12  udm.5gc.mnc010.mcc315.3gppnetwork.org
+          </code></pre>
+          <aside class="notes">
+Control information that occurs when a UE connects is routed using the FQDN.
+
+Operator Identifier are defined using PLMN-IDs as shown below.
+
+Then complete the FQDN with the name of the NF, such as nrf, ausf, udm, etc.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Determining UE Roaming in NFs
+          </h2>
+          <ul>
+            <li>
+              AMF
+            </li>
+          </ul>
+          <p>
+            <small>
+              Due to the ability to accurately extract the PLMN-ID from the SUCI, it is easy to distinguish whether the connection is being made from the Home PLMN or a Visited PLMN.
+            </small>
+          </p>
+          <p style="text-align: center;">
+          <img style="text-align: center;" height="300px" data-src="https://open5gs.org/assets/img/suci.png" alt="SUCI">
+          </p>
+          <aside class="notes">
+For HTTP2 Control information that occurs when a UE connects, we need to distinguish whether it is roaming or not.
+
+Let's take Authentication as an example.
+
+When the UE sends an Authentication Request, the gNB receives it from the AMF.
+
+It sends this control information to the AUSF via HTTP2.
+
+If it is roaming, it sends it to the AUSF in the home PLMN, otherwise it sends it to the AUSF in my network.
+
+Typically, the HTTP2 Control information contains the UE identifier.
+
+For AMF, it is contained in the HTTP2 Control information in SUCI format, as shown in the figure below.
+
+The SUCI contains the Home Network Identifier, or Home PLMN-ID.
+
+Therefore, you can compare the Serving PLMN-ID received from the NRF with the Home Network Identifier in the SUCI format.
+
+In AMF, it is easy to determine whether the HTTP2 Control information is Roaming or not.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            Determining UE Roaming(Cont.)
+          </h2>
+          <ul>
+            <li>
+              SMF
+            </li>
+          </ul>
+          <p>
+            <small>
+              The AMF transmits session information to the SMF for roaming UEs using the Full DNN method, leveraging FQDN information.
+            </small>
+          </p>
+          <p>
+            <small>
+              By comparing the SUPI with the Full DNN, the SMF determines whether the MNC is 2 or 3 bytes and identifies the accurate Home PLMN ID, allowing it to discern whether the UE is on the Home or Visited PLMN.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-4|5-9">
+          Full DNN: internet.5gc.mnc070.mcc999.3gppnetwork.org
+          SUPI: imsi-999700000000001
+          IMSI: 999700000000001
+          PLMN-ID: MCC(999) MNC(70)
+
+          Full DNN: internet.5gc.mnc014.mcc310.3gppnetwork.org
+          SUPI: imsi-3100140000000001
+          IMSI: 3100140000000001
+          PLMN-ID: MCC(310) MNC(014)
+          </code></pre>
+          <aside class="notes">
+SMFs do not have SUCI information.
+
+It only knows the IMSI, which is derived from the SUPI.
+
+As you probably know and have published, IMSI doesn't know if the MNC is 2 or 3 bytes.
+
+This means that the correct Home PLMN-ID cannot be extracted from the HTTP2 Control information that is generated when the UE connects.
+
+Here, Open5GS chose to use Full DNN.
+
+Full DNN uses the FQDN method with the Network Operator created by the PLMN-ID described earlier.
+
+This Full DNN is compared to the IMSI to determine if the MNC is 2 bytes or 3 bytes.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>
+            The Risk of Full DNN:
+          </h2>
+          <p>
+            <small>
+                If an AMF from other vendor doesn't use Full DNN, it won't work right.
+            </small>
+          </p>
+          <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="7-9|11|13-14">
+            TS29.502
+            6.1 Nsmf_PDUSession Service API
+            Table 6.1.6.2.2-1: Definition of type SmContextCreateData
+
+            NAME: dnn, Data type: Dnn
+
+            When present, it shall contain the requested DNN; the DNN
+            shall be the full DNN (i.e. with both the Network Identifier
+            and Operator Identifier) for a HR PDU session, and
+
+            it should be the full DNN in LBO and non-roaming scenarios.
+
+            If the Operator Identifier is absent,
+            the serving core network operator shall be assumed.
+          </code></pre>
+          <aside class="notes">
+But there's one problem with this approach.
+
+This is because AMFs made by different manufacturers may not send the full DNN.
+
+The standard documentation explained it this way
+
+For Home Routed, it says "shall be". So it should be sent as a Full DNN.
+
+However, in Local Break Out or Non-Roaming, it says should be. This means that it may not be sent to the full DNN.
+
+Therefore, if you are using LBO, it will not work properly with Open5GS unless the other manufacturer sends a full DNN.
+
+If you have any other good suggestions, please let me know.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>5G Roaming</h2>
+          <p>
+            <small>
+              For insights and detailed information on 5G Roaming with Open5GS, the tutorial at <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">https://open5gs.org/open5gs/docs/tutorial/05-roaming/</a> serves as an excellent resource.
+            </small>
+          </p>
+          <aside class="notes">
+So far, we've talked about 5G Roaming.
+
+It was one of the most challenging things I've done recently.
+
+And I went on a bit long because I needed to explain why I had to implement it this way.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Open5GS in the Present</h2>
+          <p>
+            <small>
+              Working to fill in the gaps where functionality is limited or not yet fully implemented, as shown below.
+            </small>
+          </p>
+          <ul>
+            <li>Partial implementation of Roaming</li>
+            <li>No OCS/OFCS</li>
+          </ul>
+          <aside class="notes">
+Now let me explain what I'm currently doing.
+
+I still have some work to do on the Roaming feature.
+
+And I'll also talk about OCS.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Home Routed Roaming</h2>
+          <p>
+            <small>
+              While progress has been made in supporting LBO for roaming, the complete implementation for Home Routed roaming is pending.
+            </small>
+          </p>
+          <img height="400px" data-src="https://open5gs.org/assets/img/roaming-hb.png" alt="Roaming(Home-Routed)">
+          <aside class="notes">
+Currently, only LBO, in other words Local Break Out, is implemented.
+
+As I mentioned a moment ago, it's that Local Break Out that other manufacturers' AMFs may not use as a Full DNN in LBO.
+
+In LBO, UPF terminates on the Visited network.
+
+Home Routed must send traffic to the UPF in Home.
+
+Because of this difference, the Home Routed method requires SMF and NSSF in addition to the Home PLMN.
+
+A property will be added to the Subscriber Database that distinguishes whether the subscriber is LBO or Home Routed.
+
+And, we'll make it selectable in the WebUI.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Gy Interface Development</h2>
+          <ul>
+            <li>
+              Collaboration with Osmocom is ongoing for Gy interface implementation
+            </li>
+            <li>
+              open5gs-smfd supports interacting to an OCS node through the Gy interface
+            </li>
+            <li>
+              Initial basic code for open5gs-ocsd is expected to be released soon - Issues <a href="https://github.com/open5gs/open5gs/issues/1492" target="_blank">#1492</a>
+            </li>
+          </ul>
+          <aside class="notes">
+Pau from Osmocom created Metrics, but also provided a Gy interface.
+
+And he's still making a lot of improvements.
+
+As soon as I finish the roaming functionality, I will implement OCS inside Open5GS.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>open5gs-ocsd</h2>
+          <p>
+          <small>
+            It may make sense to introduce at least a minimal open5gs-ocsd in open5gs.git which announced the Credit Control diameter app support, and which can handle CCR Initial/Update/Termination answering with CCA.
+          </small>
+          </p>
+          <p>
+          <small>
+            It could also set Validity-Time and Volume-Threshold each time it is requested some resources, to get periodic reports about each subscriber, and perhaps store that into the mongodb database.
+          </small>
+          </p>
+          <aside class="notes">
+I will make it minimal with very few features, and hopefully the rest will be improved by contributions.
+
+I'll add properties that can be set on the subscriber database.
+
+I'll make them selectable in the WebUI.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Future Work</h2>
+          <p>
+            I wonder if I should...
+          </p>
+          <p>
+            <small>
+              Moving Documentation and WebUI to separate repositories
+            </small>
+          </p>
+          <aside class="notes">
+There was a suggestion from the community to move the WebUI and documentation to separate repositories.
+
+I think that's the way to go.
+
+But there are other things to consider.
+
+There are better tools for documentation. What about sphinx?
+
+The web UI also needs improvement. The admin tools like the CLI need to be better.
+
+I wanted to move to another repository at that point.
+
+I haven't, so they're still all together in the same repository.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Request from Community</h2>
+          <ul>
+            <li>EAP-AKA-Prime</li>
+            <li>Add locality in the configuration</li>
+            <li>SUPI/GPSI Ranges in UDM - Issues <a href="https://github.com/open5gs/open5gs/issues/2010" target="_blank">#2010</a></li>
+            <li>UL Classifier - N9 interface between UPFs</li>
+            <li>NEF</li>
+          </ul>
+          <aside class="notes">
+There are also features requested by the community.
+
+I don't know how much I can do, but I'll do my best again.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Mesurement of UPF Performance</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>UPF</th>
+                <th>TCP</th>
+                <th>UDP</th>
+                <th>Loss</th>
+                <th>RTT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UPG-VPP</td>
+                <td>1162Mbps</td>
+                <td>458Mbps</td>
+                <td>0.96%</td>
+                <td>0.398ms</td>
+              </tr>
+              <tr>
+                <td>eUPF</td>
+                <td>358Mbps</td>
+                <td>418Mbps</td>
+                <td>3.6%</td>
+                <td>0.882ms</td>
+              </tr>
+              <tr>
+                <td>free5GC</td>
+                <td>231Mbps</td>
+                <td>401Mbps</td>
+                <td>23%</td>
+                <td>0.786ms</td>
+              </tr>
+              <tr>
+                <td>Open5GS</td>
+                <td>205Mbps</td>
+                <td>389Mbps</td>
+                <td>30%</td>
+                <td>1.081ms</td>
+              </tr>
+            </tbody>
+          </table>
+          <aside class="notes">
+UPF performance test results shared.
+
+The reliability of this test is unknown.
+
+However, the performance of Open5GS UPF is poor.
+
+I started thinking about what to do with Open5GS UPF.
+          </aside>
+        </section>
+
+        <section>
+          <h2>UPF Comparison</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Kind</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:none;">eBPF/XDP</td>
+                <td style="border:none;">
+                    Simply works on mainline linux
+                </td>
+              </tr>
+              <tr>
+                <td style="border:none;">DPDK/VPP</td>
+                <td style="border:none;">
+                    A slightly higher performance than XDP
+                </td>
+              </tr>
+              <tr>
+                <td style="border:none;"></td>
+                <td style="border:none;">
+                    NIC need to be dedicated to DPDK
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <aside class="notes">
+To improve performance, we can think of eBPF/XDP and DPDK/VPP technologies.
+
+DPDK/VPP performs slightly better than eBPF/XDP, but is NIC-limited.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Open5GS UPF Improvements</h2>
+          <p>
+            Should Open5GS create its own UPF?
+          </p>
+          <aside class="notes">
+And, is it a good idea to re-implement Open5GS UPF with a new technology?
+
+Alternatively, we can utilize an already developed eupf or UPG-VPP.
+
+I'm still trying to figure out what to do with UPF.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Harmonious Prioritization</h2>
+          <ul>
+            <li>Prioritizing bug fixes in the issue</li>
+            <li>Need to address security vulnerablilities</li>
+            <li>Hope to do a lot of new features</li>
+          </ul>
+          <aside class="notes">
+I work in order of priority.
+
+Bugs reported in Issues are prioritized.
+
+I also need to address security vulnerabilities.
+
+New features can be implemented in the remaining time.
+
+Please understand if things don't happen as quickly as you'd like.
+          </aside>
+        </section>
+
+        <section style="text-align: left;">
+          <h1>Thank you</h1>
+          <p>
+            Thank You for Your Attention!
+          </p>
+          <aside class="notes">
+Thank you!
+
+Feel free to ask any questions.
+          </aside>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+      });
+
+    </script>
+
+  </body>
+</html>
