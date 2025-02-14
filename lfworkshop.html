@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Open5GS – Status</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                    text-transform: none;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+  <!-- Title Slide -->
+  <section>
+    <h2>Open5GS: An Open Source Mobile Core Journey</h2>
+    <p><small>Functionality, Architecture, Use Cases & Deployment</small></p>
+    <p style="text-align: right;">Sukchan Lee</p>
+    <aside class="notes">
+Welcome and thanks for joining this session! Today we'll take a laid-back, high-level look at Open5GS—covering its technical aspects, deployment options, and how it fits in with other projects. Plus, I'll share a bit of our story and the fun behind building it.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Our Humble Beginnings</h2>
+    <ul>
+      <li>Feb 1, 2017: Started coding from scratch</li>
+      <li>Pure hobby—no external support</li>
+      <li>10 months until first release</li>
+      <li>Collaborated with Jihoon Lee & Jinyoung Park</li>
+      <li>Forked as Open5GS; 5G stack launched in 2020</li>
+    </ul>
+    <aside class="notes">
+      On February 1, 2017, I began coding entirely from scratch without support from companies, universities, or governments. After 10 months of hard work, I released the first version. Although I wrote most of it myself, I couldn’t have done it without the help of my long-time friends, Jihoon Lee and Jinyoung Park. They later moved towards a commercial path by founding NextEPC, while I maintained the open source spirit by forking the project as Open5GS. In 2020, I introduced our 5G protocol stack—designed to work seamlessly with 4G.
+    </aside>
+  </section>
+
+  <!-- Slide 1: Overview of Open5GS Functionality -->
+  <section>
+    <h2>Overview of Open5GS Functionality</h2>
+    <ul>
+      <li>Supports both 4G EPC and 5G Core Networks</li>
+      <li>Modular, service-based design</li>
+      <li>Key components: AMF, SMF, UPF, NRF, SEPP, etc.</li>
+      <li>Robust protocol support (HTTP/2, TLS, PFCP, Diameter)</li>
+    </ul>
+    <aside class="notes">
+Open5GS is built to be a complete mobile core network solution. Its modular design allows for independent deployment, upgrading, and integration—whether you're dealing with legacy 4G or the next-gen 5G systems.
+    </aside>
+  </section>
+
+  <!-- Slide 2: Architecture & Core Components -->
+<section>
+  <h2>Architecture & Core Components</h2>
+  <p><small>Flexible, Modular, and Secure</small></p>
+  <ul>
+    <li>Common libraries: core, security, s1ap, ngap, nas, etc.</li>
+    <li>Dedicated directories for network functions: amf, mme, smf, upf, etc.</li>
+    <li>Seamless integration with legacy 4G systems</li>
+    <li>Advanced security with TLS and encrypted identifiers (e.g., SUCI)</li>
+  </ul>
+  <aside class="notes">
+    Open5GS is built with clarity and reusability in mind. We maintain a set of common libraries—such as core, security, s1ap, ngap, and nas—that serve as the foundation for the project. Each network function (AMF, MME, SMF, UPF, etc.) is organized into its own dedicated directory, making it easy for developers to navigate and extend the codebase. Additionally, our architecture supports seamless integration with legacy 4G systems while providing advanced security features using TLS and encrypted identifiers like SUCI to meet modern security standards.
+  </aside>
+</section>
+
+  <!-- Slide 3: Use Cases & Deployment Scenarios -->
+  <section>
+    <h2>Use Cases & Deployment Scenarios</h2>
+    <ul>
+      <li>Carrier networks (both Home Routed & Local Break Out roaming)</li>
+      <li>Enterprise and private network deployments</li>
+      <li>Edge computing and IoT applications</li>
+    </ul>
+    <aside class="notes">
+Whether you’re experimenting in a lab, deploying a private network, or working on carrier-grade solutions, Open5GS offers the flexibility you need.
+    </aside>
+  </section>
+
+  <!-- Slide 4: Complementary & Overlapping Projects -->
+<section>
+  <h2>Complementary & Overlapping Projects</h2>
+  <ul>
+    <li>Interoperability with Osmocom-based projects (e.g., MSC/VLR, Gy interface)</li>
+    <li>Seamless integration with various commercial core solutions</li>
+    <li>Collaboration with NextEPC—maintaining strong relationships even as paths diverged</li>
+  </ul>
+  <aside class="notes">
+    Our ecosystem shares many common goals. Open5GS’s open and modular design not only complements Osmocom-based projects—such as MSC/VLR and Gy interface implementations—but also integrates smoothly with numerous commercial core solutions. We continue to collaborate with NextEPC, ensuring our combined efforts benefit the broader community.
+  </aside>
+</section>
+
+  <!-- Slide 5: Collaboration & Merge Opportunities -->
+  <section>
+    <h2>Collaboration & Adopter Landscape</h2>
+    <ul>
+      <li>
+        <strong>Collaborative Development:</strong> Joint enhancements, unified config, and community fixes boost interoperability.
+      </li>
+      <li>
+        <strong>Adopter Benefits:</strong> Transparent, modular design with rich docs and proven real-world performance.
+      </li>
+    </ul>
+    <aside class="notes">
+Working together enhances our ecosystem by pooling diverse expertise and fostering an environment of continuous innovation. Our collaborative efforts lead to improved performance, robust security, and more flexible deployments, directly benefiting carriers, enterprises, and developers alike.
+    </aside>
+  </section>
+
+  <!-- Slide 7: Industry Positioning & Community Clarity -->
+  <section>
+    <h2>Industry Positioning & Community Clarity</h2>
+    <ul>
+      <li>A leading open-source mobile core solution built by developers, for developers</li>
+      <li>A strong focus on security, performance, and scalability</li>
+      <li>Deep interoperability with industry standards and protocols</li>
+      <li>Active partnerships with global open source communities (Osmocom, NextEPC, etc.)</li>
+    </ul>
+    <aside class="notes">
+Open5GS is more than just software—it's a community effort. Our commitment to open standards and collaboration underpins our vision of a transparent, innovative mobile core ecosystem.
+    </aside>
+  </section>
+
+  <!-- Slide 8: Future Roadmap & Community Engagement -->
+  <section>
+    <h2>Future Roadmap & Community Engagement</h2>
+    <ul>
+      <li>Enhanced roaming features (both Home Routed and LBO)</li>
+      <li>Performance boosts in UPF via eBPF/XDP, DPDK/VPP integration</li>
+      <li>Simplified, unified configuration and improved WebUI</li>
+      <li>Active collaboration with industry, academia, and open source contributors</li>
+    </ul>
+    <aside class="notes">
+Looking ahead, our roadmap is all about continuous improvement and collaboration. We invite everyone—new and experienced—to join us in shaping the future of mobile core networks.
+    </aside>
+  </section>
+
+  <!-- Closing Slide -->
+  <section>
+    <h2>Thank You!</h2>
+    <p>Questions? Let's chat and collaborate!</p>
+    <aside class="notes">
+Thanks for listening, everyone. I'm excited to hear your thoughts and ideas—let's keep the conversation going and build something awesome together!
+    </aside>
+  </section>
+
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+      });
+
+    </script>
+
+  </body>
+</html>
