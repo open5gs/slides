@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Open5GS – Status</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                    text-transform: none;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+  <section>
+    <h2>Open5GS: An Open Source Mobile Core Journey</h2>
+    <p><small>Introduction, Architecture, Use Cases & Deployment</small></p>
+    <p style="text-align: right;">Sukchan Lee</p>
+    <aside class="notes">
+Welcome and thanks for joining this session! Today we'll take a laid-back, high-level look at Open5GS—covering its technical aspects, deployment options, and how it fits in with other projects. Plus, I'll share a bit of our story and the fun behind building it.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Our Humble Beginnings</h2>
+    <ul>
+      <li>Feb 1, 2017: Started coding from scratch</li>
+      <li>Pure hobby—no external support</li>
+      <li>10 months until first release</li>
+      <li>Collaborated with Jihoon Lee & Jinyoung Park</li>
+      <li>Forked as Open5GS; 5G stack launched in 2020</li>
+    </ul>
+    <aside class="notes">
+On February 1, 2017, I started coding Open5GS from scratch as a pure hobby project. After 10 months of work with help from friends Jihoon Lee and Jinyoung Park, we released the first version. While they later founded NextEPC for commercial purposes, I forked the project as Open5GS to maintain the open source spirit, adding our 5G stack in 2020.
+    </aside>
+  </section>
+
+  <!-- Slide 1: Overview of Open5GS Functionality -->
+  <section>
+    <h2>Overview of Open5GS Functionality</h2>
+    <ul>
+      <li>Supports both 4G EPC and 5G Core Networks</li>
+      <li>Modular, service-based design</li>
+      <li>Key components: AMF, SMF, UPF, NRF, SEPP, etc.</li>
+      <li>Robust protocol support (HTTP/2, TLS, PFCP, Diameter)</li>
+    </ul>
+    <aside class="notes">
+Open5GS bridges 4G and 5G technologies with its modular, service-based architecture. You can deploy, upgrade, and integrate each component independently—perfect for legacy 4G systems while preparing for 5G. The core includes AMF for access management, SMF for session management, and UPF for user plane functions, all supported by robust protocols.
+    </aside>
+  </section>
+
+  <!-- Slide 2: Architecture & Core Components -->
+  <section>
+    <h2>Architecture & Core Components</h2>
+    <p><small>Flexible, Modular, and Secure</small></p>
+    <ul>
+      <li>Common libraries: core, security, s1ap, ngap, nas, etc.</li>
+      <li>Dedicated directories for network functions: amf, mme, smf, upf, etc.</li>
+      <li>Seamless integration with legacy 4G systems</li>
+      <li>Advanced security with TLS and encrypted identifiers (e.g., SUCI)</li>
+    </ul>
+    <aside class="notes">
+Open5GS is built with clarity and reusability in mind. We maintain common libraries like core, security, s1ap, ngap, and nas as the foundation. Each network function is organized into dedicated directories, making development easy. Our architecture supports seamless 4G integration while providing advanced security with TLS and encrypted identifiers like SUCI.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Community Support</h2>
+    <ul>
+      <li>Problem with Open5GS can be filed as <a href="https://github.com/open5gs/open5gs/issues" target="_blank">issues</a> in this repository.</li>
+      <li>Other topics related to this project are happening on the <a href="https://github.com/open5gs/open5gs/discussions" target="_blank">discussions</a>.</li>
+      <li>Voice and text chat are available in Open5GS's <a href="https://discord.com/" target="_blank">Discord</a> workspace. Use this <a href="https://discord.com/invite/GreNkuc" target="_blank">link</a> to get started.</li>
+    </ul>
+    <aside class="notes">
+Community is at the heart of Open5GS. We have multiple support channels—GitHub for issues and discussions, and Discord for real-time help. Our community is incredibly responsive and welcoming to newcomers.
+    </aside>
+  </section>
+
+  <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+    <h2>Contributors on Jun 9, 2025</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Commits</th>
+          <th>Additions</th>
+          <th>Deletions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>acetcom</td>
+          <td>3,804</td>
+          <td>5,553,489</td>
+          <td>3,619,620</td>
+        </tr>
+        <tr>
+          <td>pespin</td>
+          <td>205</td>
+          <td>38,330</td>
+          <td>17,236</td>
+        </tr>
+        <tr>
+          <td>bmeglic</td>
+          <td>96</td>
+          <td>7,885</td>
+          <td>1,952</td>
+        </tr>
+        <tr>
+          <td>jyounggo</td>
+          <td>43</td>
+          <td>2,908</td>
+          <td>423</td>
+        </tr>
+        <tr>
+          <td>herlesupreeth</td>
+          <td>40</td>
+          <td>3,346</td>
+          <td>2,299</td>
+        </tr>
+        <tr>
+          <td>mitmitmitm</td>
+          <td>38</td>
+          <td>3,141</td>
+          <td>977</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>About 95 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> participated.</p>
+    <aside class="notes">
+We have 95 contributors who have participated in building Open5GS. While I've contributed the most commits at 3,804, every contribution matters—from major features to small bug fixes. This represents years of collaborative development that made Open5GS production-ready.
+    </aside>
+  </section>
+
+  <section style="text-align: left;">
+    <h2>License</h2>
+    <p>
+      Open5GS is licensed under a dual licensing model designed to meet the development and distribution needs of both commercial and open source projects.
+    </p>
+    <ul>
+      <li>
+        Open5GS Open Source files are made available under the terms of the GNU Affero General Public License (<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AGPL v3.0</a>).
+      </li>
+      <li>
+        Commercial licenses are also available.
+      </li>
+    </ul>
+    <aside class="notes">
+Our dual licensing approach gives you flexibility. The GNU AGPL v3.0 license is perfect for open source projects and research. For commercial deployments requiring proprietary modifications, we offer commercial licensing options through our partners.
+    </aside>
+  </section>
+
+  <section style="text-align: left;">
+    <h2>Our Partners</h2>
+    <p>Leading partners in mobile communications for complete solutions</p>
+    <ul>
+      <li><strong>NewPlane:</strong> Commercial licensing & enterprise support</li>
+      <li><strong>NextEPC:</strong> Scalable 4G/5G systems with DPDK acceleration</li>
+      <li><strong>sysmocom:</strong> FOSS expertise, consulting & training services</li>
+    </ul>
+    <aside class="notes">
+We work with three key partners to provide comprehensive solutions. NewPlane handles commercial licensing and enterprise support. NextEPC offers high-performance systems with DPDK acceleration—they're the commercial evolution of our early work. And sysmocom brings deep open source expertise with consulting and training services.
+    </aside>
+  </section>
+
+  <!-- Closing Slide -->
+  <section>
+    <h2>Thank You!</h2>
+    <p>Questions? Let's chat and collaborate!</p>
+    <aside class="notes">
+Thanks for listening, everyone. I'm excited to hear your thoughts and ideas—let's keep the conversation going and build something awesome together!
+    </aside>
+  </section>
+
+
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+      });
+
+    </script>
+
+  </body>
+</html>
