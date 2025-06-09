@@ -41,11 +41,7 @@
           <p><small>Presentation link : <a href="https://open5gs.org/slides/oscar-open5gs-techsess" target="_blank">https://open5gs.org/slides/oscar-open5gs-techsess</a></small></p>
           <p style="text-align: right;">Sukchan Lee</p>
           <aside class="notes">
-Hello everyone, and thank you for joining this online presentation. I'm Sukchan Lee, the lead developer of Open5GS.
-
-Today I'm excited to share what we've been working on in Open5GS - the recent developments we've completed, what we're currently focusing on, and where we're heading in the future.
-
-Open5GS has come a long way, and I want to give you insights into not just what we've built, but why we built it the way we did. This presentation will take about 15 minutes, and I hope you'll find it valuable.
+Hello everyone, and thank you for staying with us. I'm Sukchan Lee, the lead developer of Open5GS. Today I'm excited to share what we've been working on in Open5GS - the recent developments we've completed, what we're currently focusing on, and where we're heading in the future. Open5GS has come a long way, and I want to give you insights into not just what we've built, but why we built it the way we did. I hope you'll find this continuation valuable.
           </aside>
         </section>
 
@@ -187,13 +183,10 @@ This might seem like a lot of configuration, but it gives operators the flexibil
             <li>Certificate management for secure operator connections</li>
           </ul>
           <aside class="notes">
-Implementing roaming wasn't just about connecting networks - we had to solve some fundamental challenges.
-
-First, how do you route messages between operators? We use FQDN-based routing where each network function has a fully qualified domain name that includes the operator's PLMN ID. This allows automatic routing to the correct operator.
-
-Second, determining if a subscriber is roaming. For AMF, this is straightforward - the SUCI contains the home network identifier. But for SMF, we only have the IMSI, which doesn't clearly indicate if the MNC is 2 or 3 digits. Our solution uses Full DNN - a complete domain name that includes the operator identifier.
-
-This approach has trade-offs. It works reliably when all components use Full DNN, but might face interoperability challenges with implementations that don't follow this approach strictly.
+Implementing roaming wasn't just about connecting networks - we had to solve some fundamental challenges. First, how do you route messages between operators? We use FQDN-based routing where each network function has a fully qualified domain name that includes the operator's PLMN ID. This allows automatic routing to the correct operator.
+Second, determining if a subscriber is roaming. For AMF, this is straightforward - the SUCI contains the home network identifier. But for SMF, we only have the IMSI, which doesn't clearly indicate if the MNC is 2 or 3 digits. This problem specifically occurs in LBO (Local Breakout) scenarios.
+Our solution uses Full DNN - a complete domain name that includes the operator identifier. In LBO deployments, we configure the system to use Full DNN, which allows us to compare it with the IMSI to calculate the Home PLMN. Of course, there's an alternative approach - maintaining a database of known PLMNs to determine whether they use 2 or 3 digits. However, for implementation simplicity, we chose the Full DNN approach.
+It's worth noting that this complexity doesn't exist in Home Routed Roaming scenarios, where the traffic routing is more straightforward. This approach has trade-offs. It works reliably when all components use Full DNN in LBO scenarios, but might face interoperability challenges with implementations that don't follow this approach strictly.
           </aside>
         </section>
 
@@ -282,13 +275,9 @@ Q4 will bring UPF performance optimization and advanced features implementation.
             </small>
           </p>
           <aside class="notes">
-Thank you for your attention. Open5GS has evolved significantly, and we're excited about the future. 
-
-We're building not just a 5G core network, but a platform that enables innovation and deployment across various scenarios - from research and development to industrial IoT and edge computing.
-
-I'd be happy to answer any questions you might have about Open5GS, our implementation choices, or future plans. You can also find more information on our website and GitHub repository.
-
-The 5G ecosystem is rapidly evolving, and Open5GS aims to be your reliable foundation for exploring and deploying these new capabilities.
+Thank you for your attention. Open5GS has evolved significantly, and we're excited about the future. We're building not just a 5G core network, but a platform that enables innovation and deployment across various scenarios - from research and development to industrial IoT and edge computing.
+I'd be happy to answer any questions you might have about Open5GS, our implementation choices, or future plans. However, I should mention that it's quite late here in Korea - it's nighttime and my children are sleeping, so I need to keep my voice down. If you have questions that require detailed vocal responses, perhaps we could address them through our GitHub discussions or Discord community where I can provide more comprehensive written answers.
+You can also find more information on our website and GitHub repository. The 5G ecosystem is rapidly evolving, and Open5GS aims to be your reliable foundation for exploring and deploying these new capabilities.
           </aside>
         </section>
       </div>
