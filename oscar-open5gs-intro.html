@@ -10,7 +10,7 @@
     <meta name="author" content="Hakim El Hattab">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <parameter name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -25,6 +25,16 @@
       .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
                     text-transform: none;
         }
+      .timing {
+        color: #ff6b6b;
+        font-size: 0.8em;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.7);
+        padding: 5px;
+        border-radius: 3px;
+      }
     </style>
   </head>
 
@@ -40,67 +50,65 @@
     <p><small>Introduction, Architecture, Use Cases & Deployment</small></p>
     <p style="text-align: right;">Sukchan Lee</p>
     <aside class="notes">
-Welcome and thanks for joining this session! Today we'll take a laid-back, high-level look at Open5GS—covering its technical aspects, deployment options, and how it fits in with other projects. Plus, I'll share a bit of our story and the fun behind building it.
+Hello everyone, and thank you for joining this online session! I'm Sukchan Lee, the founder of Open5GS. Over the next 9 minutes, I'll share our journey building an open-source mobile core network, covering the technical highlights, architecture, and real-world applications. For those joining us online, I hope this presentation provides valuable insights into the world of open-source 5G technology.
     </aside>
   </section>
 
   <section>
     <h2>Our Humble Beginnings</h2>
     <ul>
-      <li>Feb 1, 2017: Started coding from scratch</li>
-      <li>Pure hobby—no external support</li>
-      <li>10 months until first release</li>
+      <li>February 1st, 2017: Started coding from scratch</li>
+      <li>Pure hobby project—no external funding</li>
+      <li>10 months to first release</li>
       <li>Collaborated with Jihoon Lee & Jinyoung Park</li>
       <li>Forked as Open5GS; 5G stack launched in 2020</li>
     </ul>
     <aside class="notes">
-On February 1, 2017, I started coding Open5GS from scratch as a pure hobby project. After 10 months of work with help from friends Jihoon Lee and Jinyoung Park, we released the first version. While they later founded NextEPC for commercial purposes, I forked the project as Open5GS to maintain the open source spirit, adding our 5G stack in 2020.
+Let me start with our origin story. On February 1st, 2017, I began coding Open5GS from scratch as a pure hobby project—no funding, no corporate backing, just passion for mobile networks. After 10 intensive months, working alongside my colleagues Jihoon Lee and Jinyoung Park, we released our first version. While they later founded NextEPC for commercial purposes, I maintained the open-source spirit by forking the project as Open5GS. We added our complete 5G stack in 2020, making it one of the first comprehensive open-source 5G cores available.
     </aside>
   </section>
 
-  <!-- Slide 1: Overview of Open5GS Functionality -->
   <section>
     <h2>Overview of Open5GS Functionality</h2>
     <ul>
       <li>Supports both 4G EPC and 5G Core Networks</li>
-      <li>Modular, service-based design</li>
-      <li>Key components: AMF, SMF, UPF, NRF, SEPP, etc.</li>
-      <li>Robust protocol support (HTTP/2, TLS, PFCP, Diameter)</li>
+      <li>Modular, service-based architecture</li>
+      <li>Key components: AMF, SMF, UPF, NRF, SEPP</li>
+      <li>Robust protocol support: HTTP/2, TLS, PFCP, Diameter</li>
     </ul>
     <aside class="notes">
-Open5GS bridges 4G and 5G technologies with its modular, service-based architecture. You can deploy, upgrade, and integrate each component independently—perfect for legacy 4G systems while preparing for 5G. The core includes AMF for access management, SMF for session management, and UPF for user plane functions, all supported by robust protocols.
+So what exactly does Open5GS do? We've built a comprehensive solution that bridges the gap between 4G and 5G technologies. Our modular, service-based architecture means you can deploy and upgrade each component independently—perfect for organizations transitioning from legacy 4G systems to 5G. The core includes essential network functions like AMF for access management, SMF for session management, and UPF for user plane functions. All of this is supported by industry-standard protocols including HTTP/2, TLS for security, and PFCP for control plane communication.
     </aside>
   </section>
 
-  <!-- Slide 2: Architecture & Core Components -->
   <section>
     <h2>Architecture & Core Components</h2>
     <p><small>Flexible, Modular, and Secure</small></p>
     <ul>
-      <li>Common libraries: core, security, s1ap, ngap, nas, etc.</li>
-      <li>Dedicated directories for network functions: amf, mme, smf, upf, etc.</li>
+      <li>Common libraries: core, security, s1ap, ngap, nas</li>
+      <li>Dedicated directories for network functions</li>
       <li>Seamless integration with legacy 4G systems</li>
-      <li>Advanced security with TLS and encrypted identifiers (e.g., SUCI)</li>
+      <li>Advanced security: TLS and encrypted identifiers</li>
     </ul>
     <aside class="notes">
-Open5GS is built with clarity and reusability in mind. We maintain common libraries like core, security, s1ap, ngap, and nas as the foundation. Each network function is organized into dedicated directories, making development easy. Our architecture supports seamless 4G integration while providing advanced security with TLS and encrypted identifiers like SUCI.
+The architecture of Open5GS is designed with developers in mind. We maintain shared libraries like core, security, s1ap, ngap, and nas as our foundation—this means consistent behavior across all components. Each network function lives in its own dedicated directory, making development and debugging straightforward. What's particularly powerful is our seamless 4G integration capability, allowing operators to gradually migrate to 5G. Security is built-in from the ground up, with TLS encryption and advanced features like SUCI for protecting user identities.
     </aside>
   </section>
 
   <section>
     <h2>Community Support</h2>
     <ul>
-      <li>Problem with Open5GS can be filed as <a href="https://github.com/open5gs/open5gs/issues" target="_blank">issues</a> in this repository.</li>
-      <li>Other topics related to this project are happening on the <a href="https://github.com/open5gs/open5gs/discussions" target="_blank">discussions</a>.</li>
-      <li>Voice and text chat are available in Open5GS's <a href="https://discord.com/" target="_blank">Discord</a> workspace. Use this <a href="https://discord.com/invite/GreNkuc" target="_blank">link</a> to get started.</li>
+      <li>GitHub <a href="https://github.com/open5gs/open5gs/issues" target="_blank">issues</a> for bug reports and feature requests</li>
+      <li>Active <a href="https://github.com/open5gs/open5gs/discussions" target="_blank">discussions</a> for project topics</li>
+      <li>Real-time help via <a href="https://discord.com/invite/GreNkuc" target="_blank">Discord</a> community</li>
     </ul>
     <aside class="notes">
-Community is at the heart of Open5GS. We have multiple support channels—GitHub for issues and discussions, and Discord for real-time help. Our community is incredibly responsive and welcoming to newcomers.
+One thing I'm particularly proud of is our vibrant community. We've built multiple support channels to help users at every level. For technical issues and feature requests, we use GitHub issues and discussions. But what really sets us apart is our Discord community—it's where real-time collaboration happens. Whether you're a telecom engineer, a researcher, or just curious about 5G technology, our community welcomes everyone. The response time is incredible, and the knowledge sharing is outstanding.
     </aside>
   </section>
 
   <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-    <h2>Contributors on Jun 9, 2025</h2>
+    <h2>Contributors as of June 9th, 2025</h2>
     <table>
       <thead>
         <tr>
@@ -141,60 +149,66 @@ Community is at the heart of Open5GS. We have multiple support channels—GitHub
           <td>3,346</td>
           <td>2,299</td>
         </tr>
-        <tr>
-          <td>mitmitmitm</td>
-          <td>38</td>
-          <td>3,141</td>
-          <td>977</td>
-        </tr>
       </tbody>
     </table>
-    <p>About 95 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> participated.</p>
+    <p>About 95 <a href="https://github.com/open5gs/open5gs/graphs/contributors" target="_blank">contributors</a> have participated</p>
     <aside class="notes">
-We have 95 contributors who have participated in building Open5GS. While I've contributed the most commits at 3,804, every contribution matters—from major features to small bug fixes. This represents years of collaborative development that made Open5GS production-ready.
+These numbers tell our story of collaboration. We now have 95 contributors from around the world who have helped build Open5GS. While I've contributed the most commits at 3,804, every single contribution matters—from major architectural changes to small bug fixes. This represents over 8 years of collaborative development that has made Open5GS production-ready and battle-tested in real deployments worldwide.
     </aside>
   </section>
 
   <section style="text-align: left;">
-    <h2>License</h2>
+    <h2>Licensing & Business Model</h2>
     <p>
-      Open5GS is licensed under a dual licensing model designed to meet the development and distribution needs of both commercial and open source projects.
+      Dual licensing model for maximum flexibility:
     </p>
     <ul>
       <li>
-        Open5GS Open Source files are made available under the terms of the GNU Affero General Public License (<a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AGPL v3.0</a>).
+        <strong>Open Source:</strong> GNU AGPL v3.0 for research and open projects
       </li>
       <li>
-        Commercial licenses are also available.
+        <strong>Commercial:</strong> Proprietary licenses available for enterprise
       </li>
     </ul>
     <aside class="notes">
-Our dual licensing approach gives you flexibility. The GNU AGPL v3.0 license is perfect for open source projects and research. For commercial deployments requiring proprietary modifications, we offer commercial licensing options through our partners.
+Let's talk about our business approach. We use a dual licensing model that serves both the open-source community and commercial needs. The GNU AGPL v3.0 license is perfect for researchers, academics, and open-source projects—you get full access to modify and distribute the code. For commercial deployments that require proprietary modifications or don't want to share their changes, we offer commercial licensing through our trusted partners. This model has proven successful in sustaining the project while keeping it freely available for innovation.
     </aside>
   </section>
 
   <section style="text-align: left;">
     <h2>Our Partners</h2>
-    <p>Leading partners in mobile communications for complete solutions</p>
+    <p>Leading partners for complete mobile solutions:</p>
     <ul>
       <li><strong>NewPlane:</strong> Commercial licensing & enterprise support</li>
-      <li><strong>NextEPC:</strong> Scalable 4G/5G systems with DPDK acceleration</li>
-      <li><strong>sysmocom:</strong> FOSS expertise, consulting & training services</li>
+      <li><strong>NextEPC:</strong> High-performance systems with DPDK acceleration</li>
+      <li><strong>sysmocom:</strong> Open source consulting & training services</li>
     </ul>
     <aside class="notes">
-We work with three key partners to provide comprehensive solutions. NewPlane handles commercial licensing and enterprise support. NextEPC offers high-performance systems with DPDK acceleration—they're the commercial evolution of our early work. And sysmocom brings deep open source expertise with consulting and training services.
+We work with three key partners to provide comprehensive solutions. NewPlane handles our commercial licensing and provides enterprise-grade support—they're your go-to for production deployments. NextEPC offers high-performance, carrier-grade systems with DPDK acceleration—they're actually the commercial evolution of our early collaborative work. And sysmocom brings deep open-source expertise, offering consulting and training services to help organizations successfully deploy and maintain Open5GS. Together, we cover everything from hobbyist experiments to carrier-grade deployments.
     </aside>
   </section>
 
-  <!-- Closing Slide -->
+  <section>
+    <h2>What's Next for Open5GS?</h2>
+    <ul>
+      <li>Continued 5G-Advanced features</li>
+      <li>Enhanced cloud-native deployment</li>
+      <li>Growing ecosystem integrations</li>
+      <li>Stronger community collaboration</li>
+    </ul>
+    <aside class="notes">
+Looking ahead, we're excited about several developments. We're continuously adding 5G-Advanced features to stay current with the latest standards. Cloud-native deployment is a major focus—making Open5GS even easier to deploy in Kubernetes and containerized environments. We're also seeing fantastic ecosystem integrations with projects like srsRAN and other open-source radio solutions. But most importantly, we're focused on growing our community collaboration. The future of telecommunications is open source, and Open5GS is leading that charge.
+    </aside>
+  </section>
+
   <section>
     <h2>Thank You!</h2>
-    <p>Questions? Let's chat and collaborate!</p>
+    <p>Questions? Let's connect and collaborate!</p>
+    <p><small>GitHub: open5gs/open5gs | Discord: discord.com/invite/GreNkuc</small></p>
     <aside class="notes">
-Thanks for listening, everyone. I'm excited to hear your thoughts and ideas—let's keep the conversation going and build something awesome together!
+Thank you all for your attention, especially those joining us online today! I'm excited to hear your questions and ideas. Whether you're looking to experiment with 5G, deploy a production network, or contribute to open-source telecommunications, we'd love to have you join our community. Let's keep building the future of mobile networks together!
     </aside>
   </section>
-
 
       </div>
 
