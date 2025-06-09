@@ -202,19 +202,19 @@ This approach has trade-offs. It works reliably when all components use Full DNN
           <ul>
             <li>Home-Routed Roaming Completion</li>
               <small>Development complete, testing phase for Q2 2025 release</small>
-            <li>OCS/OFCS Integration</li>
-              <small>Gy interface implementation with Osmocom collaboration</small>
             <li>UPF Performance Optimization</li>
               <small>Evaluating eBPF/XDP and DPDK/VPP technologies</small>
+            <li>Release-18 Feature Implementation</li>
+              <small>Advanced 5G capabilities and enhanced network functions</small>
           </ul>
           <aside class="notes">
 Now let me tell you what we're currently working on.
 
 Home-Routed roaming development is complete. Unlike Local Breakout where traffic stays in the visited network, Home-Routed sends all user traffic back to the home network. We're now in the testing phase and plan to release this in Q2 2025.
 
-We're also working on charging capabilities. Through collaboration with Osmocom, we're implementing the Gy interface for Online Charging System integration. This will include a basic open5gs-ocsd component that can handle Credit Control requests and store charging information in MongoDB.
+UPF performance is a key focus area. Our current UPF implementation, while functional, doesn't match the performance of specialized solutions. We're evaluating whether to enhance our existing UPF with eBPF/XDP technology or integrate with high-performance alternatives like eUPF or UPG-VPP.
 
-UPF performance is another focus area. Our current UPF implementation, while functional, doesn't match the performance of specialized solutions. We're evaluating whether to enhance our existing UPF with eBPF/XDP technology or integrate with high-performance alternatives like eUPF or UPG-VPP.
+We're also working on implementing Release-18 features, which bring advanced 5G capabilities and enhanced network function behaviors that will be important for next-generation use cases.
           </aside>
         </section>
 
@@ -255,7 +255,7 @@ The community feedback helps us prioritize features and improvements that matter
               </tr>
               <tr>
                 <td style="border:none;">Q4 2025</td>
-                <td style="border:none;">OCS Integration & UPF Optimization</td>
+                <td style="border:none;">UPF Optimization & Advanced Features</td>
               </tr>
             </tbody>
           </table>
@@ -266,7 +266,7 @@ Q2 will see the release of Home-Routed roaming after thorough testing. This comp
 
 Q3 focuses on Release-18 features and enhanced command-line interfaces for better operational capabilities.
 
-Q4 will bring charging capabilities with OCS integration and UPF performance improvements. Our goal is to make Open5GS not just feature-complete but also operationally mature for production deployments.
+Q4 will bring UPF performance optimization and advanced features implementation. Our goal is to make Open5GS not just feature-complete but also operationally mature for production deployments.
           </aside>
         </section>
 
