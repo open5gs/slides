@@ -41,7 +41,7 @@
           <p><small>Presentation link : <a href="https://open5gs.org/slides/oscar-open5gs-techsess" target="_blank">https://open5gs.org/slides/oscar-open5gs-techsess</a></small></p>
           <p style="text-align: right;">Sukchan Lee</p>
           <aside class="notes">
-Hello everyone, and thank you for staying with us. I'm Sukchan Lee, the lead developer of Open5GS. Today I'm excited to share what we've been working on in Open5GS - the recent developments we've completed, what we're currently focusing on, and where we're heading in the future. Open5GS has come a long way, and I want to give you insights into not just what we've built, but why we built it the way we did. I hope you'll find this continuation valuable.
+Hi again, thanks for sticking around for the technical session. I'm back to dive deeper into what we've actually been building in Open5GS. Since this will be my last chance to take questions today - it's getting pretty late here in Korea and my kids need to sleep - please feel free to ask anything during or right after this presentation. I'll do my best to answer everything before the other speakers take over. Let me walk you through some of the more technical stuff we've been working on and where we're headed.
           </aside>
         </section>
 
@@ -70,17 +70,17 @@ Hello everyone, and thank you for staying with us. I'm Sukchan Lee, the lead dev
               </small>
           </ul>
           <aside class="notes">
-Let me start with what we've accomplished recently. These are significant milestones that bring Open5GS closer to commercial-grade functionality.
+So let me start with what we've actually managed to get working recently. These took way longer than I initially thought they would, but I think we got them right.
 
-First, HTTP/2 over TLS support. This is crucial because while 4G relied heavily on Diameter protocols, 5G has moved to HTTP/2 as the primary interface. TLS security is essential, especially for roaming scenarios where different operators need to communicate securely.
+The HTTP/2 over TLS support was necessary because 5G really moved away from the Diameter-heavy approach of 4G. Getting the TLS part right was tricky - you need different certificates for different scenarios, especially when operators need to talk to each other securely.
 
-Second, we've implemented the 5G SUCI Profile A/B Scheme. This is a major privacy enhancement. In 4G, capturing S1AP traffic could expose subscriber identities. With SUCI, the subscriber's identity is encrypted, providing much better privacy protection.
+The SUCI implementation was something I felt we really needed. In 4G, if someone captures your S1AP traffic, they can potentially see subscriber identities. SUCI encrypts that, which feels like basic privacy protection these days.
 
-Third, UPF High Availability with PFCP Restoration. This allows you to configure redundant UPFs and enables automatic recovery when either control plane or data plane components fail. The system detects failures through heartbeat mechanisms and seamlessly transfers sessions.
+UPF High Availability was probably the most complex piece. Making automatic failover work reliably took a lot of testing and debugging. There are so many edge cases when network components fail.
 
-We've also completed our full 5G roaming implementation, including both Local Breakout and Home-Routed scenarios. This was one of our most challenging projects.
+The roaming implementation... well, that was a journey. Both Local Breakout and Home-Routed scenarios with SEPP integration required basically redesigning how our components communicate with each other.
 
-Finally, Framed Routing enables advanced IoT and enterprise scenarios where a single device provides connectivity for multiple IP ranges, along with comprehensive TLS support for production deployments.
+And the framed routing support came from user requests for IoT scenarios where one device needs to provide connectivity for multiple IP ranges. Pretty useful in practice.
           </aside>
         </section>
 
@@ -95,11 +95,11 @@ Finally, Framed Routing enables advanced IoT and enterprise scenarios where a si
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/metrics.png" alt="Metrics">
           <aside class="notes">
-Monitoring is critical for any production deployment. We've integrated Prometheus support throughout Open5GS, providing a generic API for counters, gauges, and other metrics.
+The Prometheus integration was something users kept asking for, and honestly, I should have done it earlier. Monitoring is crucial if you want to run this stuff seriously.
 
-This wasn't just about adding numbers - we built a comprehensive monitoring framework. Each Open5GS process can now serve metrics through an HTTP endpoint, making it easy to integrate with existing monitoring infrastructure.
+We built a generic metrics API using prometheus-client-c, so each Open5GS process can serve metrics through a simple HTTP endpoint. Nothing fancy, but it works well with existing monitoring stacks. You can easily hook it up to Grafana or whatever monitoring setup you already have.
 
-The implementation uses prometheus-client-c, which gives us both the metric formatting and a lightweight HTTP server. This means you can easily integrate Open5GS with Grafana, Alertmanager, or any other Prometheus-compatible monitoring stack.
+The tricky part was deciding which metrics actually matter and not overwhelming people with too much data. We tried to focus on the metrics that would actually help you understand what's happening in your network.
           </aside>
         </section>
 
@@ -114,13 +114,11 @@ The implementation uses prometheus-client-c, which gives us both the metric form
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming Architecture">
           <aside class="notes">
-Now let me dive into our roaming implementation, which required significant architectural changes.
+SEPP was probably our biggest architectural challenge. It's basically the secure gateway between different operator networks, but the tricky part is that most 5G core architectures weren't really designed with SEPP in mind from the beginning.
 
-SEPP - the Security Edge Protection Proxy - is the gateway between different operator networks. It handles all the security, encryption, and message routing between operators.
+We had to rethink how network functions discover each other and route messages. It wasn't just adding another component - we basically had to redesign the service communication model. TLS is mandatory for the N32 interface between operators, but internal communications can stay HTTP for efficiency.
 
-The key challenge here was that traditional 5G core architectures weren't designed with SEPP in mind. We had to redesign how network functions discover each other and how they route messages. This wasn't just adding a new component - it required rethinking the entire service communication model.
-
-TLS is mandatory for the N32 interface between SEPPs, while internal communications can remain HTTP. This creates a secure tunnel between operators while keeping internal operations efficient.
+Getting the certificate management right was... let's say it took several iterations. Operators need to be able to trust each other's certificates while maintaining security isolation.
           </aside>
         </section>
 
@@ -160,11 +158,11 @@ TLS is mandatory for the N32 interface between SEPPs, while internal communicati
                     port: 7777
           </code></pre>
           <aside class="notes">
-To support roaming and SEPP, we had to completely redesign our configuration system. The old format was too rigid for the complexity we needed.
+The old configuration system just couldn't handle the complexity we needed for roaming and SEPP. I had to basically throw it out and start over.
 
-The new system introduces clear separation between server and client configurations. You can see here how we can configure different TLS certificates for different interfaces, set up common defaults, and handle the complex N32 interface requirements.
+This new format might look complicated, but it gives operators the flexibility they actually need. You can see how we can set up different TLS certificates for different interfaces, configure defaults that make sense, and handle all the N32 interface requirements.
 
-This might seem like a lot of configuration, but it gives operators the flexibility they need for real-world deployments. We can now support scenarios where different interfaces need different security settings, different certificates, and different routing rules.
+I know it's more complex than the old system, but real-world deployments need this kind of control. Different interfaces need different security settings, different certificates, different routing rules. The old system was too rigid for that.
           </aside>
         </section>
 
@@ -183,10 +181,15 @@ This might seem like a lot of configuration, but it gives operators the flexibil
             <li>Certificate management for secure operator connections</li>
           </ul>
           <aside class="notes">
-Implementing roaming wasn't just about connecting networks - we had to solve some fundamental challenges. First, how do you route messages between operators? We use FQDN-based routing where each network function has a fully qualified domain name that includes the operator's PLMN ID. This allows automatic routing to the correct operator.
-Second, determining if a subscriber is roaming. For AMF, this is straightforward - the SUCI contains the home network identifier. But for SMF, we only have the IMSI, which doesn't clearly indicate if the MNC is 2 or 3 digits. This problem specifically occurs in LBO (Local Breakout) scenarios.
-Our solution uses Full DNN - a complete domain name that includes the operator identifier. In LBO deployments, we configure the system to use Full DNN, which allows us to compare it with the IMSI to calculate the Home PLMN. Of course, there's an alternative approach - maintaining a database of known PLMNs to determine whether they use 2 or 3 digits. However, for implementation simplicity, we chose the Full DNN approach.
-It's worth noting that this complexity doesn't exist in Home Routed Roaming scenarios, where the traffic routing is more straightforward. This approach has trade-offs. It works reliably when all components use Full DNN in LBO scenarios, but might face interoperability challenges with implementations that don't follow this approach strictly.
+Roaming brought some really interesting technical challenges that aren't obvious until you try to implement them.
+
+First, how do you route messages between operators? We use FQDN-based routing where each network function includes the operator's PLMN ID in its domain name. Sounds simple, but getting all the edge cases right took time.
+
+The bigger challenge was figuring out if a subscriber is roaming, especially for SMF in Local Breakout scenarios. AMF gets the SUCI which clearly indicates the home network, but SMF only gets the IMSI. The problem is that some mobile country codes use 2 digits, others use 3, and you can't always tell just from the IMSI.
+
+Our solution uses Full DNN - basically the complete domain name includes the operator identifier. It works reliably when everyone follows this approach, but it might cause interoperability issues with implementations that don't. There's an alternative approach using PLMN databases, but for simplicity, we went with Full DNN.
+
+This complexity doesn't exist in Home Routed scenarios, which is why that's often the simpler deployment option.
           </aside>
         </section>
 
@@ -201,13 +204,11 @@ It's worth noting that this complexity doesn't exist in Home Routed Roaming scen
               <small>Advanced 5G capabilities and enhanced network functions</small>
           </ul>
           <aside class="notes">
-Now let me tell you what we're currently working on.
+Right now we're focused on finishing up Home-Routed roaming. The development is done, but I'm being careful with testing since roaming is one of those things that needs to work reliably.
 
-Home-Routed roaming development is complete. Unlike Local Breakout where traffic stays in the visited network, Home-Routed sends all user traffic back to the home network. We're now in the testing phase and plan to release this in Q2 2025.
+UPF performance is honestly something I'm not entirely happy with yet. Our current implementation works, but it's not going to compete with specialized high-performance solutions. We're looking at eBPF/XDP to improve our existing UPF, or potentially integrating with solutions like eUPF or UPG-VPP that are designed for performance from the ground up.
 
-UPF performance is a key focus area. Our current UPF implementation, while functional, doesn't match the performance of specialized solutions. We're evaluating whether to enhance our existing UPF with eBPF/XDP technology or integrate with high-performance alternatives like eUPF or UPG-VPP.
-
-We're also working on implementing Release-18 features, which bring advanced 5G capabilities and enhanced network function behaviors that will be important for next-generation use cases.
+Release-18 features are also on the roadmap. The 5G specs keep evolving, and we're trying to stay current with the important capabilities that people actually need.
           </aside>
         </section>
 
@@ -220,11 +221,11 @@ We're also working on implementing Release-18 features, which bring advanced 5G 
             <li>Enhanced documentation and tutorials</li>
           </ul>
           <aside class="notes">
-Open5GS continues to grow as a community project. Our collaboration with Osmocom has been particularly valuable - they've contributed metrics support, Gy interface implementation, and ongoing improvements.
+The collaboration with Osmocom has been really valuable. They contributed the metrics support we just talked about, the Gy interface implementation, and ongoing improvements. Having experienced telecom developers contributing makes a huge difference.
 
-We're seeing increased adoption in industrial and research environments, which drives us to focus on stability and performance. We've also been improving our documentation and tutorials, making it easier for new users to get started with 5G core networks.
+We're seeing more industrial and research adoption, which is both exciting and a bit nerve-wracking because it means people are counting on this stuff to actually work. It definitely pushes us to focus on stability and proper testing.
 
-The community feedback helps us prioritize features and improvements that matter most for real-world deployments.
+Documentation is something I'm always trying to improve. 5G is complex enough without making it harder to understand how to actually deploy and use these systems.
           </aside>
         </section>
 
@@ -253,13 +254,13 @@ The community feedback helps us prioritize features and improvements that matter
             </tbody>
           </table>
           <aside class="notes">
-Looking ahead, our roadmap for 2025 focuses on completing the core commercial features and improving operational capabilities.
+This roadmap is what we're aiming for, though as any developer knows, timelines can be... optimistic.
 
-Q2 will see the release of Home-Routed roaming after thorough testing. This completes our roaming implementation.
+Q2 should see Home-Routed roaming after we finish testing. That'll complete our roaming story.
 
-Q3 focuses on Release-18 features and enhanced command-line interfaces for better operational capabilities.
+Q3 is focused on Release-18 features and better operational tools. CLI improvements might not sound exciting, but they're important for people actually running these systems.
 
-Q4 will bring UPF performance optimization and advanced features implementation. Our goal is to make Open5GS not just feature-complete but also operationally mature for production deployments.
+Q4 is when we tackle UPF performance optimization. That's going to be a significant effort, but it's necessary to make Open5GS competitive for high-throughput scenarios.
           </aside>
         </section>
 
@@ -275,9 +276,9 @@ Q4 will bring UPF performance optimization and advanced features implementation.
             </small>
           </p>
           <aside class="notes">
-Thank you for your attention. Open5GS has evolved significantly, and we're excited about the future. We're building not just a 5G core network, but a platform that enables innovation and deployment across various scenarios - from research and development to industrial IoT and edge computing.
-I'd be happy to answer any questions you might have about Open5GS, our implementation choices, or future plans. However, I should mention that it's quite late here in Korea - it's nighttime and my children are sleeping, so I need to keep my voice down. If you have questions that require detailed vocal responses, perhaps we could address them through our GitHub discussions or Discord community where I can provide more comprehensive written answers.
-You can also find more information on our website and GitHub repository. The 5G ecosystem is rapidly evolving, and Open5GS aims to be your reliable foundation for exploring and deploying these new capabilities.
+Thanks for your attention, and please, if you have any questions about the technical details, implementations, or future plans, now's the time to ask. It's getting quite late here in Korea and my kids are sleeping, so I need to keep my voice down. After the next two speakers, I won't be able to take vocal questions, but you can always reach out through our GitHub discussions or Discord where I can give more detailed written responses.
+
+Open5GS has come a long way from that hobby project I started in 2017. Having a community of developers and users who actually care about getting 5G technology right has made all the difference. Whether you're doing research, building prototypes, or considering production deployments, I hope Open5GS can be a useful foundation for your work.
           </aside>
         </section>
       </div>
