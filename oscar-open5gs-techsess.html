@@ -114,7 +114,7 @@ The tricky part was deciding which metrics actually matter and not overwhelming 
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming Architecture">
           <aside class="notes">
-SEPP was probably our biggest architectural challenge. It's basically the secure gateway between different operator networks, but the tricky part is that most 5G core architectures weren't really designed with SEPP in mind from the beginning.
+SEPP was probably our biggest architectural challenge. It's basically the secure gateway between different operator networks, but the tricky part is that when we first designed Open5GS's 5G core architecture, we didn't have SEPP in mind."
 
 We had to rethink how network functions discover each other and route messages. It wasn't just adding another component - we basically had to redesign the service communication model. TLS is mandatory for the N32 interface between operators, but internal communications can stay HTTP for efficiency.
 
@@ -276,9 +276,7 @@ Q4 is when we tackle UPF performance optimization. That's going to be a signific
             </small>
           </p>
           <aside class="notes">
-Thanks for your attention, and please, if you have any questions about the technical details, implementations, or future plans, now's the time to ask. It's getting quite late here in Korea and my kids are sleeping, so I need to keep my voice down. After the next two speakers, I won't be able to take vocal questions, but you can always reach out through our GitHub discussions or Discord where I can give more detailed written responses.
-
-Open5GS has come a long way from that hobby project I started in 2017. Having a community of developers and users who actually care about getting 5G technology right has made all the difference. Whether you're doing research, building prototypes, or considering production deployments, I hope Open5GS can be a useful foundation for your work.
+Thanks for your attention. Open5GS has come a long way from that hobby project I started in 2017. Having a community of developers and users who actually care about getting 5G technology right has made all the difference. Whether you're doing research, building prototypes, or considering production deployments, I hope Open5GS can be a useful foundation for your work.
           </aside>
         </section>
       </div>
