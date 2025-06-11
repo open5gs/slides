@@ -56,17 +56,17 @@ Hi again, thanks for sticking around for the technical session. I'm back to dive
               <small>
                 Complete subscriber privacy protection implementation
               </small>
-            <li>UPF High Availability & PFCP Restoration</li>
+            <li>UPF High Availability</li>
               <small>
-                Automatic failover and recovery from control/data plane failures
+                Automatic failover and recovery from data plane failures
               </small>
-            <li>Full 5G Roaming Implementation</li>
+            <li>PFCP Restoration</li>
               <small>
-                Both LBO and Home-Routed scenarios with SEPP integration
+                Heartbeat-based peer failure detection and session recovery
               </small>
-            <li>Framed Routing & Enhanced Security</li>
+            <li>Framed Routing</li>
               <small>
-                IoT scenarios support and comprehensive TLS certificate management
+                IoT scenarios support for multi-IP range connectivity
               </small>
           </ul>
           <aside class="notes">
@@ -76,11 +76,11 @@ The HTTP/2 over TLS support was necessary because 5G really moved away from the 
 
 The SUCI implementation was something I felt we really needed. In 4G, if someone captures your S1AP traffic, they can potentially see subscriber identities. SUCI encrypts that, which feels like basic privacy protection these days.
 
-UPF High Availability was probably the most complex piece. Making automatic failover work reliably took a lot of testing and debugging. There are so many edge cases when network components fail.
+UPF High Availability was probably one of the most complex pieces on the data plane side. Making automatic failover work reliably when UPF instances fail took a lot of testing and debugging. There are so many edge cases when network components fail suddenly.
 
-The roaming implementation... well, that was a journey. Both Local Breakout and Home-Routed scenarios with SEPP integration required basically redesigning how our components communicate with each other.
+PFCP Restoration is the complementary feature for handling peer PFCP entity failures. PFCP is the 3GPP protocol used between SMF and UPF in 5G, or between SGW-C and SGW-U in 4G networks. We implemented the heartbeat mechanism using PFCP Heartbeat Request and Response messages to detect when peer entities fail or restart. This allows nodes to properly handle session state and restore connectivity without losing existing user sessions. Getting the timing and state management right was tricky, but it's essential for network resilience.
 
-And the framed routing support came from user requests for IoT scenarios where one device needs to provide connectivity for multiple IP ranges. Pretty useful in practice.
+And the framed routing support came from user requests for IoT scenarios where one device needs to provide connectivity for multiple IP ranges. Pretty useful in practice for complex IoT deployments.
           </aside>
         </section>
 
@@ -114,7 +114,7 @@ The tricky part was deciding which metrics actually matter and not overwhelming 
           </p>
           <img height="400px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="Roaming Architecture">
           <aside class="notes">
-SEPP was probably our biggest architectural challenge. It's basically the secure gateway between different operator networks, but the tricky part is that when we first designed Open5GS's 5G core architecture, we didn't have SEPP in mind."
+SEPP was probably our biggest architectural challenge. It's basically the secure gateway between different operator networks, but the tricky part is that when we first designed Open5GS's 5G core architecture, we didn't have SEPP in mind.
 
 We had to rethink how network functions discover each other and route messages. It wasn't just adding another component - we basically had to redesign the service communication model. TLS is mandatory for the N32 interface between operators, but internal communications can stay HTTP for efficiency.
 
