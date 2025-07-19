@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Open5GS – ETRI 2025</title>
+
+    <meta name="description" content="Open5GS Status and Recent Developments for ETRI 2025">
+    <meta name="author" content="Sukchan Lee">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+                      text-transform: none;
+          }
+
+        /* Common Box Styles */
+        .content-box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #666;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: rgba(66,175,250,0.1);
+            border: 2px solid #42affa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .warning-box {
+            background: rgba(244,67,54,0.1);
+            border: 2px solid #f44336;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .success-box {
+            background: rgba(76,175,80,0.1);
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .pricing-box {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #42affa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        /* Layout Grids */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: stretch;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        /* Typography */
+        .small-text {
+            font-size: 0.7em;
+            line-height: 1.4;
+        }
+        
+        .medium-text {
+            font-size: 0.8em;
+            line-height: 1.3;
+        }
+        
+        .large-text {
+            font-size: 0.9em;
+            line-height: 1.3;
+        }
+        
+        .highlight-price {
+            color: #42affa;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .box-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        /* Lists */
+        .feature-list {
+            text-align: left;
+            font-size: 0.7em;
+            line-height: 1.4;
+        }
+        
+        .feature-list li {
+            margin: 5px 0;
+        }
+        
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            font-size: 0.7em;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 1px solid #666;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 8px;
+            border: 1px solid #666;
+            text-align: center;
+        }
+        
+        .comparison-table tbody tr:last-child td {
+            border-bottom: 1px solid #666;
+        }
+        
+        .comparison-table th {
+            background: rgba(66,175,250,0.2);
+        }
+        
+        .green-check {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .red-x {
+            color: #F44336;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <!-- 1. Title Slide -->
+        <section>
+          <h2>
+            <a href="https://open5gs.org" target="_blank">Open5GS</a> Project Status and Latest Developments
+          </h2>
+          <p><small>Invited Expert Seminar Hosted by the Cyber Security Research Division of ETRI</small></p>
+          <p><small>July 24, 2025</small></p>
+          <p style="text-align: right;">Sukchan Lee (Author, Open5GS)</p>
+        </section>
+
+        <!-- 2. What is Open5GS? -->
+        <section style="text-align: left;">
+          <h2>What is Open5GS?</h2>
+          <ul>
+            <li><strong>Open Source 4G/5G Core Network</strong></li>
+              <small>
+                Complete EPC (4G) and 5G Core implementation
+              </small>
+            <li><strong>Started as Personal Project in 2017</strong></li>
+              <small>
+                Originally NextEPC, forked to Open5GS in 2019
+              </small>
+            <li><strong>8+ Years of Continuous Development</strong></li>
+              <small>
+                Proven stability and maturity through long-term evolution
+              </small>
+            <li><strong>Independent Community Project</strong></li>
+              <small>
+                  No external funding or corporate backing since inception
+              </small>
+          </ul>
+        </section>
+
+        <!-- 3. Open5GS vs Competitors -->
+        <section>
+            <h2>Open5GS vs Competitors</h2>
+            
+            <div class="three-column">
+                <div class="info-box">
+                    <h4 style="color: #42affa;" class="box-title">Open5GS</h4>
+                    <div class="small-text">
+                        4G/5G Core<br>
+                        Very Active<br>
+                        Commercial Stability<br>
+                        AGPLv3
+                    </div>
+                </div>
+                
+                <div class="content-box" style="background: rgba(255,193,7,0.1); border-color: #ffc107;">
+                    <h4 style="color: #ffc107;" class="box-title">OpenAirInterface</h4>
+                    <div class="small-text">
+                        RAN + Core platform<br>
+                        Complex setup<br>
+                        Research-focused<br>
+                        Apache 2.0
+                    </div>
+                </div>
+                
+                <div class="content-box" style="background: rgba(156,39,176,0.1); border-color: #9c27b0;">
+                    <h4 style="color: #9c27b0;" class="box-title">free5GC</h4>
+                    <div class="small-text">
+                        Academia-focused<br>
+                        Limited activity<br>
+                        Basic features<br>
+                        Apache 2.0
+                    </div>
+                </div>
+            </div>
+            
+            <div class="success-box">
+                <p class="medium-text"><strong>🚀 Open5GS: Only production-ready open source 5G Core with proven commercial deployments</strong></p>
+            </div>
+        </section>
+
+        <!-- 4. Global Commercial Use Cases -->
+        <section style="text-align: left;">
+          <h2>Global Commercial Use Cases</h2>
+          <ul>
+            <li><strong>RAKwireless (Hong Kong)</strong></li>
+              <small>
+                World's first all-in-one 5G Hotspot with embedded Open5GS core
+              </small>
+            <li><strong>Seattle Community Network (USA)</strong></li>
+              <small>
+                Community LTE services for digitally underserved areas
+              </small>
+            <li><strong>ng-voice (Germany)</strong></li>
+              <small>
+                Cloud-native IMS/VoLTE solution validation platform
+              </small>
+            <li><strong>P1 Security (France)</strong></li>
+              <small>
+                5G security research and penetration testing tool development
+              </small>
+          </ul>
+        </section>
+
+        <!-- 6. Research & Academic Deployment -->
+        <section style="text-align: left;">
+          <h2>Research & Academic Deployment</h2>
+          <ul>
+            <li><strong>NSF PAWR ARA Testbed (USA)</strong></li>
+              <small>
+                Commercial Ericsson RAN + Open5GS core for rural 5G demonstration
+              </small>
+            <li><strong>Northeastern University (USA)</strong></li>
+              <small>
+                NVIDIA collaboration for Kubernetes-based 5G SA experiments
+              </small>
+            <li><strong>Altice Labs (Portugal)</strong></li>
+              <small>
+                Core component of EU open 5G experimental networks
+              </small>
+            <li><strong>NIST, University of Luxembourg</strong></li>
+              <small>
+                5G O-RAN, satellite-5G integration research infrastructure
+              </small>
+          </ul>
+        </section>
+
+        <!-- 7. Key Technical Achievements -->
+        <section style="text-align: left;">
+          <h2>Key Technical Achievements</h2>
+          
+          <div class="two-column">
+            <div class="success-box">
+              <h4 class="box-title" style="color: #4caf50;">Standards & Core Archi</h4>
+              <ul class="small-text">
+                <li><strong>3GPP Release-16/17:</strong> Full compliance</li>
+                <li><strong>Microservices:</strong> Cloud-native design</li>
+                <li><strong>Interoperability:</strong> Works with commercial RAN</li>
+              </ul>
+            </div>
+            
+            <div class="warning-box">
+              <h4 class="box-title" style="color: #f44336;">Security & Operations</h4>
+              <ul class="small-text">
+                <li><strong>SUCI Protection:</strong> Profile A/B encryption</li>
+                <li><strong>TLS Support:</strong> Per-interface configuration</li>
+                <li><strong>Monitoring:</strong> Prometheus integration</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. July 2025 Major Achievement: Complete 5G Roaming -->
+        <section style="text-align: left;">
+          <h2>🎉 Recent Major Achievement: Complete 5G Roaming</h2>
+          <ul>
+            <li><strong>Full 5G roaming functionality merged to main branch!</strong></li>
+              <small>
+                Both LBO (Local Breakout) and HR (Home Routed) supported
+              </small>
+            <li><strong>Built-in test framework included</strong></li>
+              <small>
+                Self-contained test environment since UERANSIM lacks roaming support
+              </small>
+            <li><strong>Comprehensive tutorial guide</strong></li>
+              <small>
+                Step-by-step guide from build to configuration and testing
+              </small>
+            <li><strong>Packet capture examples provided</strong></li>
+              <small>
+                Real traffic analysis materials for LBO/HR scenarios
+              </small>
+          </ul>
+        </section>
+
+        <!-- 9. 5G Roaming Architecture Implementation -->
+        <section style="text-align: left;">
+          <h2>
+            5G Roaming Architecture Implementation
+          </h2>
+          <div style="display: flex; align-items: center;">
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>SEPP Fully Implemented</strong></li>
+                  <small>Security Edge Protection Proxy</small>
+                <li><strong>N32 Interface</strong></li>
+                  <small>Secure TLS communication between operators</small>
+                <li><strong>FQDN-based Routing</strong></li>
+                  <small>Automatic routing via PLMN identifiers</small>
+                <li><strong>Certificate Management</strong></li>
+                  <small>Separate certificates for control/forwarding interfaces</small>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <img height="300px" data-src="https://open5gs.org/assets/img/roaming-lbo.png" alt="5G Roaming">
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. Community & Ecosystem -->
+        <section style="text-align: left;">
+          <h2>Community & Ecosystem</h2>
+          
+          <div class="two-column">
+            <div class="success-box">
+              <h4 class="box-title" style="color: #4caf50;">Global Community</h4>
+              <ul class="small-text">
+                <li><strong>100+ Contributors</strong> worldwide</li>
+                <li><strong>2,000+ GitHub Stars</strong> interest</li>
+                <li><strong>Osmocom Partnership</strong> tight collaboration</li>
+              </ul>
+            </div>
+            
+            <div class="info-box">
+              <h4 class="box-title" style="color: #42affa;">Industry Partners</h4>
+              <ul class="small-text">
+                <li><strong>Sponsors:</strong> Mobi, WaveMobile + 10 more</li>
+                <li><strong>Commercial:</strong> NewPlane, NextEPC, sysmocom</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="content-box">
+            <p class="small-text">
+              <strong>📈 From hobby project to industry-standard reference</strong>
+            </p>
+          </div>
+        </section>
+
+        <!-- 11. Recent Major Enhancements -->
+        <section style="text-align: left;">
+          <h2>Recent Major Enhancements (2024-2025)</h2>
+          <ul>
+            <li><strong>Complete Configuration System Redesign</strong></li>
+              <small>
+                Flexible server/client architecture supporting complex deployments
+              </small>
+            <li><strong>Enhanced Security Implementation</strong></li>
+              <small>
+                Per-interface TLS configuration, certificate management
+              </small>
+            <li><strong>Operational Monitoring</strong></li>
+              <small>
+                Prometheus metrics integration for production environments
+              </small>
+            <li><strong>Industrial IoT Support</strong></li>
+              <small>
+                Framed Routing for multi-IP range connectivity scenarios
+              </small>
+          </ul>
+        </section>
+
+        <!-- 12. 2025 Roadmap -->
+        <section style="text-align: left;">
+          <h2>2025 Roadmap</h2>
+          <ul>
+            <li><strong>Q3 2025: Next-Generation Features</strong></li>
+              <small>
+                Roaming stability improvements and Release-18 key features
+              </small>
+            <li><strong>Q4 2025: Performance Revolution</strong></li>
+              <small>
+                eBPF/XDP-based high-performance UPF or integration with existing solutions
+              </small>
+            <li><strong>Continuous: Usability Enhancement</strong></li>
+              <small>
+                CLI tools, configuration simplification, documentation improvement
+              </small>
+            <li><strong>Long-term: 6G Preparation</strong></li>
+              <small>
+                AI/ML integration, satellite connectivity, ultra-low latency services
+              </small>
+          </ul>
+        </section>
+
+        <!-- 13. Working Together -->
+        <section style="text-align: left;">
+          <h2>Working Together</h2>
+          
+          <div class="info-box">
+            <h3 class="box-title" style="color: #42affa;">Community-Driven Development</h3>
+            <p class="small-text">Independent volunteer-based open source project</p>
+          </div>
+          
+          <div class="two-column">
+            <div class="success-box">
+              <h4 class="box-title" style="color: #4caf50;">✅ What We Do</h4>
+              <ul class="small-text">
+                <li><strong>Security vulnerabilities:</strong> Immediate fixes</li>
+                <li><strong>Critical bugs:</strong> Fast resolution</li>
+              </ul>
+            </div>
+            
+            <div class="warning-box">
+              <h4 class="box-title" style="color: #f44336;">⚠️ Limitations</h4>
+              <ul class="small-text">
+                <li><strong>No paid work:</strong> Volunteer-only</li>
+                <li><strong>Limited troubleshooting:</strong> Time constraints</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="content-box">
+            <p class="small-text">
+              We strive to provide additional assistance for Korean teams when possible.
+            </p>
+          </div>
+        </section>
+
+        <!-- 14. Thank You -->
+        <section style="text-align: left;">
+          <h1>Thank You</h1>
+          <p>
+            Questions and Discussion Welcome
+          </p>
+          <p>
+            <small>
+              Open5GS: <a href="https://open5gs.org" target="_blank">https://open5gs.org</a><br>
+              GitHub: <a href="https://github.com/open5gs/open5gs" target="_blank">https://github.com/open5gs/open5gs</a><br>
+              Discord: <a href="https://discord.com/invite/GreNkuc" target="_blank">discord.com/invite/GreNkuc</a><br>
+              Roaming Tutorial: <a href="https://open5gs.org/open5gs/docs/tutorial/05-roaming/" target="_blank">05-roaming tutorial</a>
+            </small>
+          </p>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+      });
+
+    </script>
+
+  </body>
+</html>
